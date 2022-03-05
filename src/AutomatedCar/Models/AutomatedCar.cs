@@ -8,6 +8,8 @@ namespace AutomatedCar.Models
         private VirtualFunctionBus virtualFunctionBus;
         private PowerTrain powerTrain;
         private AutomaticGearShift carShift;
+        private SteeringWheel steeringWheel;
+
         public AutomatedCar(int x, int y, string filename)
             : base(x, y, filename)
         {
@@ -15,6 +17,7 @@ namespace AutomatedCar.Models
             this.ZIndex = 10;
             this.powerTrain = new PowerTrain(this.virtualFunctionBus);
             this.carShift = new AutomaticGearShift(this.virtualFunctionBus, this.powerTrain);
+            this.steeringWheel = new SteeringWheel(this.virtualFunctionBus);
         }
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }
