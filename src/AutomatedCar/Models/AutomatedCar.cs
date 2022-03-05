@@ -6,12 +6,14 @@ namespace AutomatedCar.Models
     public class AutomatedCar : Car
     {
         private VirtualFunctionBus virtualFunctionBus;
+        private PowerTrain powerTrain;
 
         public AutomatedCar(int x, int y, string filename)
             : base(x, y, filename)
         {
             this.virtualFunctionBus = new VirtualFunctionBus();
             this.ZIndex = 10;
+            this.powerTrain = new PowerTrain(this.virtualFunctionBus);
         }
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }
