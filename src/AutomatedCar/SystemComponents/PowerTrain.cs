@@ -6,11 +6,8 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    public delegate void ChangeShift(int rpm);
-
     public class PowerTrain : SystemComponent
     {
-        public event ChangeShift changeShiftEvent;
 
         public PowerTrain(VirtualFunctionBus virtualFunctionBus) : base(virtualFunctionBus)
         {
