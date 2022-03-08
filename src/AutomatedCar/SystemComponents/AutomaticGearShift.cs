@@ -45,7 +45,7 @@
         /// </summary>
         public override void Process()
         {
-            throw new NotImplementedException();
+            var a = 5 + 5;
         }
 
         /// <summary>
