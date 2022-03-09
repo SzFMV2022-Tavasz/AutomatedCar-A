@@ -12,11 +12,11 @@
 
         public double AngleSensor { get; set; }
 
-        public int RightEdge { get; set; }
+        public Point RightEdge { get; set; }
 
-        public int LeftEdge { get; set; }
+        public Point LeftEdge { get; set; }
 
-        public int Position { get; set; }
+        public Point Position { get; set; }
 
         public List<WorldObject> WorldObjects { get; set; }
 
@@ -27,7 +27,7 @@
         /// <param name="range">Sensor range.</param>
         /// <param name="angleSensor">Sensor angle.</param>
         /// <param name="position">Sensor position.</param>
-        public AbstractSensor(int range, double angleSensor, int position)
+        public AbstractSensor(int range, double angleSensor, Point position)
         {
             this.Range = range;
             this.AngleSensor = angleSensor;
