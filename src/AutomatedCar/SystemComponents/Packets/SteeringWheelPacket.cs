@@ -11,6 +11,11 @@
     {
         private int wheelRotation;
 
+        public SteeringWheelPacket()
+        {
+            this.wheelRotation = 0;
+        }
+
         public int WheelRotation
         {
             get => this.wheelRotation;

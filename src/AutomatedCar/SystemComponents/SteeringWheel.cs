@@ -16,6 +16,7 @@
         {
             this.steeringWheelPacket = new SteeringWheelPacket();
             this.virtualFunctionBus.SteeringWheelPacket = this.steeringWheelPacket;
+            this.WheelRotation = 0;
         }
 
         public int WheelRotation { get; set; }
