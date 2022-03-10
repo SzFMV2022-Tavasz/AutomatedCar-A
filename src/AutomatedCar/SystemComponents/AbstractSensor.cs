@@ -3,10 +3,11 @@
     using System.Collections.Generic;
     using AutomatedCar.Models;
     using Avalonia;
+    using Avalonia.Media;
 
     abstract class AbstractSensor
     {
-        private List<Point> points;
+        public PolylineGeometry SensorGeometry{ get; set; }
 
         public int Range { get; set; }
 
@@ -37,8 +38,8 @@
         /// <summary>
         /// Calculates the sensor area.
         /// </summary>
-        /// <returns>Retrun to list of sensor point.</returns>
-        public abstract List<Point> GetSensorArea();
+        /// <returns>Retrun to PolylineGeometry sensor.</returns>
+        public abstract PolylineGeometry GetSensorArea();
 
         /// <summary>
         /// Rotates the angle around the point. (or something similar).
