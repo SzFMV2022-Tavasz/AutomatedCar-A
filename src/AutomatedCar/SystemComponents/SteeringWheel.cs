@@ -1,5 +1,6 @@
 ﻿namespace AutomatedCar.SystemComponents
 {
+    using AutomatedCar.SystemComponents.Packets;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -8,9 +9,13 @@
 
     public class SteeringWheel : SystemComponent
     {
+        private SteeringWheelPacket steeringWheelPacket;
+
         public SteeringWheel(VirtualFunctionBus virtualFunctionBus)
             : base(virtualFunctionBus)
         {
+            this.steeringWheelPacket = new SteeringWheelPacket();
+            this.virtualFunctionBus.SteeringWheelPacket = this.steeringWheelPacket;
         }
 
         public override void Process()
