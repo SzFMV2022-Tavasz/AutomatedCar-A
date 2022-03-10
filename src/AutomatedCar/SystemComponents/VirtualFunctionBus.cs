@@ -7,8 +7,10 @@ namespace AutomatedCar.SystemComponents
     {
         private List<SystemComponent> components = new List<SystemComponent>();
 
-        public GearShiftPacket ShiftPacket;
-        public PowerTrainPacket PowerTrainPacket;
+        public IGearShiftPacket GearShiftPacket { get; set; }
+
+        public IPowerTrainPacket PowerTrainPacket { get; set; }
+
         public void RegisterComponent(SystemComponent component)
         {
             this.components.Add(component);
