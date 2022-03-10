@@ -97,6 +97,25 @@ namespace AutomatedCar.ViewModels
             //World.Instance.DebugStatus.Rotate = !World.Instance.DebugStatus.Rotate;
         }
 
+        public void GearReverse()
+        {
+            World.Instance.ControlledCar.carShift.ShiftPacket.CurrentGear = Helpers.Gear.Reverse;
+        }
+        public void GearNeutral()
+        {
+            World.Instance.ControlledCar.carShift.ShiftPacket.CurrentGear = Helpers.Gear.Neutral;
+        }
+
+        public void GearPark()
+        {
+            World.Instance.ControlledCar.carShift.ShiftPacket.CurrentGear = Helpers.Gear.Park;
+        }
+
+        public void GearDrive()
+        {
+            World.Instance.ControlledCar.carShift.ShiftPacket.CurrentGear = Helpers.Gear.Drive;
+        }
+
         public void FocusCar(ScrollViewer scrollViewer)
         {
             var offsetX = World.Instance.ControlledCar.X - (scrollViewer.Viewport.Width / 2);
