@@ -8,6 +8,6 @@
 
     public interface ISteeringWheelPacket
     {
-        int WheelRotation { get; set; }      //THIS MAY NOT BE AN INT IN THE FUTURE!!!!!!
+        int WheelRotation { get; }      //THIS MAY NOT BE AN INT IN THE FUTURE!!!!!!
     }
 }
