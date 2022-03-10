@@ -1,14 +1,20 @@
-﻿namespace AutomatedCar.SystemComponents.Packets
+﻿// <copyright file="PowerTrainPacket.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace AutomatedCar.SystemComponents.Packets
+
 {
     using ReactiveUI;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-    public class PowerTrainPacket: ReactiveObject
+    public class PowerTrainPacket: ReactiveObject,IPowerTrainPacket
     {
-        public int RPM { get; set; }
+        private int rpm;
+
+        public int RPM 
+        {
+            get => this.rpm;
+            set => this.RaiseAndSetIfChanged(ref this.rpm, value);
+        }
     }
 }

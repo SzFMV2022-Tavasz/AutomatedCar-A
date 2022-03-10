@@ -2,16 +2,22 @@
 {
     using AutomatedCar.Helpers;
     using ReactiveUI;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-
-    public class GearShiftPacket: ReactiveObject
+    public class GearShiftPacket: ReactiveObject, IGearShiftPacket
     {
-        public Gear CurrentGear { get; set; }
-        public Shifts CurrentShift { get; set; }
+        private Gear currentGear;
+        private Shifts currentShift;
+
+        public Gear CurrentGear
+        {
+            get => this.currentGear;
+            set => this.RaiseAndSetIfChanged(ref this.currentGear, value);
+        }
+
+        public Shifts CurrentShift
+        {
+            get => this.currentShift;
+            set => this.RaiseAndSetIfChanged(ref this.currentShift, value);
+        }
     }
 }
