@@ -23,7 +23,7 @@
             : base(virtualFunctionBus)
         {
             this.ShiftPacket = new GearShiftPacket();
-            this.virtualFunctionBus.ShiftPacket = this.ShiftPacket;
+            this.virtualFunctionBus.GearShiftPacket = this.ShiftPacket;
         }
 
         /// <summary>
@@ -37,18 +37,18 @@
                 case int n when (n >= 2500 && n < 4500): this.ChangeShift(Shifts.Two);break;
                 case int n when (n >= 4500 && n < 6000): this.ChangeShift(Shifts.Three);break;
                 case int n when (n >= 6000 && n < 8000): this.ChangeShift(Shifts.Four);break;
-                default: this.virtualFunctionBus.ShiftPacket.CurrentGear = Gear.Neutral;
+                default: this.virtualFunctionBus.GearShiftPacket.CurrentGear = Gear.Neutral;
                     break;
             }
 
         }
 
         /// <summary>
-        /// Changes the Gears.
+        /// Changes the Gears. Esetleges sorrend kényszerítés D>N>P>R.
         /// </summary>
         private void ChangeShift(Shifts shift)
         {
-            this.virtualFunctionBus.ShiftPacket.CurrentShift = shift;
+            this.virtualFunctionBus.GearShiftPacket.CurrentShift = shift;
         }
     }
 }
