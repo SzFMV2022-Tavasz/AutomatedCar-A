@@ -6,7 +6,7 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    internal interface IPedalPacket
+    public interface IPedalPacket
     {
 
         public int GasPedalLevel { get; set; }

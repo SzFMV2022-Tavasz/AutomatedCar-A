@@ -7,7 +7,7 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    internal class PedalPacket : ReactiveObject, IPedalPacket
+    public class PedalPacket : ReactiveObject, IPedalPacket
     {
         private int gasLevel;
         private int breakLevel;
