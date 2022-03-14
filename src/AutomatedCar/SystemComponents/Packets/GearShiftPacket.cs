@@ -7,7 +7,7 @@
     {
         private Gear currentGear;
         private Shifts currentShift;
-
+        private string currentState;
         public Gear CurrentGear
         {
             get => this.currentGear;
@@ -18,6 +18,13 @@
         {
             get => this.currentShift;
             set => this.RaiseAndSetIfChanged(ref this.currentShift, value);
+        }
+
+        public string GearState
+        {
+            get => this.currentState;
+   
+            set => this.RaiseAndSetIfChanged(ref this.currentState, value);
         }
     }
 }
