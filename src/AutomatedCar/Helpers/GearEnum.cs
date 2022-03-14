@@ -6,16 +6,18 @@
     using System.Text;
     using System.Threading.Tasks;
 
+
     public enum Gear
     {
         Park,
         Reverse,
         Neutral,
-        Drive
+        Drive 
     }
 
     public enum Shifts
     {
+        None,
         One,
         Two,
         Three,

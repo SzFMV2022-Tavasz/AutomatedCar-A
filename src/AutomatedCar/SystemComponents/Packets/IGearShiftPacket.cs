@@ -8,5 +8,6 @@
 
         Shifts CurrentShift { get; set; }
 
+        string GearState { get; set; }
     }
 }
