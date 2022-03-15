@@ -9,5 +9,9 @@
     public interface ISteeringWheelPacket
     {
         int WheelRotation { get; }      //THIS MAY NOT BE AN INT IN THE FUTURE!!!!!!
+
+        int NextPositionX { get; }
+
+        int NextPositionY { get; }
     }
 }
