@@ -32,52 +32,5 @@
         protected abstract ICollection<WorldObject> GetWorldObjectsInRange();
 
         protected abstract bool IsInRange(WorldObject worldObject);
-
-        /*
-        public PolylineGeometry SensorGeometry{ get; set; }
-
-        public int Range { get; set; }
-
-        public double AngleSensor { get; set; }
-
-        public Point RightEdge { get; private set; }
-
-        public Point LeftEdge { get; private set; }
-
-        public Point Position { get; private set; }
-
-        public List<WorldObject> WorldObjects { get; set; }
-
-        public Sensor(VirtualFunctionBus virtualFunctionBus, Car car, int range) : base(virtualFunctionBus)
-        {
-            
-            this.Position = new Point(car.X + 10, car.Y + 10);
-
-
-
-           
-        }
-
-
-        public override void Process()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected void SetPosition(Point point)
-        {
-            this.Position = point;
-        }
-
-        /// <summary>
-        /// Calculates the sensor area.
-        /// </summary>
-        /// <returns>Retrun to PolylineGeometry sensor.</returns>
-        public abstract PolylineGeometry GetSensorArea();
-
-        /// <summary>
-        /// Rotates the angle around the point. (or something similar).
-        /// </summary>
-        public abstract void RotatetoSensor();*/
     }
 }
