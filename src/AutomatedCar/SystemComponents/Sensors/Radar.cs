@@ -12,22 +12,39 @@
         public Radar(ref World world, VirtualFunctionBus virtualFunctionBus, int range, double angleOfView) 
             : base(ref world, virtualFunctionBus, range, angleOfView)
         {
-
         }
 
         public override void Process()
         {
-            throw new NotImplementedException();
+            this.UpdateSensorPosition();
+            this.virtualFunctionBus.SensorPacket.WorldObjectsInRange = GetWorldObjectsInRange();
         }
 
         protected override ICollection<WorldObject> GetWorldObjectsInRange()
         {
-            throw new NotImplementedException();
+            return this.world.WorldObjects.FindAll(IsInRange);
         }
 
         protected override bool IsInRange(WorldObject worldObject)
         {
-            throw new NotImplementedException();
+            if (worldObject.Collideable)
+            {
+                bool flag = false;
+                foreach (var geometry in worldObject.Geometries)
+                {
+                    if (geometry.Bounds.Intersects(this.FieldOfView.Bounds))
+                    {
+                        flag = true;
+                    }
+                }
+
+                return flag;
+            }
+            else
+            {
+                return false;
+            }
+
         }
     }
 }

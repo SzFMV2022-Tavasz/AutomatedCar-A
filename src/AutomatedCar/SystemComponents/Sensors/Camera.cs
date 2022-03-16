@@ -15,6 +15,7 @@
 
         public override void Process()
         {
+            this.UpdateSensorPosition();
             this.virtualFunctionBus.SensorPacket.WorldObjectsInRange = GetWorldObjectsInRange();
         }
 

@@ -13,7 +13,17 @@
         public SensorPacket SensorPacket;
         protected World world;
 
-        protected PolylineGeometry FieldOfView { get; private set; }
+        protected Point SensorPosition { get; set; }
+
+        protected Point RightEdge { get; set; }
+
+        protected Point LeftEdge { get; set; }
+
+        protected PolylineGeometry FieldOfView { get; set; }
+
+        protected int Range { get; set; }
+
+        protected double AngleOfView { get; set; }
 
         public Sensor(ref World world, VirtualFunctionBus virtualFunctionBus, int range, double angleOfView)
             : base(virtualFunctionBus)
@@ -21,12 +31,13 @@
             this.world = world;
             this.SensorPacket = new SensorPacket();
             this.virtualFunctionBus.SensorPacket = this.SensorPacket;
-            this.InitSensor(range, angleOfView);
+            this.Range = range;
+            this.AngleOfView = angleOfView;
         }
 
-        private void InitSensor(int range, double angleOfView)
+        protected void UpdateSensorPosition()
         {
-            this.FieldOfView = new PolylineGeometry(new List<Point>() { new Point(2, 3), new Point(4, 5), new Point(6, 7) }, true);
+            //TODO dummy szenzor pozíció, a "szélvédő" mögé kell majd helyezni
         }
 
         protected abstract ICollection<WorldObject> GetWorldObjectsInRange();
