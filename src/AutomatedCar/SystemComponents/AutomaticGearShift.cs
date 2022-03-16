@@ -1,5 +1,7 @@
 ﻿namespace AutomatedCar.SystemComponents
 {
+    using AutomatedCar.Helpers;
+    using AutomatedCar.SystemComponents.Packets;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -11,33 +13,17 @@
     /// </summary>
     public class AutomaticGearShift : SystemComponent
     {
-        private enum Gear
-        {
-            Park,
-            Reverse,
-            Neutral,
-            Drive
-        }
-
-        private enum Shifts
-        {
-            One,
-            Two,
-            Three,
-            Four
-        }
-
-        private PowerTrain powerTrain;
+        public GearShiftPacket ShiftPacket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutomaticGearShift"/> class.
         /// </summary>
         /// <param name="virtualFunctionBus">Main communication object</param>
-        /// <param name="powerTrain">Power train of the automated car</param>
-        public AutomaticGearShift(VirtualFunctionBus virtualFunctionBus, PowerTrain powerTrain)
+        public AutomaticGearShift(VirtualFunctionBus virtualFunctionBus)
             : base(virtualFunctionBus)
         {
-            this.powerTrain = powerTrain;
+            this.ShiftPacket = new GearShiftPacket();
+            this.virtualFunctionBus.GearShiftPacket = this.ShiftPacket;
         }
 
         /// <summary>
@@ -45,15 +31,25 @@
         /// </summary>
         public override void Process()
         {
-            throw new NotImplementedException();
+            switch (this.virtualFunctionBus.PowerTrainPacket.RPM)
+            {
+                case int n when (n >= 1000 && n < 2500) && this.virtualFunctionBus.GearShiftPacket.CurrentGear==Gear.Drive: this.ChangeShift(Shifts.One);break;
+                case int n when (n >= 2500 && n < 4500) && this.virtualFunctionBus.GearShiftPacket.CurrentGear == Gear.Drive: this.ChangeShift(Shifts.Two);break;
+                case int n when (n >= 4500 && n < 6000) && this.virtualFunctionBus.GearShiftPacket.CurrentGear == Gear.Drive: this.ChangeShift(Shifts.Three);break;
+                case int n when (n >= 6000 && n < 8000) && this.virtualFunctionBus.GearShiftPacket.CurrentGear == Gear.Drive: this.ChangeShift(Shifts.Four);break;
+                default: this.virtualFunctionBus.GearShiftPacket.CurrentGear = Gear.Neutral;
+                    break;
+            }
+
         }
 
         /// <summary>
-        /// Changes the Gears.
+        /// Changes the Gears. Esetleges sorrend kényszerítés D>N>P>R.
         /// </summary>
-        public void ChangeShift()
+        private void ChangeShift(Shifts shift)
         {
-
+            this.virtualFunctionBus.GearShiftPacket.CurrentShift = shift;
+            this.virtualFunctionBus.GearShiftPacket.GearState = shift.ToString();
         }
     }
 }

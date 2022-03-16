@@ -92,6 +92,31 @@ namespace AutomatedCar.Views
                 Keyboard.Keys.Remove(Key.F5);
             }
 
+            if (Keyboard.IsKeyDown(Key.R))
+            {
+                viewModel.CourseDisplay.GearReverse();
+                Keyboard.Keys.Remove(Key.R);
+            }
+
+            if (Keyboard.IsKeyDown(Key.P))
+            {
+                viewModel.CourseDisplay.GearPark();
+                Keyboard.Keys.Remove(Key.P);
+            }
+
+            if (Keyboard.IsKeyDown(Key.N))
+            {
+                viewModel.CourseDisplay.GearNeutral();
+                Keyboard.Keys.Remove(Key.N);
+            }
+
+            if (Keyboard.IsKeyDown(Key.D))
+            {
+                viewModel.CourseDisplay.GearDrive();
+                Keyboard.Keys.Remove(Key.D);
+            }
+
+
             var scrollViewer = this.Get<CourseDisplayView>("courseDisplay").Get<ScrollViewer>("scrollViewer");
             viewModel.CourseDisplay.FocusCar(scrollViewer);
         }

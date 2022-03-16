@@ -1,10 +1,17 @@
 namespace AutomatedCar.SystemComponents
 {
+    using AutomatedCar.SystemComponents.Packets;
     using System.Collections.Generic;
 
     public class VirtualFunctionBus : GameBase
     {
         private List<SystemComponent> components = new List<SystemComponent>();
+
+        public IGearShiftPacket GearShiftPacket { get; set; }
+
+        public IPowerTrainPacket PowerTrainPacket { get; set; }
+
+        public ISteeringWheelPacket SteeringWheelPacket { get; set; }
 
         public void RegisterComponent(SystemComponent component)
         {
