@@ -23,6 +23,7 @@
         private Stopwatch stopwatch = new Stopwatch();
         private Stopwatch stopwatch2 = new Stopwatch();
         private AutomatedCar car;
+        private int tick = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PowerTrain"/> class.
@@ -110,7 +111,7 @@
             }
             else if (Brake == 0 && GasTemporary == 0)
             {
-                if ((this.stopwatch.Elapsed - timeSpan).TotalMilliseconds > 1000)
+                if (/*(this.stopwatch.Elapsed - timeSpan).TotalMilliseconds > 1000*/ this.tick > 50)
                 {
                     if (this.PowerTrainPacket.Speed > 0)
                     {
@@ -130,8 +131,11 @@
                     }
 
                     timeSpan = stopwatch.Elapsed;
+                    this.tick = 0;
                 }
             }
+
+            tick++;
         }
 
         public void NeutralGear()
