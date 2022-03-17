@@ -9,7 +9,7 @@ namespace AutomatedCar.SystemComponents
         
         public IGearShiftPacket GearShiftPacket { get; set; }
 
-        public List<IPowerTrainPacket> PowerTrainPacket { get; set; } = new List<IPowerTrainPacket>();
+        public IPowerTrainPacket PowerTrainPacket { get; set; }
 
         public ISteeringWheelPacket SteeringWheelPacket { get; set; }
 

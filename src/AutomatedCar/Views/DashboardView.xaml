@@ -63,7 +63,7 @@
 								<TextBlock Grid.Row="4" Grid.Column="0">Wheel rotation:</TextBlock>
 								<TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.SteeringWheelPacket.WheelRotation}"/>
                               <TextBlock Grid.Row="5" Grid.Column="0">Speed:</TextBlock>
-                              <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.PowerTrainPacket[0].Speed}"/>
+                              <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.PowerTrainPacket.Speed}"/>
                             </Grid>
                         </StackPanel>
                     </DataTemplate>

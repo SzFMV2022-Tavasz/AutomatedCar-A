@@ -15,7 +15,7 @@ namespace AutomatedCar.Models
         {
             this.virtualFunctionBus = new VirtualFunctionBus();
             this.ZIndex = 10;
-            this.powerTrain = new PowerTrain(this.virtualFunctionBus);
+            this.powerTrain = new PowerTrain(this.virtualFunctionBus, this);
             this.carShift = new AutomaticGearShift(this.virtualFunctionBus);
             this.steeringWheel = new SteeringWheel(this.virtualFunctionBus);
         }

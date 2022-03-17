@@ -22,20 +22,22 @@
         private static TimeSpan timeSpan;
         private Stopwatch stopwatch = new Stopwatch();
         private Stopwatch stopwatch2 = new Stopwatch();
+        private AutomatedCar car;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PowerTrain"/> class.
         /// </summary>
         /// <param name="virtualFunctionBus">comm object.</param>
-        public PowerTrain(VirtualFunctionBus virtualFunctionBus)
+        public PowerTrain(VirtualFunctionBus virtualFunctionBus, AutomatedCar car)
             : base(virtualFunctionBus)
         {
+            this.car = car;
             this.PowerTrainPacket = new PowerTrainPacket();
             this.PowerTrainPacket.RPM = 1000; //üresjárat.
             this.PowerTrainPacket.Speed = 20; //ideiglenes
             this.stopwatch.Start();
             this.stopwatch2.Start();
-            this.virtualFunctionBus.PowerTrainPacket.Add(this.PowerTrainPacket);
+            this.virtualFunctionBus.PowerTrainPacket = this.PowerTrainPacket;
         }
 
         /// <summary>
@@ -66,7 +68,7 @@
                 //    stopwatch2.Restart();
                 //}
 
-                World.Instance.ControlledCar.Y -= ((int)this.stopwatch2.ElapsedMilliseconds * this.PowerTrainPacket.Speed) / 200;
+                this.car.Y -= ((int)this.stopwatch2.ElapsedMilliseconds * this.PowerTrainPacket.Speed) / 200;
                 if (this.PowerTrainPacket.Speed<1)
                 {
                     ;

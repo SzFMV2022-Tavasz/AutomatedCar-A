@@ -31,7 +31,7 @@
         /// </summary>
         public override void Process()
         {
-            switch (this.virtualFunctionBus.PowerTrainPacket[0].RPM) //[0] ideiglenes
+            switch (this.virtualFunctionBus.PowerTrainPacket.RPM)
             {
                 case int n when (n >= 1000 && n < 3000) && this.virtualFunctionBus.GearShiftPacket.CurrentGear==Gear.Drive: this.ChangeShift(Shifts.One);break;
                 case int n when (n >= 3000 && n < 5000) && this.virtualFunctionBus.GearShiftPacket.CurrentGear == Gear.Drive: this.ChangeShift(Shifts.Two);break;
