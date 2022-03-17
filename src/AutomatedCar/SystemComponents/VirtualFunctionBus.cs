@@ -6,10 +6,10 @@ namespace AutomatedCar.SystemComponents
     public class VirtualFunctionBus : GameBase
     {
         private List<SystemComponent> components = new List<SystemComponent>();
-
+        
         public IGearShiftPacket GearShiftPacket { get; set; }
 
-        public IPowerTrainPacket PowerTrainPacket { get; set; }
+        public List<IPowerTrainPacket> PowerTrainPacket { get; set; } = new List<IPowerTrainPacket>();
 
         public ISteeringWheelPacket SteeringWheelPacket { get; set; }
 
