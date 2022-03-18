@@ -12,7 +12,7 @@
         private int wheelRotation;
         private int nextPositionX;
         private int nextPositionY;
-
+        private bool isbeingRotated;
         public SteeringWheelPacket()
         {
             this.wheelRotation = 0;
@@ -35,5 +35,12 @@
             get => this.nextPositionY;
             set => this.RaiseAndSetIfChanged(ref this.nextPositionY, value);
         }
+
+        public bool IsBeingRotated
+        {
+            get => this.isbeingRotated;
+            set => this.RaiseAndSetIfChanged(ref this.isbeingRotated, value);
+        }
+
     }
 }

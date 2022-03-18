@@ -27,6 +27,11 @@
 
         public override void Process()
         {
+            switch (this.steeringWheelPacket.IsBeingRotated)
+            {
+                case false: this.RotateWheelByInputRotation();break;
+                case true: this.RotateWheelByInputRotation();break;
+            }
             Steering();
         }
 
@@ -50,6 +55,12 @@
             //{
             //    this.steeringWheelPacket.WheelRotation = newRotation;
             //}
+
+            switch (this.virtualFunctionBus.SteeringWheelPacket.WheelRotation)
+            {
+                case int n when (n < 0): this.RotateWheelByInputRotation(10); break;
+                case int n when (n > 0): this.RotateWheelByInputRotation(-10); break;
+            }
         }
 
         public void RotateWheelByInputRotation(int rotationSize)
@@ -112,7 +123,7 @@
             automatedCar.Y = carLocationY;
 
             /*carHeading = Math.Atan2(frontWheelY - backWheelY, frontWheelX - backWheelX) * (180 / Math.PI);*/    //////////////////////// új számítááááás
-            automatedCar.Rotation = carHeading + steerAngle/40;
+            automatedCar.Rotation = carHeading + steerAngle/20;
 
         }
     }
