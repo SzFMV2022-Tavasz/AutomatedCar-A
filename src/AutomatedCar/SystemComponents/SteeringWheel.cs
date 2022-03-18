@@ -23,11 +23,10 @@
             this.automatedCar = automatedCar;
         }
 
-        public int WheelRotation { get; set; }
+        //public int WheelRotation { get; set; }
 
         public override void Process()
         {
-            //this.RotateWheelByInputRotation();
             Steering();
         }
 
@@ -37,58 +36,83 @@
             //int newRotation = this.steeringWheelPacket.WheelRotation;
             //newRotation += this.WheelRotation;
 
-            int newRotation = this.WheelRotation;
+            //int newRotation = this.WheelRotation;
 
-            if (newRotation > 60)
+            //if (newRotation > 60)
+            //{
+            //    this.steeringWheelPacket.WheelRotation = 60;
+            //}
+            //else if (newRotation < -60)
+            //{
+            //    this.steeringWheelPacket.WheelRotation = -60;
+            //}
+            //else
+            //{
+            //    this.steeringWheelPacket.WheelRotation = newRotation;
+            //}
+        }
+
+        public void RotateWheelByInputRotation(int rotationSize)
+        {
+            int actualWheelRotation = steeringWheelPacket.WheelRotation;
+
+            int newWheelRotation = actualWheelRotation + rotationSize;
+
+            if (newWheelRotation <= 60 && newWheelRotation >= -60)
+            {
+                this.steeringWheelPacket.WheelRotation = newWheelRotation;
+            }
+            else if (newWheelRotation > 60)
             {
                 this.steeringWheelPacket.WheelRotation = 60;
             }
-            else if (newRotation < -60)
+            else if (newWheelRotation < -60)
             {
                 this.steeringWheelPacket.WheelRotation = -60;
-            }
-            else
-            {
-                this.steeringWheelPacket.WheelRotation = newRotation;
             }
         }
 
         private void Steering()
         {
-            Vector2 carLocation;
-            int steerAngle = 0;
+            int steerAngle = steeringWheelPacket.WheelRotation;
             int wheelBase = 130;
-            double dt = 1;
-            carLocation.X = World.Instance.ControlledCar.X;
-            carLocation.Y = World.Instance.ControlledCar.Y;
-            double carHeading = World.Instance.ControlledCar.Rotation;
-            int carSpeed = 1;
+            double dt = 0.1;
+            int carLocationX = automatedCar.X;
+            int carLocationY = automatedCar.Y;
+            double carHeading = automatedCar.Rotation;
+            int carSpeed = 40;
 
-            double fele = (wheelBase / 2 * Math.Cos(carHeading));
-            double fele2 = (wheelBase / 2 * Math.Sin(carHeading));
+            double valami = (carHeading * Math.PI) / 180;
 
-            double frontWheelX = (carLocation.X + fele2);
-            double frontWheelY = (carLocation.Y + fele);
+            double matcos = Math.Cos(valami);
+            double matsin = (Math.Sin((carHeading * Math.PI) / 180));
 
-            double backWheelX = (carLocation.X - wheelBase / 2 * Math.Sin(carHeading));
-            double backWheelY = (carLocation.Y - wheelBase / 2 * Math.Cos(carHeading));
+            double fele = (wheelBase / 2 * matcos);
+            double fele2 = (wheelBase / 2 * matsin);
 
-            ///////////////////////////////////////////////////
+            double frontWheelX = carLocationX + fele2;
+            double frontWheelY = carLocationY - fele;
 
-            backWheelX += (carSpeed * dt * Math.Sin(carHeading));
-            backWheelY -= (carSpeed * dt * Math.Cos(carHeading));
+            double backWheelX = carLocationX - wheelBase / 2 * matsin;
+            double backWheelY = carLocationY + wheelBase / 2 * matcos;
 
-            frontWheelX += (carSpeed * dt * Math.Sin(carHeading + steerAngle));
-            frontWheelY -= (carSpeed * dt * Math.Cos(carHeading + steerAngle));
+            backWheelX += (int)(carSpeed * dt * matsin);
+            backWheelY -= (int)(carSpeed * dt * matcos);
 
-            carLocation.X = (float)((frontWheelX + backWheelX) / 2);
-            carLocation.Y = (float)((frontWheelY + backWheelY) / 2);
+            double mat2sin = Math.Sin((carHeading + steerAngle) * Math.PI / 180);
+            double mat2cos = Math.Cos((carHeading + steerAngle) * Math.PI / 180);
 
-            World.Instance.ControlledCar.X = (int)carLocation.X;
-            World.Instance.ControlledCar.Y = (int)carLocation.Y;
+            frontWheelX += (carSpeed * dt * mat2sin);
+            frontWheelY -= (carSpeed * dt * mat2cos);
 
-            carHeading = (int)Math.Atan2(frontWheelY - backWheelY, frontWheelX - backWheelX);
-            //World.Instance.ControlledCar.Rotation += 5;
+            carLocationX = (int)Math.Round((frontWheelX + backWheelX) / 2);
+            carLocationY = (int)Math.Round((frontWheelY + backWheelY) / 2);
+
+            automatedCar.X = carLocationX;
+            automatedCar.Y = carLocationY;
+
+            /*carHeading = Math.Atan2(frontWheelY - backWheelY, frontWheelX - backWheelX) * (180 / Math.PI);*/    //////////////////////// új számítááááás
+            automatedCar.Rotation = carHeading + steerAngle/40;
 
         }
     }
