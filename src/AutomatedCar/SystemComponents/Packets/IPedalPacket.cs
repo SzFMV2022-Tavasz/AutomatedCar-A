@@ -8,8 +8,7 @@
 
     public interface IPedalPacket
     {
-
-        public int GasPedalLevel { get; set; }
-        public int BreakPedalLevel { get; set; }
+        public int GasPedalLevel { get; }
+        public int BreakPedalLevel { get; }
     }
 }

@@ -19,12 +19,14 @@ namespace AutomatedCar.Models
             this.powerTrain = new PowerTrain(this.virtualFunctionBus, this);
             this.carShift = new AutomaticGearShift(this.virtualFunctionBus);
             this.steeringWheel = new SteeringWheel(this.virtualFunctionBus);
-            this.pedal = new Pedal(this.virtualFunctionBus);
+            this.pedal = new Pedal(this.virtualFunctionBus, this);
         }
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }
 
         public SteeringWheel SteeringWheel { get => this.steeringWheel; }
+
+        public Pedal Pedal { get => this.pedal; }
 
         public int Revolution { get; set; }
 

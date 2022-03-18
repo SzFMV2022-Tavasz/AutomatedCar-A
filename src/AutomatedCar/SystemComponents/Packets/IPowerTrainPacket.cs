@@ -8,9 +8,9 @@
 
     public interface IPowerTrainPacket
     {
-        int RPM { get; }
+        int RPM { get; set; }
 
-        int Speed { get; }
+        int Speed { get; set; }
 
         int Acceleration { get; }
     }
