@@ -54,24 +54,22 @@ namespace AutomatedCar.ViewModels
 
         public void KeyLeft()
         {
-            World.Instance.ControlledCar.X -= 5;
-            World.Instance.ControlledCar.SteeringWheel.WheelRotation -= 2;
+            World.Instance.ControlledCar.StreeringInputKey(-5);
         }
 
         public void KeyRight()
         {
-            World.Instance.ControlledCar.X += 5;
-            World.Instance.ControlledCar.SteeringWheel.WheelRotation += 2;
+            World.Instance.ControlledCar.StreeringInputKey(5);
         }
 
         public void PageUp()
         {
-            World.Instance.ControlledCar.Rotation += 5;
+            //World.Instance.ControlledCar.Rotation += 5;
         }
 
         public void PageDown()
         {
-            World.Instance.ControlledCar.Rotation -= 5;
+            //World.Instance.ControlledCar.Rotation -= 5;
         }
 
         public void ToggleDebug()
