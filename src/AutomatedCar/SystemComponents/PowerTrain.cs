@@ -109,7 +109,7 @@
                     this.stopwatch.Restart();
                 }
             }
-            else if (Brake == 0 && GasTemporary == 0)
+            else if (Brake == 0 && GasTemporary == 0) //Lassulás
             {
                 if (/*(this.stopwatch.Elapsed - timeSpan).TotalMilliseconds > 1000*/ this.tick > 50)
                 {
