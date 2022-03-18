@@ -12,13 +12,15 @@
     public class SteeringWheel : SystemComponent
     {
         private SteeringWheelPacket steeringWheelPacket;
+        private AutomatedCar automatedCar;
 
-        public SteeringWheel(VirtualFunctionBus virtualFunctionBus)
+        public SteeringWheel(VirtualFunctionBus virtualFunctionBus, AutomatedCar automatedCar)
             : base(virtualFunctionBus)
         {
             this.steeringWheelPacket = new SteeringWheelPacket();
             this.virtualFunctionBus.SteeringWheelPacket = this.steeringWheelPacket;
-            this.WheelRotation = 0;
+            //this.WheelRotation = 0;
+            this.automatedCar = automatedCar;
         }
 
         public int WheelRotation { get; set; }
