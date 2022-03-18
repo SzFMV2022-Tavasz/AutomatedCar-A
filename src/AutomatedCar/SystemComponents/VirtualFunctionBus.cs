@@ -11,6 +11,8 @@ namespace AutomatedCar.SystemComponents
 
         public IPowerTrainPacket PowerTrainPacket { get; set; }
 
+        public IPedalPacket PedalPacket { get; set; }
+
         public ISteeringWheelPacket SteeringWheelPacket { get; set; }
 
         public void RegisterComponent(SystemComponent component)
