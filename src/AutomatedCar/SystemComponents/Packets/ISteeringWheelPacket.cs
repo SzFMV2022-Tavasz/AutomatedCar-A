@@ -13,5 +13,7 @@
         int NextPositionX { get; }
 
         int NextPositionY { get; }
+
+        bool IsBeingRotated { get; set; }
     }
 }
