@@ -72,7 +72,7 @@
                 this.BrakeDown();
                 this.pressedPedal = false;
             }
-            else if (brakeUp && this.pressedPedal)
+            else if (this.brakeUp && this.pressedPedal)
             {
                 this.BrakeUp();
                 this.pressedPedal = false;
@@ -80,7 +80,7 @@
 
 
             this.RPMCalculator();
-            this.SpeedCalculator();
+            //this.SpeedCalculator();
         }
 
         private void ThrottleUp()
@@ -134,9 +134,10 @@
 
         }
 
+        //Ideiglenes, powertrainnél kell majd ez is.
         private void RPMCalculator()
         {
-            var value = this.virtualFunctionBus.PowerTrainPacket.RPM + (int)(this.PedalPacket.GasPedalLevel * 0.25) - (int)(this.PedalPacket.BreakPedalLevel * 0.5);
+            var value = this.virtualFunctionBus.PowerTrainPacket.RPM + (int)(this.PedalPacket.GasPedalLevel * 0.25) - (int)(this.PedalPacket.BreakPedalLevel * 0.85);
 
             if (value < 0)
             {
@@ -149,13 +150,13 @@
         }
 
         // Idegilenes, elv nem is itt kell majd hanem powertrainben
-        private void SpeedCalculator()
-        {
-            if (timer.ElapsedMilliseconds > 850)
-            {
-                this.virtualFunctionBus.PowerTrainPacket.Speed += (this.virtualFunctionBus.PowerTrainPacket.RPM / 500);
-                timer.Restart();
-            }
-        }
+        //private void SpeedCalculator()
+        //{
+        //    if (timer.ElapsedMilliseconds > 850)
+        //    {
+        //        this.virtualFunctionBus.PowerTrainPacket.Speed += (this.virtualFunctionBus.PowerTrainPacket.RPM / 500);
+        //        timer.Restart();
+        //    }
+        //}
     }
 }
