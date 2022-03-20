@@ -35,7 +35,7 @@
             this.car = car;
             this.PowerTrainPacket = new PowerTrainPacket();
             this.PowerTrainPacket.RPM = 1000; //üresjárat.
-            this.PowerTrainPacket.Speed = 20; //ideiglenes
+            //this.PowerTrainPacket.Speed = 20; //ideiglenes
             this.stopwatch.Start();
             this.stopwatch2.Start();
             this.virtualFunctionBus.PowerTrainPacket = this.PowerTrainPacket;

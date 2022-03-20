@@ -44,12 +44,14 @@ namespace AutomatedCar.ViewModels
 
         public void KeyUp()
         {
-            World.Instance.ControlledCar.Y -= 5;
+            //World.Instance.ControlledCar.Y -= 5;
+            World.Instance.ControlledCar.Pedal.ToggleUp();
         }
 
         public void KeyDown()
         {
-            World.Instance.ControlledCar.Y += 5;
+            //World.Instance.ControlledCar.Y += 5;
+            World.Instance.ControlledCar.Pedal.ToggleDown();
         }
 
         public void KeyLeft()
