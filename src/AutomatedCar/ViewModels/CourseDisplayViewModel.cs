@@ -54,13 +54,13 @@ namespace AutomatedCar.ViewModels
 
         public void KeyLeft()
         {
-            World.Instance.ControlledCar.StreeringInputKey(-50);
+            World.Instance.ControlledCar.StreeringInputKey(-10);
             World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsBeingRotated = World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.WheelRotation < -20;
         }
 
         public void KeyRight()
         {
-            World.Instance.ControlledCar.StreeringInputKey(50);
+            World.Instance.ControlledCar.StreeringInputKey(10);
             World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsBeingRotated = World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.WheelRotation > 20;
         }
 

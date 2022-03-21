@@ -58,8 +58,8 @@
 
             switch (this.virtualFunctionBus.SteeringWheelPacket.WheelRotation)
             {
-                case int n when (n < 0): this.RotateWheelByInputRotation(10); break;
-                case int n when (n > 0): this.RotateWheelByInputRotation(-10); break;
+                case int n when (n < 0): this.RotateWheelByInputRotation(5); break;
+                case int n when (n > 0): this.RotateWheelByInputRotation(-5); break;
             }
         }
 
