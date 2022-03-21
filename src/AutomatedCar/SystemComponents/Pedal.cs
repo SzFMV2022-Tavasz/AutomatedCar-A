@@ -79,15 +79,15 @@
             }
 
 
-            this.RPMCalculator();
+            //this.RPMCalculator();
             //this.SpeedCalculator();
         }
 
         private void ThrottleUp()
         {
-            if ((this.PedalPacket.GasPedalLevel + 10) > 100)
+            if ((this.PedalPacket.GasPedalLevel + 10) > 80)
             {
-                this.PedalPacket.GasPedalLevel = 100;
+                this.PedalPacket.GasPedalLevel = 80;
             }
             else
             {
@@ -110,9 +110,9 @@
 
         private void BrakeUp()
         {
-            if ((this.PedalPacket.BreakPedalLevel + 10) > 100)
+            if ((this.PedalPacket.BreakPedalLevel + 10) > 80)
             {
-                this.PedalPacket.BreakPedalLevel = 100;
+                this.PedalPacket.BreakPedalLevel = 80;
             }
             else
             {

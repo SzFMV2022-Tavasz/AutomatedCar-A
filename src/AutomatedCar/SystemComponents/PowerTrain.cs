@@ -69,12 +69,12 @@
                 //    stopwatch2.Restart();
                 //}
 
-                this.car.Y -= ((int)this.stopwatch2.ElapsedMilliseconds * this.PowerTrainPacket.Speed) / 200;
-                if (this.PowerTrainPacket.Speed<1)
-                {
-                    ;
-                }
-                this.stopwatch2.Restart();
+                //this.car.Y -= ((int)this.stopwatch2.ElapsedMilliseconds * this.PowerTrainPacket.Speed) / 200;
+                //if (this.PowerTrainPacket.Speed<1)
+                //{
+                //    ;
+                //}
+                //this.stopwatch2.Restart();
             }
 
             /*Váltó figyelése, (gear) (D), N, P, R*/
@@ -100,22 +100,28 @@
         public void DriveGear()
         {
             /*Gázpedál meghatározza az autó jelenlegi cél sebességét,*/
-            if (Brake == 0 && GasTemporary > 0)
+            if (this.car.Pedal.PedalPacket.BreakPedalLevel == 0 && this.car.Pedal.PedalPacket.GasPedalLevel > 0)
             {
-                if ((this.stopwatch.Elapsed).TotalMilliseconds > (GasTemporary - this.PowerTrainPacket.Speed) * Acceleration && this.PowerTrainPacket.Speed < GasTemporary)
+                if (this.tick > 50 / (this.car.Pedal.PedalPacket.GasPedalLevel / 10) && this.PowerTrainPacket.Speed < this.car.Pedal.PedalPacket.GasPedalLevel)
                 {
                     this.PowerTrainPacket.Speed += 1;
-                    this.PowerTrainPacket.RPM += 100;
-                    this.stopwatch.Restart();
+                    this.PowerTrainPacket.RPM += 50;
+                    this.tick = 0;
+                }
+                else if (this.tick > 50 && this.PowerTrainPacket.Speed > this.car.Pedal.PedalPacket.GasPedalLevel) // RPM / TICK SPEED / 50Tick
+                {
+                    this.PowerTrainPacket.Speed -= 1;
+                    this.PowerTrainPacket.RPM -= 50;
+                    this.tick = 0;
                 }
             }
-            else if (Brake == 0 && GasTemporary == 0)
+            else if (this.car.Pedal.PedalPacket.BreakPedalLevel == 0 && this.car.Pedal.PedalPacket.GasPedalLevel == 0) //Lassulás
             {
-                if (/*(this.stopwatch.Elapsed - timeSpan).TotalMilliseconds > 1000*/ this.tick > 50)
+                if (this.tick > 50)// Dinamik TODO
                 {
-                    if (this.PowerTrainPacket.Speed > 0)
+                    if (this.PowerTrainPacket.Speed > 0 && this.PowerTrainPacket.Speed > this.car.Pedal.PedalPacket.GasPedalLevel)
                     {
-                        if ((this.PowerTrainPacket.Speed - Friction)<0)
+                        if ((this.PowerTrainPacket.Speed - Friction) < 0)
                         {
                             this.PowerTrainPacket.Speed = 0;
                             this.PowerTrainPacket.RPM = 1000;
@@ -123,19 +129,42 @@
                         else
                         {
                             this.PowerTrainPacket.Speed -= Friction;
-                            if (this.PowerTrainPacket.RPM > 1000)
+                            if (this.PowerTrainPacket.RPM > 1000) // Basic, can be modified
                             {
                                 this.PowerTrainPacket.RPM -= 50;
                             }
                         }
                     }
 
-                    timeSpan = stopwatch.Elapsed;
+                    this.tick = 0;
+                }
+            }
+            else if (this.car.Pedal.PedalPacket.BreakPedalLevel > 0 && this.car.Pedal.PedalPacket.GasPedalLevel == 0)
+            {
+                if (this.tick > 50 / (this.car.Pedal.PedalPacket.GasPedalLevel / 10)) // a pedaltol valtozzon TODO 
+                {
+                    if (this.PowerTrainPacket.Speed > 0)
+                    {
+                        if ((this.PowerTrainPacket.Speed - (1 + Friction)) < 0)
+                        {
+                            this.PowerTrainPacket.Speed = 0;
+                            this.PowerTrainPacket.RPM = 1000;
+                        }
+                        else
+                        {
+                            this.PowerTrainPacket.Speed -= Friction + 1;
+                            if (this.PowerTrainPacket.RPM > 1000) // Basic, can be modified
+                            {
+                                this.PowerTrainPacket.RPM -= 100;
+                            }
+                        }
+                    }
+
                     this.tick = 0;
                 }
             }
 
-            tick++;
+            this.tick++;
         }
 
         public void NeutralGear()

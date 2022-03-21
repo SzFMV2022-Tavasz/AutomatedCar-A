@@ -12,6 +12,5 @@
 
         int Speed { get; set; }
 
-        int Acceleration { get; }
     }
 }
