@@ -91,7 +91,12 @@
             int carLocationX = automatedCar.X;
             int carLocationY = automatedCar.Y;
             double carHeading = automatedCar.Rotation;
-            int carSpeed = 40;
+            int carSpeed = this.automatedCar.VirtualFunctionBus.PowerTrainPacket.Speed;
+
+            if (automatedCar.VirtualFunctionBus.GearShiftPacket.CurrentGear == Helpers.Gear.Reverse)
+            {
+                carSpeed = carSpeed * (-1);
+            }
 
             double valami = (carHeading * Math.PI) / 180;
 
@@ -119,8 +124,11 @@
             carLocationX = (int)Math.Round((frontWheelX + backWheelX) / 2);
             carLocationY = (int)Math.Round((frontWheelY + backWheelY) / 2);
 
-            automatedCar.X = carLocationX;
-            automatedCar.Y = carLocationY;
+            steeringWheelPacket.NextPositionX = carLocationX;
+            steeringWheelPacket.NextPositionY = carLocationY;
+
+            //automatedCar.X = carLocationX;
+            //automatedCar.Y = carLocationY;
 
             /*carHeading = Math.Atan2(frontWheelY - backWheelY, frontWheelX - backWheelX) * (180 / Math.PI);*/    //////////////////////// új számítááááás
             automatedCar.Rotation = carHeading + steerAngle/20;
