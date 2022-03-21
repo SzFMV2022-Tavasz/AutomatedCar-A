@@ -3,8 +3,11 @@ namespace AutomatedCar
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
+    using System.Numerics;
     using System.Reflection;
     using AutomatedCar.Models;
+    using AutomatedCar.Models.NPC;
+    using AutomatedCar.SystemComponents;
     using AutomatedCar.ViewModels;
     using AutomatedCar.Views;
     using Avalonia;
@@ -40,6 +43,8 @@ namespace AutomatedCar
             world.PopulateFromJSON($"AutomatedCar.Assets.test_world.json");
 
             this.AddControlledCarsTo(world);
+            
+            this.LoadNPCsInto(world);
 
             return world;
         }
@@ -93,6 +98,40 @@ namespace AutomatedCar
 
             world.AddControlledCar(controlledCar);
             world.AddControlledCar(controlledCar2);
+        }
+
+        // hard-coded, test values
+        private void LoadNPCsInto(World world)
+        {
+            var positions = new Vector2[] {
+            new Vector2(264, 700), new Vector2(264, 530),
+            new Vector2(264, 515), new Vector2(272, 467), new Vector2(290, 420), new Vector2(318, 372),
+            new Vector2(357, 336), new Vector2(396, 304), new Vector2(437, 280), new Vector2(482, 268),
+            new Vector2(520, 263),
+            new Vector2(1000, 263), new Vector2(1001, 263),
+            };
+
+            for (int i = 0; i < positions.Length; i++)
+            {
+                positions[i] += new Vector2(130, 150);
+            }
+
+            var velocities = new float[positions.Length];
+            for (int i = 0; i < velocities.Length; i++)
+            {
+                velocities[i] = 4.0f;
+            }
+            velocities[0] = 5f;
+            velocities[velocities.Length - 3] = 5f;
+            velocities[velocities.Length - 2] = 10f;
+            velocities[velocities.Length - 1] = 100f;
+
+            // data.Positions = new Vector2[] { new Vector2(10, 10), new Vector2(11, 10) };
+            // data.Velocities = new float[] { 1, 1 };
+
+            NPCCar car = new NPCCar(new NPCEngine(positions, velocities), 480, 1425, "car_1_white.png");
+            car.RotationPoint = new System.Drawing.Point(54, 240);
+            world.AddObject(car);
         }
     }
 }

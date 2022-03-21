@@ -1,21 +1,22 @@
 ﻿namespace AutomatedCar.Models.NPC
 {
+    using global::AutomatedCar.SystemComponents;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
 
-    class NPCCar : Car, INPC
+    public class NPCCar : Car
     {
-        public NPCCar(int x, int y, string filename)
+        public NPCCar(NPCEngine engine, int x, int y, string filename)
             : base(x, y, filename)
         {
+            this.Engine = engine;
+            this.Engine.SetNpc(this);
+            this.Engine.Start();
+        }
 
-        }
-        public void Step(int x, int y, double rotation)
-        {
-            throw new NotImplementedException();
-        }
+        public NPCEngine Engine { get; set; }
     }
 }
