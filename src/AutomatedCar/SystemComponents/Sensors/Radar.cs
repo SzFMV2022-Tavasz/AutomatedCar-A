@@ -9,8 +9,8 @@
     public class Radar : Sensor
     {
 
-        public Radar(ref World world, VirtualFunctionBus virtualFunctionBus, int range, double angleOfView) 
-            : base(ref world, virtualFunctionBus, range, angleOfView)
+        public Radar(ref World world, VirtualFunctionBus virtualFunctionBus)
+            : base(ref world, virtualFunctionBus, 200, 60)
         {
         }
 
