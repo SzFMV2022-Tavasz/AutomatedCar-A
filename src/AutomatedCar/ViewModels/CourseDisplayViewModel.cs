@@ -14,7 +14,7 @@ namespace AutomatedCar.ViewModels
     public class CourseDisplayViewModel : ViewModelBase
     {
         public ObservableCollection<WorldObjectViewModel> WorldObjects { get; } = new ObservableCollection<WorldObjectViewModel>();
-      
+
         private Avalonia.Vector offset;
 
         public CourseDisplayViewModel(World world)
@@ -44,34 +44,46 @@ namespace AutomatedCar.ViewModels
 
         public void KeyUp()
         {
-            World.Instance.ControlledCar.Y -= 5;
+            //World.Instance.ControlledCar.Y -= 5;
+            World.Instance.ControlledCar.Pedal.ToggleUp();
         }
 
         public void KeyDown()
         {
-            World.Instance.ControlledCar.Y += 5;
+            //World.Instance.ControlledCar.Y += 5;
+            World.Instance.ControlledCar.Pedal.ToggleDown();
         }
 
         public void KeyLeft()
         {
-            World.Instance.ControlledCar.X -= 5;
-            World.Instance.ControlledCar.SteeringWheel.WheelRotation -= 2;
+            World.Instance.ControlledCar.StreeringInputKey(-10);
+            World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsBeingRotated = World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.WheelRotation < -20;
         }
 
         public void KeyRight()
         {
-            World.Instance.ControlledCar.X += 5;
-            World.Instance.ControlledCar.SteeringWheel.WheelRotation += 2;
+            World.Instance.ControlledCar.StreeringInputKey(10);
+            World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsBeingRotated = World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.WheelRotation > 20;
+        }
+
+        public void KeyLeftUp()
+        {
+            World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsBeingRotated = false;
+        }
+
+        public void KeyRightUp()
+        {
+            World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsBeingRotated = false;
         }
 
         public void PageUp()
         {
-            World.Instance.ControlledCar.Rotation += 5;
+            //World.Instance.ControlledCar.Rotation += 5;
         }
 
         public void PageDown()
         {
-            World.Instance.ControlledCar.Rotation -= 5;
+            //World.Instance.ControlledCar.Rotation -= 5;
         }
 
         public void ToggleDebug()

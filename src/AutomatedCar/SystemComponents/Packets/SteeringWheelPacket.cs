@@ -10,7 +10,9 @@
     public class SteeringWheelPacket : ReactiveObject, ISteeringWheelPacket
     {
         private int wheelRotation;
-
+        private int nextPositionX;
+        private int nextPositionY;
+        private bool isbeingRotated;
         public SteeringWheelPacket()
         {
             this.wheelRotation = 0;
@@ -21,5 +23,24 @@
             get => this.wheelRotation;
             set => this.RaiseAndSetIfChanged(ref this.wheelRotation, value);
         }
+
+        public int NextPositionX 
+        {
+            get => this.nextPositionX;
+            set => this.RaiseAndSetIfChanged(ref this.nextPositionX, value);
+        }
+
+        public int NextPositionY
+        {
+            get => this.nextPositionY;
+            set => this.RaiseAndSetIfChanged(ref this.nextPositionY, value);
+        }
+
+        public bool IsBeingRotated
+        {
+            get => this.isbeingRotated;
+            set => this.RaiseAndSetIfChanged(ref this.isbeingRotated, value);
+        }
+
     }
 }
