@@ -46,16 +46,16 @@
         /// </summary>
         public override void Process()
         {
-            this.virtualFunctionBus.GearShiftPacket.CurrentGear = Gear.Drive;
+            //this.virtualFunctionBus.GearShiftPacket.CurrentGear = Gear.Drive;
 
-            switch (this.virtualFunctionBus.GearShiftPacket.CurrentGear)
+            switch (this.car.VirtualFunctionBus.GearShiftPacket.CurrentGear)
             {
-                case Gear n when (n == Gear.Drive ): this.DriveGear(); break;
+                case Gear n when (n == Gear.Drive ): this.DriveGear(80); break;
                 case Gear n when (n == Gear.Neutral): this.NeutralGear(); break;
                 case Gear n when (n == Gear.Reverse): this.ReverseGear(); break;
                 case Gear n when (n == Gear.Park): this.ParkGear(); break;
                 default:
-                    this.virtualFunctionBus.GearShiftPacket.CurrentGear = Gear.Neutral;
+                    this.car.VirtualFunctionBus.GearShiftPacket.CurrentGear = Gear.Neutral;
                     break;
             }
 
@@ -75,6 +75,8 @@
                 //    ;
                 //}
                 //this.stopwatch2.Restart();
+                this.car.Y = this.car.VirtualFunctionBus.SteeringWheelPacket.NextPositionY;
+                this.car.X = this.car.VirtualFunctionBus.SteeringWheelPacket.NextPositionX;
             }
 
             /*Váltó figyelése, (gear) (D), N, P, R*/
@@ -97,22 +99,28 @@
             legellenállás állandó*/
         }
 
-        public void DriveGear()
+        public void DriveGear(int maxspeed)//for reverse
         {
             /*Gázpedál meghatározza az autó jelenlegi cél sebességét,*/
-            if (this.car.Pedal.PedalPacket.BreakPedalLevel == 0 && this.car.Pedal.PedalPacket.GasPedalLevel > 0)
+            if (this.car.Pedal.PedalPacket.BreakPedalLevel == 0 && this.car.Pedal.PedalPacket.GasPedalLevel > 0) //Gas gas gas
             {
-                if (this.tick > 50 / (this.car.Pedal.PedalPacket.GasPedalLevel / 10) && this.PowerTrainPacket.Speed < this.car.Pedal.PedalPacket.GasPedalLevel)
+                if (this.PowerTrainPacket.Speed < this.car.Pedal.PedalPacket.GasPedalLevel && this.PowerTrainPacket.Speed < maxspeed)
                 {
-                    this.PowerTrainPacket.Speed += 1;
-                    this.PowerTrainPacket.RPM += 50;
-                    this.tick = 0;
+                    if (this.tick > 30)//50 / (this.car.Pedal.PedalPacket.GasPedalLevel / 10)
+                    {
+                        this.PowerTrainPacket.Speed += 1;
+                        this.PowerTrainPacket.RPM += 10;
+                        this.tick = 0;
+                    }
                 }
-                else if (this.tick > 50 && this.PowerTrainPacket.Speed > this.car.Pedal.PedalPacket.GasPedalLevel) // RPM / TICK SPEED / 50Tick
+                else if (this.PowerTrainPacket.Speed > this.car.Pedal.PedalPacket.GasPedalLevel) // RPM / TICK SPEED / 50Tick
                 {
-                    this.PowerTrainPacket.Speed -= 1;
-                    this.PowerTrainPacket.RPM -= 50;
-                    this.tick = 0;
+                    if (this.tick > 30 )/// (this.car.Pedal.PedalPacket.GasPedalLevel / 10)
+                    {
+                        this.PowerTrainPacket.Speed -= 1;
+                        this.PowerTrainPacket.RPM -= 10;
+                        this.tick = 0;
+                    }
                 }
             }
             else if (this.car.Pedal.PedalPacket.BreakPedalLevel == 0 && this.car.Pedal.PedalPacket.GasPedalLevel == 0) //Lassulás
@@ -131,7 +139,7 @@
                             this.PowerTrainPacket.Speed -= Friction;
                             if (this.PowerTrainPacket.RPM > 1000) // Basic, can be modified
                             {
-                                this.PowerTrainPacket.RPM -= 50;
+                                this.PowerTrainPacket.RPM -= 100;
                             }
                         }
                     }
@@ -139,7 +147,7 @@
                     this.tick = 0;
                 }
             }
-            else if (this.car.Pedal.PedalPacket.BreakPedalLevel > 0 && this.car.Pedal.PedalPacket.GasPedalLevel == 0)
+            else if (this.car.Pedal.PedalPacket.BreakPedalLevel > 0 && this.car.Pedal.PedalPacket.GasPedalLevel == 0) //Fékezés
             {
                 if (this.tick > 50 / (this.car.Pedal.PedalPacket.GasPedalLevel / 10)) // a pedaltol valtozzon TODO 
                 {
@@ -169,17 +177,20 @@
 
         public void NeutralGear()
         {
-            //rpm 
+            this.car.Pedal.PedalPacket.GasPedalLevel = 0;
+            this.car.Pedal.PedalPacket.BreakPedalLevel = 0;
+            this.PowerTrainPacket.RPM = 1000;
         }
 
         public void ReverseGear()
         {
-
+            this.car.Pedal.PedalPacket.BreakPedalLevel = 0;
+            DriveGear(40);
         }
 
         public void ParkGear()
         {
-            //fék
+            this.car.Pedal.PedalPacket.BreakPedalLevel = 50;
         }
     }
 }

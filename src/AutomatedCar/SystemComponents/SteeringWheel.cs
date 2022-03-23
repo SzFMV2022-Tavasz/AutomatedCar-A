@@ -87,7 +87,7 @@
         {
             int steerAngle = steeringWheelPacket.WheelRotation;
             int wheelBase = 130;
-            double dt = 0.1;
+            double dt = 1;
             int carLocationX = automatedCar.X;
             int carLocationY = automatedCar.Y;
             double carHeading = automatedCar.Rotation;
