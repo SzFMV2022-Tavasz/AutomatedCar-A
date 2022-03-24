@@ -8,6 +8,6 @@
 
     public interface ICollisionRadar
     {
-
+        delegate void EventHandler();
     }
 }
