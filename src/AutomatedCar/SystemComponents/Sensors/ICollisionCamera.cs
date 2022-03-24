@@ -9,5 +9,7 @@
     public interface ICollisionCamera
     {
         delegate void EventHandler();
+
+        event EventHandler CollisionInCamera;
     }
 }
