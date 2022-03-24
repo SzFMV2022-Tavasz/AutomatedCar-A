@@ -8,6 +8,6 @@
 
     public interface ICollisionCamera
     {
-
+        delegate void EventHandler();
     }
 }
