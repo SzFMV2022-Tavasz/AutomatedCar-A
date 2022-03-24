@@ -108,7 +108,9 @@
                 {
                     this.PowerTrainPacket.RPM += 1;
 
-                    if (this.tick > 30)//50 / (this.car.Pedal.PedalPacket.GasPedalLevel / 10)
+                    int adjustedGasLevel = (int)Math.Round(maxspeed * ((float)this.car.Pedal.PedalPacket.GasPedalLevel / 80));
+
+                    if (this.tick > ((maxspeed + 20) - adjustedGasLevel))//50 / (this.car.Pedal.PedalPacket.GasPedalLevel / 10)
                     {
                         this.PowerTrainPacket.Speed += 1;
                         this.tick = 0;
@@ -118,7 +120,7 @@
                 {
                     this.PowerTrainPacket.RPM -= 1;
 
-                    if (this.tick > 30 )/// (this.car.Pedal.PedalPacket.GasPedalLevel / 10)
+                    if (this.tick > 10)/// (this.car.Pedal.PedalPacket.GasPedalLevel / 10)
                     {
                         this.PowerTrainPacket.Speed -= 1;
                         this.tick = 0;
@@ -153,7 +155,9 @@
             }
             else if (this.car.Pedal.PedalPacket.BreakPedalLevel > 0 && this.car.Pedal.PedalPacket.GasPedalLevel == 0) //Fékezés
             {
-                if (this.tick > 50 / (this.car.Pedal.PedalPacket.GasPedalLevel / 10)) // a pedaltol valtozzon TODO 
+                int adjustedbreakLevel = (int)Math.Round(maxspeed * ((float)this.car.Pedal.PedalPacket.BreakPedalLevel / 80));
+
+                if (this.tick > ((maxspeed + 20) - adjustedbreakLevel)/2) // a pedaltol valtozzon TODO 
                 {
                     if (this.PowerTrainPacket.Speed > 0)
                     {
