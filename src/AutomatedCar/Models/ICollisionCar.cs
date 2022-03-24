@@ -8,6 +8,6 @@
 
     public interface ICollisionCar
     {
-
+        delegate void EventHandler();
     }
 }
