@@ -149,7 +149,7 @@
             }
             else if (this.car.Pedal.PedalPacket.BreakPedalLevel > 0 && this.car.Pedal.PedalPacket.GasPedalLevel == 0) //Fékezés
             {
-                if (this.tick > 50 / (this.car.Pedal.PedalPacket.GasPedalLevel / 10)) // a pedaltol valtozzon TODO 
+                if (this.car.Pedal.PedalPacket.GasPedalLevel > 0 && this.tick > 50 / (this.car.Pedal.PedalPacket.GasPedalLevel / 10)) // a pedaltol valtozzon TODO 
                 {
                     if (this.PowerTrainPacket.Speed > 0)
                     {
