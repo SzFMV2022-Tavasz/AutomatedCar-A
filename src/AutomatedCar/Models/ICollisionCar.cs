@@ -9,5 +9,7 @@
     public interface ICollisionCar
     {
         delegate void EventHandler();
+
+        event EventHandler CollisionInCar;
     }
 }
