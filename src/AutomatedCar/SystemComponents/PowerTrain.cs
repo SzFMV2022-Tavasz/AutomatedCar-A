@@ -106,29 +106,37 @@
             {
                 if (this.PowerTrainPacket.Speed < this.car.Pedal.PedalPacket.GasPedalLevel && this.PowerTrainPacket.Speed < maxspeed)
                 {
+                    this.PowerTrainPacket.RPM += 1;
+
                     if (this.tick > 30)//50 / (this.car.Pedal.PedalPacket.GasPedalLevel / 10)
                     {
                         this.PowerTrainPacket.Speed += 1;
-                        this.PowerTrainPacket.RPM += 10;
                         this.tick = 0;
                     }
                 }
                 else if (this.PowerTrainPacket.Speed > this.car.Pedal.PedalPacket.GasPedalLevel) // RPM / TICK SPEED / 50Tick
                 {
+                    this.PowerTrainPacket.RPM -= 1;
+
                     if (this.tick > 30 )/// (this.car.Pedal.PedalPacket.GasPedalLevel / 10)
                     {
                         this.PowerTrainPacket.Speed -= 1;
-                        this.PowerTrainPacket.RPM -= 10;
                         this.tick = 0;
                     }
                 }
             }
             else if (this.car.Pedal.PedalPacket.BreakPedalLevel == 0 && this.car.Pedal.PedalPacket.GasPedalLevel == 0) //Lassulás
             {
+                if (this.PowerTrainPacket.RPM > 1000)
+                {
+                    this.PowerTrainPacket.RPM -= 1;
+                }
+
                 if (this.tick > 50)// Dinamik TODO
                 {
                     if (this.PowerTrainPacket.Speed > 0 && this.PowerTrainPacket.Speed > this.car.Pedal.PedalPacket.GasPedalLevel)
                     {
+
                         if ((this.PowerTrainPacket.Speed - Friction) < 0)
                         {
                             this.PowerTrainPacket.Speed = 0;
@@ -137,10 +145,6 @@
                         else
                         {
                             this.PowerTrainPacket.Speed -= Friction;
-                            if (this.PowerTrainPacket.RPM > 1000) // Basic, can be modified
-                            {
-                                this.PowerTrainPacket.RPM -= 100;
-                            }
                         }
                     }
 
