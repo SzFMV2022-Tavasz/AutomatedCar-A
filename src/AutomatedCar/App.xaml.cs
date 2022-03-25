@@ -129,9 +129,11 @@ namespace AutomatedCar
             // data.Positions = new Vector2[] { new Vector2(10, 10), new Vector2(11, 10) };
             // data.Velocities = new float[] { 1, 1 };
 
-            NPCCar car = new NPCCar(new NPCEngine(positions, velocities), 480, 1425, "car_1_white.png");
+            NPCCar car = new NPCCar(480, 1425, "car_1_white.png");
             car.RotationPoint = new System.Drawing.Point(54, 240);
             world.AddObject(car);
+            NPCEngine engine = new NPCEngine(positions, velocities, car);
+            engine.Start();
         }
     }
 }

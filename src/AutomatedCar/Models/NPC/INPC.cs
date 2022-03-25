@@ -1,13 +1,9 @@
-﻿namespace AutomatedCar.Models.NPC
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+﻿using AutomatedCar.Helpers;
 
+namespace AutomatedCar.Models.NPC
+{
     interface INPC
     {
-        public void Step(int x, int y, double rotation);
+        public NPCStatus NPCStatus { get; set; }
     }
 }

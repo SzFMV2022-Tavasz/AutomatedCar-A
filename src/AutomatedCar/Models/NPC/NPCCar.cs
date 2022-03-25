@@ -6,17 +6,15 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using Helpers;
 
-    public class NPCCar : Car
+    public class NPCCar : Car, INPC
     {
-        public NPCCar(NPCEngine engine, int x, int y, string filename)
+        public NPCCar(int x, int y, string filename)
             : base(x, y, filename)
         {
-            this.Engine = engine;
-            this.Engine.SetNpc(this);
-            this.Engine.Start();
+            this.NPCStatus = new NPCStatus();
         }
-
-        public NPCEngine Engine { get; set; }
+        public NPCStatus NPCStatus { get; set; }
     }
 }
