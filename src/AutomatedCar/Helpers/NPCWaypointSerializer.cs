@@ -55,19 +55,24 @@
         {
             using (StreamWriter writer = new StreamWriter($"{fileName}.csv"))
             {
-                string waypoints = string.Empty;
-                for (int i = 0; i < this.Data.Count(); i++)
-                {
-                    for (int j = 0; j < this.Data[i].Count(); j++)
-                    {
-                        waypoints += $"{this.Data[i][j]};";
-                    }
+                writer.Write(this.ToString());
+            }
+        }
 
-                    waypoints = waypoints.Remove(waypoints.Count() - 1, 1) + "\n";
+        public override string ToString()
+        {
+            string waypoints = string.Empty;
+            for (int i = 0; i < this.Data?.Count(); i++)
+            {
+                for (int j = 0; j < this.Data[i].Count(); j++)
+                {
+                    waypoints += $"{this.Data[i][j]};";
                 }
 
-                writer.Write(waypoints);
+                waypoints = waypoints.Remove(waypoints.Count() - 1, 1) + "\n";
             }
+
+            return waypoints;
         }
     }
 }
