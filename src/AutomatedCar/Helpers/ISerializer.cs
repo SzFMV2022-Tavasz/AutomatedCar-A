@@ -13,6 +13,8 @@
 
         public void ClearData();
 
+        public void StoreData(T data);
+
         /*Input*/
         public T Deserialize(string path);
 
