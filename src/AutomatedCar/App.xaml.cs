@@ -5,6 +5,7 @@ namespace AutomatedCar
     using System.IO;
     using System.Numerics;
     using System.Reflection;
+    using AutomatedCar.Helpers;
     using AutomatedCar.Models;
     using AutomatedCar.Models.NPC;
     using AutomatedCar.SystemComponents;
@@ -103,33 +104,46 @@ namespace AutomatedCar
         // hard-coded, test values
         private void LoadNPCsInto(World world)
         {
-            var positions = new Vector2[] {
-            new Vector2(264, 700), new Vector2(264, 530),
-            new Vector2(264, 515), new Vector2(272, 467), new Vector2(290, 420), new Vector2(318, 372),
-            new Vector2(357, 336), new Vector2(396, 304), new Vector2(437, 280), new Vector2(482, 268),
-            new Vector2(520, 263),
-            new Vector2(1000, 263), new Vector2(1001, 263),
-            };
+            NPCWaypointSerializer wp = new NPCWaypointSerializer();
+            wp.Deserialize("../../../Assets/teszt.csv");
 
-            for (int i = 0; i < positions.Length; i++)
-            {
-                positions[i] += new Vector2(130, 150);
-            }
+            var positions = new Vector2[wp.Data.Length];
+            var velocities = new float[wp.Data.Length];
 
-            var velocities = new float[positions.Length];
-            for (int i = 0; i < velocities.Length; i++)
+            for (int i = 0; i < wp.Data.Length; i++)
             {
-                velocities[i] = 4.0f;
+                positions[i] = new Vector2(float.Parse(wp.Data[i][0]), float.Parse(wp.Data[i][1]));
+                velocities[i] = float.Parse(wp.Data[i][2]);
             }
-            velocities[0] = 5f;
-            velocities[velocities.Length - 3] = 5f;
-            velocities[velocities.Length - 2] = 10f;
-            velocities[velocities.Length - 1] = 100f;
+            
+
+            //var positions = new Vector2[] {
+            //new Vector2(264, 700), new Vector2(264, 530),
+            //new Vector2(264, 515), new Vector2(272, 467), new Vector2(290, 420), new Vector2(318, 372),
+            //new Vector2(357, 336), new Vector2(396, 304), new Vector2(437, 280), new Vector2(482, 268),
+            //new Vector2(520, 263),
+            //new Vector2(1000, 263), new Vector2(1001, 263),
+            //};
+
+            //for (int i = 0; i < positions.Length; i++)
+            //{
+            //    positions[i] += new Vector2(130, 150);
+            //}
+
+            //var velocities = new float[positions.Length];
+            //for (int i = 0; i < velocities.Length; i++)
+            //{
+            //    velocities[i] = 4.0f;
+            //}
+            //velocities[0] = 5f;
+            //velocities[velocities.Length - 3] = 5f;
+            //velocities[velocities.Length - 2] = 10f;
+            //velocities[velocities.Length - 1] = 100f;
 
             // data.Positions = new Vector2[] { new Vector2(10, 10), new Vector2(11, 10) };
             // data.Velocities = new float[] { 1, 1 };
 
-            NPCCar car = new NPCCar(480, 1425, "car_1_white.png");
+            NPCCar car = new NPCCar(int.Parse(wp.Data[0][0]), int.Parse(wp.Data[0][1]), "car_1_white.png");
             car.RotationPoint = new System.Drawing.Point(54, 240);
             world.AddObject(car);
             NPCEngine engine = new NPCEngine(positions, velocities, car);
