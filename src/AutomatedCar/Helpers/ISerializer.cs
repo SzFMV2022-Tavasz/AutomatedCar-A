@@ -19,6 +19,6 @@
         public T Deserialize(string path);
 
         /*Output*/
-        public void Serialize(string fileName);
+        public void Serialize(string path);
     }
 }
