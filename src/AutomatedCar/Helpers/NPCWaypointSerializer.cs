@@ -51,9 +51,9 @@
             return this.Data;
         }
 
-        public void Serialize(string fileName)
+        public void Serialize(string path)
         {
-            using (StreamWriter writer = new StreamWriter($"{fileName}.csv"))
+            using (StreamWriter writer = new StreamWriter(path))
             {
                 writer.Write(this.ToString());
             }
