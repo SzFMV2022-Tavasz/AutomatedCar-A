@@ -8,6 +8,9 @@ namespace AutomatedCar.SystemComponents
         private List<SystemComponent> components = new List<SystemComponent>();
 
         public ISensorPacket SensorPacket { get; set; }
+
+        public IHitBoxPacket HitBoxPacket { get; set; }
+
         public IGearShiftPacket GearShiftPacket { get; set; }
 
         public IPowerTrainPacket PowerTrainPacket { get; set; }
