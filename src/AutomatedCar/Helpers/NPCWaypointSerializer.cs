@@ -19,7 +19,7 @@
 
         public void ClearData()
         {
-            this._data = null;
+            this.Data = null;
         }
 
         public void StoreData(string[][] data)
@@ -41,10 +41,10 @@
 
                 waypoints = stringData.Split("\n");
 
-                this._data = new string[waypoints.Count()][];
+                this.Data = new string[waypoints.Count()][];
                 for (int i = 0; i < waypoints.Count(); i++)
                 {
-                    this._data[i] = waypoints[i].Split(';');
+                    this.Data[i] = waypoints[i].Split(';');
                 }
             }
 
