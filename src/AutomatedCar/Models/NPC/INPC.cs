@@ -2,7 +2,7 @@
 
 namespace AutomatedCar.Models.NPC
 {
-    interface INPC
+    public interface INPC
     {
         public NPCStatus NPCStatus { get; set; }
     }
