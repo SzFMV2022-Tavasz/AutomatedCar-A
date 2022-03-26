@@ -191,13 +191,13 @@
 
         public void ReverseGear()
         {
-            this.car.Pedal.PedalPacket.BreakPedalLevel = 0;
             DriveGear(10);
         }
 
         public void ParkGear()
         {
-            this.car.Pedal.PedalPacket.BreakPedalLevel = 50;
+            this.car.Pedal.PedalPacket.BreakPedalLevel = 0;
+            this.car.Pedal.PedalPacket.GasPedalLevel = 0;
         }
 
         private void RPMDecreaser(int value)
