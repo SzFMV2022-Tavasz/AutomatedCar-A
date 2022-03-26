@@ -18,19 +18,25 @@
             : base(virtualFunctionBus)
         {
             this.steeringWheelPacket = new SteeringWheelPacket();
+            this.steeringWheelPacket.NextPositionX = automatedCar.X;
+            this.steeringWheelPacket.NextPositionY = automatedCar.Y;
             this.virtualFunctionBus.SteeringWheelPacket = this.steeringWheelPacket;
             this.automatedCar = automatedCar;
         }
 
         public override void Process()
         {
-            switch (this.steeringWheelPacket.IsBeingRotated)
+            if (this.automatedCar.VirtualFunctionBus.PowerTrainPacket.Speed > 0)
             {
-                case false: this.SteeringWheelReset(); break;
-                case true: this.SteeringWheelReset(); break;
-            }
 
-            this.Steering();
+                switch (this.steeringWheelPacket.IsBeingRotated)
+                {
+                    case false: this.SteeringWheelReset(); break;
+                    case true: this.SteeringWheelReset(); break;
+                }
+
+                this.Steering();
+            }
         }
 
         private void SteeringWheelReset()
