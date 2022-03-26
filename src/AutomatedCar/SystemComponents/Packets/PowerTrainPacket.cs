@@ -7,12 +7,13 @@ namespace AutomatedCar.SystemComponents.Packets
 {
     using ReactiveUI;
 
-    public class PowerTrainPacket: ReactiveObject, IPowerTrainPacket
+
+    public class PowerTrainPacket : ReactiveObject, IPowerTrainPacket
     {
         private int rpm;
         private int speed; //közvetlenül összefügg az rpm el
         private int acceleration;
-
+        private int correctedSpeed;
         public int RPM
         {
             get => this.rpm;
@@ -23,6 +24,18 @@ namespace AutomatedCar.SystemComponents.Packets
         {
             get => this.speed;
             set => this.RaiseAndSetIfChanged(ref this.speed, value);
+        }
+
+        public int CorrectedSpeed
+        {
+            get
+            {
+                return this.correctedSpeed;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref this.correctedSpeed, value * 7);
+            }
         }
 
         public int Acceleration

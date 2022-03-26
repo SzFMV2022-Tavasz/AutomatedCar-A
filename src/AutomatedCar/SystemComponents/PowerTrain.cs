@@ -187,7 +187,7 @@
                     this.tick = 0;
                 }
             }
-
+            this.PowerTrainPacket.CorrectedSpeed=this.PowerTrainPacket.Speed;
             this.tick++;
         }
 
