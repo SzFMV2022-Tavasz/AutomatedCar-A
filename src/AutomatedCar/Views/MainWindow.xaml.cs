@@ -1,5 +1,6 @@
 namespace AutomatedCar.Views
 {
+    using AutomatedCar.Models;
     using AutomatedCar.ViewModels;
     using Avalonia.Controls;
     using Avalonia.Input;
@@ -10,6 +11,7 @@ namespace AutomatedCar.Views
         public MainWindow()
         {
             this.InitializeComponent();
+            World.Instance.ScrollViewerForFocus = this.Get<CourseDisplayView>("courseDisplay").Get<ScrollViewer>("scrollViewer");
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
