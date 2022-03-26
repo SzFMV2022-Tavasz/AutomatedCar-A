@@ -33,10 +33,10 @@
         {
             switch (this.virtualFunctionBus.PowerTrainPacket.RPM)
             {
-                case int n when (n >= 1000 && n < 1100) && this.virtualFunctionBus.GearShiftPacket.CurrentGear==Gear.Drive: this.ChangeShift(Shifts.One);break;
-                case int n when (n >= 1100 && n < 1200) && this.virtualFunctionBus.GearShiftPacket.CurrentGear == Gear.Drive: this.ChangeShift(Shifts.Two);break;
-                case int n when (n >= 1200 && n < 1300) && this.virtualFunctionBus.GearShiftPacket.CurrentGear == Gear.Drive: this.ChangeShift(Shifts.Three);break;
-                case int n when (n >= 1300 && n < 1500) && this.virtualFunctionBus.GearShiftPacket.CurrentGear == Gear.Drive: this.ChangeShift(Shifts.Four);break;
+                case int n when (n >= 1000 && n < 2250) && this.virtualFunctionBus.GearShiftPacket.CurrentGear==Gear.Drive: this.ChangeShift(Shifts.One);break;
+                case int n when (n >= 2250 && n < 3500) && this.virtualFunctionBus.GearShiftPacket.CurrentGear == Gear.Drive: this.ChangeShift(Shifts.Two);break;
+                case int n when (n >= 3500 && n < 4750) && this.virtualFunctionBus.GearShiftPacket.CurrentGear == Gear.Drive: this.ChangeShift(Shifts.Three);break;
+                case int n when (n >= 4750 && n < 6000) && this.virtualFunctionBus.GearShiftPacket.CurrentGear == Gear.Drive: this.ChangeShift(Shifts.Four);break;
             }
 
         }
