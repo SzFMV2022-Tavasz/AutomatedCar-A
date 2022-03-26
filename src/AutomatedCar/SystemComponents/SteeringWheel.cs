@@ -1,13 +1,13 @@
 ﻿namespace AutomatedCar.SystemComponents
 {
-    using AutomatedCar.Models;
-    using AutomatedCar.SystemComponents.Packets;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Numerics;
     using System.Text;
     using System.Threading.Tasks;
+    using AutomatedCar.Models;
+    using AutomatedCar.SystemComponents.Packets;
 
     public class SteeringWheel : SystemComponent
     {
@@ -19,43 +19,22 @@
         {
             this.steeringWheelPacket = new SteeringWheelPacket();
             this.virtualFunctionBus.SteeringWheelPacket = this.steeringWheelPacket;
-            //this.WheelRotation = 0;
             this.automatedCar = automatedCar;
         }
-
-        //public int WheelRotation { get; set; }
 
         public override void Process()
         {
             switch (this.steeringWheelPacket.IsBeingRotated)
             {
-                case false: this.RotateWheelByInputRotation();break;
-                case true: this.RotateWheelByInputRotation();break;
+                case false: this.SteeringWheelReset(); break;
+                case true: this.SteeringWheelReset(); break;
             }
-            Steering();
+
+            this.Steering();
         }
 
-        public void RotateWheelByInputRotation()
+        private void SteeringWheelReset()
         {
-            // FOR FUTURE DEVELOPMENT. --> THE WHEEL SHOULD SLOWLS GET BACK TO ITS ORIGINAL POSITION IF NOT STEERED.
-            //int newRotation = this.steeringWheelPacket.WheelRotation;
-            //newRotation += this.WheelRotation;
-
-            //int newRotation = this.WheelRotation;
-
-            //if (newRotation > 60)
-            //{
-            //    this.steeringWheelPacket.WheelRotation = 60;
-            //}
-            //else if (newRotation < -60)
-            //{
-            //    this.steeringWheelPacket.WheelRotation = -60;
-            //}
-            //else
-            //{
-            //    this.steeringWheelPacket.WheelRotation = newRotation;
-            //}
-
             switch (this.virtualFunctionBus.SteeringWheelPacket.WheelRotation)
             {
                 case int n when (n < 0): this.RotateWheelByInputRotation(5); break;
@@ -65,7 +44,7 @@
 
         public void RotateWheelByInputRotation(int rotationSize)
         {
-            int actualWheelRotation = steeringWheelPacket.WheelRotation;
+            int actualWheelRotation = this.steeringWheelPacket.WheelRotation;
 
             int newWheelRotation = actualWheelRotation + rotationSize;
 
@@ -85,51 +64,39 @@
 
         private void Steering()
         {
-            int steerAngle = steeringWheelPacket.WheelRotation;
+            int steerAngle = this.steeringWheelPacket.WheelRotation;
             int wheelBase = 130;
             double dt = 1;
-            int carLocationX = automatedCar.X;
-            int carLocationY = automatedCar.Y;
-            double carHeading = automatedCar.Rotation;
+            int carLocationX = this.automatedCar.X;
+            int carLocationY = this.automatedCar.Y;
+            double carHeading = this.automatedCar.Rotation;
             int carSpeed = this.automatedCar.VirtualFunctionBus.PowerTrainPacket.Speed;
 
-            if (automatedCar.VirtualFunctionBus.GearShiftPacket.CurrentGear == Helpers.Gear.Reverse)
+            if (this.automatedCar.VirtualFunctionBus.GearShiftPacket.CurrentGear == Helpers.Gear.Reverse)
             {
                 carSpeed = carSpeed * (-1);
                 steerAngle = steerAngle * (-1);
             }
 
-            double valami = (carHeading * Math.PI) / 180;
+            double frontWheelX = carLocationX + (wheelBase / 2 * Math.Sin((carHeading * Math.PI) / 180));
+            double frontWheelY = carLocationY - (wheelBase / 2 * Math.Cos((carHeading * Math.PI) / 180));
 
-            double matcos = Math.Cos(valami);
-            double matsin = (Math.Sin((carHeading * Math.PI) / 180));
+            double backWheelX = carLocationX - (wheelBase / 2 * Math.Sin((carHeading * Math.PI) / 180));
+            double backWheelY = carLocationY + (wheelBase / 2 * Math.Cos((carHeading * Math.PI) / 180));
 
-            double fele = (wheelBase / 2 * matcos);
-            double fele2 = (wheelBase / 2 * matsin);
+            backWheelX += carSpeed * dt * Math.Sin((carHeading * Math.PI) / 180);
+            backWheelY -= carSpeed * dt * Math.Cos((carHeading * Math.PI) / 180);
 
-            double frontWheelX = carLocationX + fele2;
-            double frontWheelY = carLocationY - fele;
-
-            double backWheelX = carLocationX - wheelBase / 2 * matsin;
-            double backWheelY = carLocationY + wheelBase / 2 * matcos;
-
-            backWheelX += (carSpeed * dt * matsin);
-            backWheelY -= (carSpeed * dt * matcos);
-
-            double mat2sin = Math.Sin((carHeading + steerAngle) * Math.PI / 180);
-            double mat2cos = Math.Cos((carHeading + steerAngle) * Math.PI / 180);
-
-            frontWheelX += (carSpeed * dt * mat2sin);
-            frontWheelY -= (carSpeed * dt * mat2cos);
+            frontWheelX += carSpeed * dt * Math.Sin((carHeading + steerAngle) * Math.PI / 180);
+            frontWheelY -= carSpeed * dt * Math.Cos((carHeading + steerAngle) * Math.PI / 180);
 
             carLocationX = (int)Math.Round((frontWheelX + backWheelX) / 2);
             carLocationY = (int)Math.Round((frontWheelY + backWheelY) / 2);
 
-            steeringWheelPacket.NextPositionX = carLocationX;
-            steeringWheelPacket.NextPositionY = carLocationY;
+            this.steeringWheelPacket.NextPositionX = carLocationX;
+            this.steeringWheelPacket.NextPositionY = carLocationY;
 
-            automatedCar.Rotation = carHeading + steerAngle/20;
-
+            this.automatedCar.Rotation = carHeading + (steerAngle / 20);
         }
     }
 }
