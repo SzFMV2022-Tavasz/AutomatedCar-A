@@ -96,6 +96,7 @@
             if (automatedCar.VirtualFunctionBus.GearShiftPacket.CurrentGear == Helpers.Gear.Reverse)
             {
                 carSpeed = carSpeed * (-1);
+                steerAngle = steerAngle * (-1);
             }
 
             double valami = (carHeading * Math.PI) / 180;
@@ -112,8 +113,8 @@
             double backWheelX = carLocationX - wheelBase / 2 * matsin;
             double backWheelY = carLocationY + wheelBase / 2 * matcos;
 
-            backWheelX += (int)(carSpeed * dt * matsin);
-            backWheelY -= (int)(carSpeed * dt * matcos);
+            backWheelX += (carSpeed * dt * matsin);
+            backWheelY -= (carSpeed * dt * matcos);
 
             double mat2sin = Math.Sin((carHeading + steerAngle) * Math.PI / 180);
             double mat2cos = Math.Cos((carHeading + steerAngle) * Math.PI / 180);
@@ -127,10 +128,6 @@
             steeringWheelPacket.NextPositionX = carLocationX;
             steeringWheelPacket.NextPositionY = carLocationY;
 
-            //automatedCar.X = carLocationX;
-            //automatedCar.Y = carLocationY;
-
-            /*carHeading = Math.Atan2(frontWheelY - backWheelY, frontWheelX - backWheelX) * (180 / Math.PI);*/    //////////////////////// új számítááááás
             automatedCar.Rotation = carHeading + steerAngle/20;
 
         }
