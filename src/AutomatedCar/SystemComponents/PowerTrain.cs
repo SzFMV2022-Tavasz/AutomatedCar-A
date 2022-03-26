@@ -50,7 +50,7 @@
 
             switch (this.car.VirtualFunctionBus.GearShiftPacket.CurrentGear)
             {
-                case Gear n when (n == Gear.Drive ): this.DriveGear(30); break;
+                case Gear n when (n == Gear.Drive ): this.DriveGear(20); break;
                 case Gear n when (n == Gear.Neutral): this.NeutralGear(); break;
                 case Gear n when (n == Gear.Reverse): this.ReverseGear(); break;
                 case Gear n when (n == Gear.Park): this.ParkGear(); break;
@@ -192,7 +192,7 @@
         public void ReverseGear()
         {
             this.car.Pedal.PedalPacket.BreakPedalLevel = 0;
-            DriveGear(40);
+            DriveGear(10);
         }
 
         public void ParkGear()
