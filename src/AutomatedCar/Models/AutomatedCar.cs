@@ -16,10 +16,10 @@ namespace AutomatedCar.Models
         {
             this.virtualFunctionBus = new VirtualFunctionBus();
             this.ZIndex = 10;
+            this.steeringWheel = new SteeringWheel(this.virtualFunctionBus, this);
             this.powerTrain = new PowerTrain(this.virtualFunctionBus, this);
             this.carShift = new AutomaticGearShift(this.virtualFunctionBus);
             this.pedal = new Pedal(this.virtualFunctionBus, this);
-            this.steeringWheel = new SteeringWheel(this.virtualFunctionBus, this);
         }
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }

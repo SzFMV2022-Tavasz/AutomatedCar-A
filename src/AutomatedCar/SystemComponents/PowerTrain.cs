@@ -41,11 +41,21 @@
             this.virtualFunctionBus.PowerTrainPacket = this.PowerTrainPacket;
         }
 
+
+        public void FocusCar()
+        {
+            var offsetX = World.Instance.ControlledCar.X - (World.Instance.ScrollViewerForFocus.Viewport.Width / 2);
+            var offsetY = World.Instance.ControlledCar.Y - (World.Instance.ScrollViewerForFocus.Viewport.Height / 2);
+            World.Instance.ViewModelFocus.Offset = new Avalonia.Vector(offsetX, offsetY);
+        }
+
         /// <summary>
         /// This method will handle speed, accel, throtle.
         /// </summary>
         public override void Process()
         {
+            FocusCar();
+
             //this.virtualFunctionBus.GearShiftPacket.CurrentGear = Gear.Drive;
 
             switch (this.car.VirtualFunctionBus.GearShiftPacket.CurrentGear)
