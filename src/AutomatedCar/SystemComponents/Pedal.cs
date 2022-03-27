@@ -61,21 +61,39 @@
 
         public override void Process()
         {
-            if (this.throttleUp && this.pressedPedal)
+            //if (this.throttleUp && this.pressedPedal)
+            //{
+            //    this.ThrottleUp();
+            //    this.pressedPedal = false;
+            //}
+            //else if (!this.throttleUp && !this.brakeUp && this.pressedPedal)
+            //{
+            //    this.ThrottleDown();
+            //    this.BrakeDown();
+            //    this.pressedPedal = false;
+            //}
+            //else if (this.brakeUp && this.pressedPedal)
+            //{
+            //    this.BrakeUp();
+            //    this.pressedPedal = false;
+            //}
+
+            if (this.PedalPacket.GasPressed)
             {
                 this.ThrottleUp();
-                this.pressedPedal = false;
             }
-            else if (!this.throttleUp && !this.brakeUp && this.pressedPedal)
+            else if (this.PedalPacket.GasPressed == false)
             {
                 this.ThrottleDown();
-                this.BrakeDown();
-                this.pressedPedal = false;
             }
-            else if (this.brakeUp && this.pressedPedal)
+
+            if (this.PedalPacket.BreakPressed)
             {
                 this.BrakeUp();
-                this.pressedPedal = false;
+            }
+            else if (this.PedalPacket.BreakPressed == false)
+            {
+                this.BrakeDown();
             }
 
 
@@ -91,7 +109,7 @@
             }
             else
             {
-                this.PedalPacket.GasPedalLevel += 10;
+                this.PedalPacket.GasPedalLevel += 5;
             }
 
         }
@@ -116,21 +134,21 @@
             }
             else
             {
-                this.PedalPacket.BreakPedalLevel += 10;
+                this.PedalPacket.BreakPedalLevel += 5;
             }
 
         }
 
         private void BrakeDown()
         {
-            if ((this.PedalPacket.BreakPedalLevel - 10) < 0)
-            {
+            //if ((this.PedalPacket.BreakPedalLevel - 10) < 0)
+            //{
+            //    this.PedalPacket.BreakPedalLevel = 0;
+            //}
+            //else
+            //{
                 this.PedalPacket.BreakPedalLevel = 0;
-            }
-            else
-            {
-                this.PedalPacket.BreakPedalLevel -= 10;
-            }
+            //}
 
         }
 

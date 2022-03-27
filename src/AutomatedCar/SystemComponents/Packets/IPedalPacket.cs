@@ -10,5 +10,8 @@
     {
         public int GasPedalLevel { get; }
         public int BreakPedalLevel { get; }
+
+        public bool GasPressed { get; set; }
+        public bool BreakPressed { get; set; }
     }
 }
