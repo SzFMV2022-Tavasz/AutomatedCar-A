@@ -26,26 +26,26 @@
 
         public override void Process()
         {
-            if (this.automatedCar.VirtualFunctionBus.PowerTrainPacket.Speed > 0)
+            if (!this.steeringWheelPacket.IsLKAActive)
             {
-
                 switch (this.steeringWheelPacket.IsBeingRotated)
                 {
                     case false: this.SteeringWheelReset(); break;
                     case true: this.SteeringWheelReset(); break;
                 }
-
-                this.Steering();
             }
+
+            this.Steering();
         }
 
-        private void SteeringWheelReset()
+        public void LKAActivation()
         {
-            switch (this.virtualFunctionBus.SteeringWheelPacket.WheelRotation)
-            {
-                case int n when (n < 0): this.RotateWheelByInputRotation(5); break;
-                case int n when (n > 0): this.RotateWheelByInputRotation(-5); break;
-            }
+            this.steeringWheelPacket.IsLKAActive = true;
+        }
+
+        public void LKADeactivation()
+        {
+            this.steeringWheelPacket.IsLKAActive = false;
         }
 
         public void RotateWheelByInputRotation(int rotationSize)
@@ -65,6 +65,31 @@
             else if (newWheelRotation < -60)
             {
                 this.steeringWheelPacket.WheelRotation = -60;
+            }
+        }
+
+        public void RotateWheelByFixedValue(int rotationsize)
+        {
+            if (rotationsize <= 60 && rotationsize >= -60)
+            {
+                this.steeringWheelPacket.WheelRotation = rotationsize;
+            }
+            else if (rotationsize > 60)
+            {
+                this.steeringWheelPacket.WheelRotation = 60;
+            }
+            else if (rotationsize < -60)
+            {
+                this.steeringWheelPacket.WheelRotation = -60;
+            }
+        }
+
+        private void SteeringWheelReset()
+        {
+            switch (this.virtualFunctionBus.SteeringWheelPacket.WheelRotation)
+            {
+                case int n when (n < 0): this.RotateWheelByInputRotation(5); break;
+                case int n when (n > 0): this.RotateWheelByInputRotation(-5); break;
             }
         }
 
@@ -102,7 +127,21 @@
             this.steeringWheelPacket.NextPositionX = carLocationX;
             this.steeringWheelPacket.NextPositionY = carLocationY;
 
-            this.automatedCar.Rotation = carHeading + (steerAngle / 20);
+            if (carSpeed != 0)
+            {
+                if (Math.Abs(steerAngle) > 20)
+                {
+                    this.automatedCar.Rotation = carHeading + (int)(steerAngle / 20);
+                }
+                else if (Math.Abs(steerAngle) > 10)
+                {
+                    this.automatedCar.Rotation = carHeading + (int)(steerAngle / 10);
+                }
+                else
+                {
+                    this.automatedCar.Rotation = carHeading + (int)(steerAngle / 5);
+                }
+            }
         }
     }
 }

@@ -15,5 +15,7 @@
         int NextPositionY { get; }
 
         bool IsBeingRotated { get; set; }
+
+        bool IsLKAActive { get;}
     }
 }
