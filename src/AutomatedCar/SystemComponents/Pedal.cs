@@ -61,22 +61,6 @@
 
         public override void Process()
         {
-            //if (this.throttleUp && this.pressedPedal)
-            //{
-            //    this.ThrottleUp();
-            //    this.pressedPedal = false;
-            //}
-            //else if (!this.throttleUp && !this.brakeUp && this.pressedPedal)
-            //{
-            //    this.ThrottleDown();
-            //    this.BrakeDown();
-            //    this.pressedPedal = false;
-            //}
-            //else if (this.brakeUp && this.pressedPedal)
-            //{
-            //    this.BrakeUp();
-            //    this.pressedPedal = false;
-            //}
 
             if (this.PedalPacket.GasPressed)
             {
