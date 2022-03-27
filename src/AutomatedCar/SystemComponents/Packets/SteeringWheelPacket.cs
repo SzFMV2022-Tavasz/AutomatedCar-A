@@ -13,6 +13,8 @@
         private int nextPositionX;
         private int nextPositionY;
         private bool isbeingRotated;
+        private bool isLKAActive;
+
         public SteeringWheelPacket()
         {
             this.wheelRotation = 0;
@@ -42,5 +44,10 @@
             set => this.RaiseAndSetIfChanged(ref this.isbeingRotated, value);
         }
 
+        public bool IsLKAActive
+        {
+            get => this.isLKAActive;
+            set => this.RaiseAndSetIfChanged(ref this.isLKAActive, value);
+        }
     }
 }
