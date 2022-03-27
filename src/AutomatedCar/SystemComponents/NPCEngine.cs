@@ -29,7 +29,8 @@
             (npc as WorldObject).Rotation = ((npc.NPCStatus.Rotations[npc.NPCStatus.CurrentIdx] * currentToNextDistance) + (npc.NPCStatus.Rotations[(npc.NPCStatus.CurrentIdx + 1) % npc.NPCStatus.Rotations.Length] * previousToCurrentDistance)) / (currentToNextDistance + previousToCurrentDistance);
 
             if (displacement.LengthSquared() >= currentToNextPos.LengthSquared())
-            { 
+            {
+                displacement = currentToNextPos;
                 npc.NPCStatus.CurrentIdx = (npc.NPCStatus.CurrentIdx + 1) % npc.NPCStatus.Positions.Length;
             }
 
@@ -44,7 +45,6 @@
             {
                 this.Move(1, item);
             }
-            
         }
 
         protected override void Tick()
