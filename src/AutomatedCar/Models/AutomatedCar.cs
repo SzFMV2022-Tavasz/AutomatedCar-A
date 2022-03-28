@@ -21,7 +21,7 @@ namespace AutomatedCar.Models
             this.ZIndex = 10;
             this.powerTrain = new PowerTrain(this.virtualFunctionBus);
             this.carShift = new AutomaticGearShift(this.virtualFunctionBus);
-            this.steeringWheel = new SteeringWheel(this.virtualFunctionBus);
+            this.steeringWheel = new SteeringWheel(this.virtualFunctionBus, this);
             this.camera = new Camera(World.Instance, this.virtualFunctionBus);
             this.radar = new Radar(World.Instance, this.virtualFunctionBus);
         }

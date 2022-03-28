@@ -20,6 +20,11 @@
             this.virtualFunctionBus.SensorPacket.WorldObjectsInRange = GetWorldObjectsInRange();
         }
 
+        protected override PolylineGeometry CalculateSensorPolylineGeometry()
+        {
+            throw new NotImplementedException();
+        }
+
         protected override ICollection<WorldObject> GetWorldObjectsInRange()
         {
             return this.world.WorldObjects.FindAll(IsInRange);

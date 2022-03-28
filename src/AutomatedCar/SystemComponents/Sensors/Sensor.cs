@@ -39,6 +39,7 @@
         {
             //TODO dummy szenzor pozíció, a "szélvédő" mögé kell majd helyezni
         }
+        protected abstract PolylineGeometry CalculateSensorPolylineGeometry();
 
         protected abstract ICollection<WorldObject> GetWorldObjectsInRange();
 
