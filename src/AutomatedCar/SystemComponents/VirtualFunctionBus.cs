@@ -9,9 +9,13 @@ namespace AutomatedCar.SystemComponents
 
         public ISensorPacket SensorPacket { get; set; }
 
+        public IHitBoxPacket HitBoxPacket { get; set; }
+
         public IGearShiftPacket GearShiftPacket { get; set; }
 
         public IPowerTrainPacket PowerTrainPacket { get; set; }
+
+        public IPedalPacket PedalPacket { get; set; }
 
         public ISteeringWheelPacket SteeringWheelPacket { get; set; }
 

@@ -1,4 +1,4 @@
-﻿namespace AutomatedCar.SystemComponents.Packets
+﻿namespace AutomatedCar.Models
 {
     using System;
     using System.Collections.Generic;
@@ -6,11 +6,10 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    public interface IPowerTrainPacket
+    public interface ICollisionCar
     {
-        int RPM { get; set; }
+        delegate void EventHandler();
 
-        int Speed { get; set; }
-
+        event EventHandler CollisionInCar;
     }
 }

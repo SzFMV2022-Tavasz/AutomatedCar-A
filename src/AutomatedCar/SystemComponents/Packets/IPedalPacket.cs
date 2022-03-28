@@ -6,11 +6,9 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    public interface IPowerTrainPacket
+    public interface IPedalPacket
     {
-        int RPM { get; set; }
-
-        int Speed { get; set; }
-
+        public int GasPedalLevel { get; }
+        public int BreakPedalLevel { get; }
     }
 }
