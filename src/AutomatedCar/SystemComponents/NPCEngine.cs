@@ -1,22 +1,46 @@
 ﻿namespace AutomatedCar.SystemComponents
 {
-    using AutomatedCar.Models;
-    using AutomatedCar.Models.NPC;
-    using System;
     using System.Collections.Generic;
-    using System.Drawing;
     using System.Numerics;
+    using AutomatedCar.Models;
 
+    /// <summary>
+    /// Logic responsible for the movement of the npcs.
+    /// </summary>
     public class NPCEngine : GameBase
     {
-        public List<INPC> NPCs { get; set; }
 
-        public NPCEngine(List<INPC> NPCs)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NPCEngine"/> class.
+        /// </summary>
+        /// <param name="NPCs">List of npcs.</param>
+        public NPCEngine(List<NPC> npcs)
         {
-            this.NPCs = NPCs;
+            this.NPCs = npcs;
         }
 
-        private void Move(int deltaTime, INPC npc)
+        /// <summary>
+        /// Gets or sets the list of the npcs.
+        /// </summary>
+        public List<NPC> NPCs { get; set; }
+
+        /// <summary>
+        /// GameBase Tick method.
+        /// </summary>
+        protected override void Tick()
+        {
+            foreach (var npc in this.NPCs)
+            {
+                this.Move(1, npc);
+            }
+        }
+
+        /// <summary>
+        /// Calculating the next position and rotation of the npc.
+        /// </summary>
+        /// <param name="deltaTime">Delta time.</param>
+        /// <param name="npc">Npc to be moved.</param>
+        private void Move(int deltaTime, NPC npc)
         {
             var currentToNextPos = npc.NPCStatus.Positions[(npc.NPCStatus.CurrentIdx + 1) % npc.NPCStatus.Positions.Length] - npc.NPCStatus.CurrentPosition;
             var previousToCurrentPos = npc.NPCStatus.CurrentPosition - npc.NPCStatus.Positions[npc.NPCStatus.CurrentIdx];
@@ -26,7 +50,7 @@
 
             var currentToNextDistance = currentToNextPos.Length();
             var previousToCurrentDistance = previousToCurrentPos.Length();
-            (npc as WorldObject).Rotation = ((npc.NPCStatus.Rotations[npc.NPCStatus.CurrentIdx] * currentToNextDistance) + (npc.NPCStatus.Rotations[(npc.NPCStatus.CurrentIdx + 1) % npc.NPCStatus.Rotations.Length] * previousToCurrentDistance)) / (currentToNextDistance + previousToCurrentDistance);
+            npc.Rotation = ((npc.NPCStatus.Rotations[npc.NPCStatus.CurrentIdx] * currentToNextDistance) + (npc.NPCStatus.Rotations[(npc.NPCStatus.CurrentIdx + 1) % npc.NPCStatus.Rotations.Length] * previousToCurrentDistance)) / (currentToNextDistance + previousToCurrentDistance);
 
             if (displacement.LengthSquared() >= currentToNextPos.LengthSquared())
             {
@@ -35,21 +59,8 @@
             }
 
             npc.NPCStatus.CurrentPosition += displacement;
-            (npc as WorldObject).X = (int)npc.NPCStatus.CurrentPosition.X;
-            (npc as WorldObject).Y = (int)npc.NPCStatus.CurrentPosition.Y;
-        }
-
-        protected virtual void OnTick()
-        {
-            foreach (var item in NPCs)
-            {
-                this.Move(1, item);
-            }
-        }
-
-        protected override void Tick()
-        {
-            this.OnTick();
+            npc.X = (int)npc.NPCStatus.CurrentPosition.X;
+            npc.Y = (int)npc.NPCStatus.CurrentPosition.Y;
         }
     }
 }

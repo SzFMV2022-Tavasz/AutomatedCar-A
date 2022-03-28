@@ -8,7 +8,6 @@ namespace AutomatedCar
     using System.Reflection;
     using AutomatedCar.Helpers;
     using AutomatedCar.Models;
-    using AutomatedCar.Models.NPC;
     using AutomatedCar.SystemComponents;
     using AutomatedCar.ViewModels;
     using AutomatedCar.Views;
@@ -102,70 +101,59 @@ namespace AutomatedCar
             world.AddControlledCar(controlledCar2);
         }
 
-        // hard-coded, test values
+        /// <summary>
+        /// Method to load npcs into world.
+        /// </summary>
+        /// <param name="world">World.</param>
         private void LoadNPCsInto(World world)
         {
-            NPCWaypointSerializer cwp = new NPCWaypointSerializer();
-            NPCWaypointSerializer pwp = new NPCWaypointSerializer();
-            cwp.Deserialize("../../../Assets/teszt.csv");
-            pwp.Deserialize("../../../Assets/testmap_pedestrian.csv");
-
-            var cpositions = new Vector2[cwp.Data.Length];
-            var cvelocities = new float[cwp.Data.Length];
-
-            var ppositions = new Vector2[pwp.Data.Length];
-            var pvelocities = new float[pwp.Data.Length];
-
-            for (int i = 0; i < cwp.Data.Length; i++)
-            {
-                cpositions[i] = new Vector2(float.Parse(cwp.Data[i][0]), float.Parse(cwp.Data[i][1]));
-                cvelocities[i] = float.Parse(cwp.Data[i][2]);
-            }
-
-            for (int i = 0; i < pwp.Data.Length; i++)
-            {
-                ppositions[i] = new Vector2(float.Parse(pwp.Data[i][0]), float.Parse(pwp.Data[i][1]));
-                pvelocities[i] = float.Parse(pwp.Data[i][2]);
-            }
-
-            NPCCar car = new NPCCar(int.Parse(cwp.Data[0][0]), int.Parse(cwp.Data[0][1]), "car_1_white.png");
-            car.RotationPoint = new System.Drawing.Point(54, 180);
-
-            NPCPed ped = new NPCPed(int.Parse(pwp.Data[0][0]), int.Parse(pwp.Data[0][1]), "man.png");
-            ped.RotationPoint = new System.Drawing.Point(20, 36);
-
-            car.NPCStatus.Positions = cpositions;
-            car.NPCStatus.Velocities = cvelocities;
-
-            car.NPCStatus.CurrentPosition = car.NPCStatus.Positions[0];
-
-            car.NPCStatus.Rotations = new double[car.NPCStatus.Positions.Length];
-            for (int i = 0; i < car.NPCStatus.Positions.Length; i++)
-            {
-                var vector = car.NPCStatus.Positions[(i + 1) % car.NPCStatus.Positions.Length] - car.NPCStatus.Positions[i];
-
-                var degree = Math.Atan2(vector.Y, vector.X);
-                car.NPCStatus.Rotations[i] = (degree * (180 / Math.PI)) + 90;
-            }
-
-            ped.NPCStatus.Positions = ppositions;
-            ped.NPCStatus.Velocities = pvelocities;
-
-            ped.NPCStatus.CurrentPosition = ped.NPCStatus.Positions[0];
-
-            ped.NPCStatus.Rotations = new double[ped.NPCStatus.Positions.Length];
-            for (int i = 0; i < ped.NPCStatus.Positions.Length; i++)
-            {
-                var vector = ped.NPCStatus.Positions[(i + 1) % ped.NPCStatus.Positions.Length] - ped.NPCStatus.Positions[i];
-
-                var degree = Math.Atan2(vector.Y, vector.X);
-                ped.NPCStatus.Rotations[i] = (degree * (180 / Math.PI)) + 90;
-            }
+            NPC car = this.CreateNPC(new System.Drawing.Point(54, 160), "../../../Assets/test_world_car.csv", "car_1_white.png");
+            NPC ped = this.CreateNPC(new System.Drawing.Point(20, 36), "../../../Assets/test_world_pedestrian.csv", "man.png");
 
             world.AddObject(car);
             world.AddObject(ped);
-            NPCEngine engine = new NPCEngine(new List<INPC>() { car, ped});
+            NPCEngine engine = new NPCEngine(new List<NPC>() { car, ped });
             engine.Start();
+        }
+
+        /// <summary>
+        /// Method to create an npc.
+        /// </summary>
+        /// <param name="rotationPoint">Npc's rotation point basesd on the image.</param>
+        /// <param name="npcWayPoints">File containing the waypoints of the nps's path.</param>
+        /// <param name="pictureName">Image of the npc.</param>
+        /// <returns>Npc fully created..</returns>
+        private NPC CreateNPC(System.Drawing.Point rotationPoint ,string npcWayPoints, string pictureName)
+        {
+            NPCWaypointSerializer wps = new NPCWaypointSerializer();
+
+            wps.Deserialize(npcWayPoints);
+
+            var positions = new Vector2[wps.Data.Length];
+            var velocities = new float[wps.Data.Length];
+
+            for (int i = 0; i < wps.Data.Length; i++)
+            {
+                positions[i] = new Vector2(float.Parse(wps.Data[i][0]), float.Parse(wps.Data[i][1]));
+                velocities[i] = float.Parse(wps.Data[i][2]);
+            }
+
+            NPC npc = new NPC(int.Parse(wps.Data[0][0]), int.Parse(wps.Data[0][1]), pictureName);
+
+            npc.RotationPoint = rotationPoint;
+            npc.NPCStatus.Positions = positions;
+            npc.NPCStatus.Velocities = velocities;
+            npc.NPCStatus.CurrentPosition = npc.NPCStatus.Positions[0];
+            npc.NPCStatus.Rotations = new double[npc.NPCStatus.Positions.Length];
+
+            for (int i = 0; i < npc.NPCStatus.Positions.Length; i++)
+            {
+                var vector = npc.NPCStatus.Positions[(i + 1) % npc.NPCStatus.Positions.Length] - npc.NPCStatus.Positions[i];
+                var degree = Math.Atan2(vector.Y, vector.X);
+                npc.NPCStatus.Rotations[i] = (degree * (180 / Math.PI)) + 90;
+            }
+
+            return npc;
         }
     }
 }
