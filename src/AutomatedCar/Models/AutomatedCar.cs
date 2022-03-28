@@ -12,29 +12,38 @@ namespace AutomatedCar.Models
         private SteeringWheel steeringWheel;
         private Sensor radar;
         private Sensor camera;
-
+        private Pedal pedal;
 
         public AutomatedCar(int x, int y, string filename)
             : base(x, y, filename)
         {
             this.virtualFunctionBus = new VirtualFunctionBus();
             this.ZIndex = 10;
-            this.powerTrain = new PowerTrain(this.virtualFunctionBus);
+            this.steeringWheel = new SteeringWheel(this.virtualFunctionBus, this);
+            this.powerTrain = new PowerTrain(this.virtualFunctionBus, this);
             this.carShift = new AutomaticGearShift(this.virtualFunctionBus);
             this.steeringWheel = new SteeringWheel(this.virtualFunctionBus);
             this.camera = new Camera(World.Instance, this.virtualFunctionBus);
             this.radar = new Radar(World.Instance, this.virtualFunctionBus);
+            this.pedal = new Pedal(this.virtualFunctionBus, this);
         }
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }
 
-        public SteeringWheel SteeringWheel { get => this.steeringWheel; }
+        //public SteeringWheel SteeringWheel { get => this.steeringWheel; }
+
+        public Pedal Pedal { get => this.pedal; }
 
         public int Revolution { get; set; }
 
         public int Velocity { get; set; }
 
         public PolylineGeometry Geometry { get; set; }
+
+        public void StreeringInputKey(int rotation)
+        {
+            steeringWheel.RotateWheelByInputRotation(rotation);
+        }
 
         /// <summary>Starts the automated cor by starting the ticker in the Virtual Function Bus, that cyclically calls the system components.</summary>
         public void Start()
