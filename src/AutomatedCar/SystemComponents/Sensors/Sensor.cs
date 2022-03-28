@@ -25,6 +25,11 @@
 
         protected double AngleOfView { get; set; }
 
+        protected TranslateTransform PositionUpdater;
+        protected RotateTransform OrientationUpdater;
+        protected TransformGroup TransformGroup;
+
+
         public Sensor(World world, VirtualFunctionBus virtualFunctionBus, int range, double angleOfView)
             : base(virtualFunctionBus)
         {
@@ -35,10 +40,15 @@
             this.AngleOfView = angleOfView;
         }
 
-        protected void UpdateSensorPosition()
+        protected void UpdateSensorPositionAndOrientation()
         {
-            //TODO dummy szenzor pozíció, a "szélvédő" mögé kell majd helyezni
+            this.PositionUpdater = new TranslateTransform(this.world.ControlledCar.X, this.world.ControlledCar.Y);
+            this.OrientationUpdater = new RotateTransform(this.world.ControlledCar.Rotation);
+            this.TransformGroup.Children.Add(this.PositionUpdater);
+            this.TransformGroup.Children.Add(this.OrientationUpdater);
+            this.FieldOfView.Transform = this.TransformGroup;
         }
+
         protected abstract PolylineGeometry CalculateSensorPolylineGeometry();
 
         protected abstract ICollection<WorldObject> GetWorldObjectsInRange();
