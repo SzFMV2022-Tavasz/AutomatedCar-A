@@ -24,8 +24,6 @@ namespace AutomatedCar.Models
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }
 
-        //public SteeringWheel SteeringWheel { get => this.steeringWheel; }
-
         public Pedal Pedal { get => this.pedal; }
 
         public int Revolution { get; set; }
@@ -36,7 +34,7 @@ namespace AutomatedCar.Models
 
         public void StreeringInputKey(int rotation)
         {
-            steeringWheel.RotateWheelByInputRotation(rotation);
+            this.steeringWheel.RotateWheelByInputRotation(rotation);
         }
 
         /// <summary>Starts the automated cor by starting the ticker in the Virtual Function Bus, that cyclically calls the system components.</summary>

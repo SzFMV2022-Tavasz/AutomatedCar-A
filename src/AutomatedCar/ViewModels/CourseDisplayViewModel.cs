@@ -78,12 +78,10 @@ namespace AutomatedCar.ViewModels
 
         public void PageUp()
         {
-            //World.Instance.ControlledCar.Rotation += 5;
         }
 
         public void PageDown()
         {
-            //World.Instance.ControlledCar.Rotation -= 5;
         }
 
         public void ToggleDebug()

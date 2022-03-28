@@ -8,7 +8,7 @@
 
     public interface ISteeringWheelPacket
     {
-        int WheelRotation { get; }      //THIS MAY NOT BE AN INT IN THE FUTURE!!!!!!
+        int WheelRotation { get; }
 
         int NextPositionX { get; }
 
@@ -16,6 +16,6 @@
 
         bool IsBeingRotated { get; set; }
 
-        bool IsLKAActive { get;}
+        bool IsLKAActive { get; }
     }
 }
