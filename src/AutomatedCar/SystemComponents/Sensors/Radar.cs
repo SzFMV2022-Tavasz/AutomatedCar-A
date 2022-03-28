@@ -12,6 +12,7 @@
         public Radar(World world, VirtualFunctionBus virtualFunctionBus)
             : base(world, virtualFunctionBus, 200, 60)
         {
+            this.FieldOfView = CalculateSensorPolylineGeometry();
         }
 
         public override void Process()
@@ -22,7 +23,9 @@
 
         protected override PolylineGeometry CalculateSensorPolylineGeometry()
         {
-            throw new NotImplementedException();
+            //          kezdö pont                                      jobb széle                                              balszéle
+            Point[] p = { new Point(100, 100), new Point(/*Az a pont ahol a kamera van +*/Range, Range + 50), new Point(/*Az a pont ahol a kamera van +*/Range, Range - 50) };
+            return new PolylineGeometry(p, false);
         }
 
         protected override ICollection<WorldObject> GetWorldObjectsInRange()

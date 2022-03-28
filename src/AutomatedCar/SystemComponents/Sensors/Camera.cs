@@ -11,6 +11,7 @@
         public Camera(World world, VirtualFunctionBus virtualFunctionBus)
             : base(world, virtualFunctionBus, 80, 60)
         {
+            this.FieldOfView = CalculateSensorPolylineGeometry();
         }
 
         public override void Process()
@@ -20,8 +21,10 @@
         }
 
         protected override PolylineGeometry CalculateSensorPolylineGeometry()
-        {
-            throw new NotImplementedException();
+        {               //          kezdö pont                                      jobb széle                                              balszéle
+            Point[] p = { new Point(100, 100), new Point(/*Az a pont ahol a kamera van +*/Range, Range + 50), new Point(/*Az a pont ahol a kamera van +*/Range, Range - 50) };
+            return new PolylineGeometry(p, false);
+            // defaultnak azért is jo mert legalább nem száll el hibával az egész 
         }
 
         protected override ICollection<WorldObject> GetWorldObjectsInRange()
