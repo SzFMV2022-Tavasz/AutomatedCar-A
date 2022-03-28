@@ -35,10 +35,21 @@
             this.AngleOfView = angleOfView;
         }
 
+        public Sensor( VirtualFunctionBus virtualFunctionBus, int range, double angleOfView)
+           : base(virtualFunctionBus)
+        {
+            this.SensorPacket = new SensorPacket();
+            this.virtualFunctionBus.SensorPacket = this.SensorPacket;
+            this.Range = range;
+            this.AngleOfView = angleOfView;
+        }
+
         protected void UpdateSensorPosition()
         {
             //TODO dummy szenzor pozíció, a "szélvédő" mögé kell majd helyezni
         }
+
+        protected abstract PolylineGeometry GetRadarGeometry();
 
         protected abstract ICollection<WorldObject> GetWorldObjectsInRange();
 
