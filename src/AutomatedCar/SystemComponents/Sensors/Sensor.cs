@@ -25,7 +25,7 @@
 
         protected double AngleOfView { get; set; }
 
-        public Sensor(ref World world, VirtualFunctionBus virtualFunctionBus, int range, double angleOfView)
+        public Sensor(World world, VirtualFunctionBus virtualFunctionBus, int range, double angleOfView)
             : base(virtualFunctionBus)
         {
             this.world = world;
