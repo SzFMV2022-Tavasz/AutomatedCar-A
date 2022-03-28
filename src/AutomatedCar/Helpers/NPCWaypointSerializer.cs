@@ -1,32 +1,36 @@
 ﻿namespace AutomatedCar.Helpers
 {
-    using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-    class NPCWaypointSerializer : ISerializer<string[][]>
+    /// <summary>
+    /// Class for read or write npc waypoint data.
+    /// </summary>
+    public class NPCWaypointSerializer : ISerializer<string[][]>
     {
         private string[][] _data;
 
+
+        /// <inheritdoc/>
         public string[][] Data
         {
             get => this._data;
             private set => this._data = value;
         }
 
+        /// <inheritdoc/>
         public void ClearData()
         {
             this.Data = null;
         }
 
+        /// <inheritdoc/>
         public void StoreData(string[][] data)
         {
             this.Data = data;
         }
 
+        /// <inheritdoc/>
         public string[][] Deserialize(string path)
         {
             if (this.Data == null)
@@ -51,6 +55,7 @@
             return this.Data;
         }
 
+        /// <inheritdoc/>
         public void Serialize(string path)
         {
             using (StreamWriter writer = new StreamWriter(path))
@@ -59,6 +64,7 @@
             }
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             string waypoints = string.Empty;
