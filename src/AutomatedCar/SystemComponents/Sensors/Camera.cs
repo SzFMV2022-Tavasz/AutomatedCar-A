@@ -8,8 +8,8 @@
 
     public class Camera : Sensor
     {
-        public Camera(ref World world, VirtualFunctionBus virtualFunctionBus, int range, double angleOfView)
-            : base(ref world, virtualFunctionBus, range, angleOfView)
+        public Camera(World world, VirtualFunctionBus virtualFunctionBus)
+            : base(world, virtualFunctionBus, 80, 60)
         {
         }
 

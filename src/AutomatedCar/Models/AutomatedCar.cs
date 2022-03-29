@@ -1,6 +1,7 @@
 namespace AutomatedCar.Models
 {
     using Avalonia.Media;
+    using global::AutomatedCar.SystemComponents.Sensors;
     using SystemComponents;
 
     public class AutomatedCar : Car
@@ -9,6 +10,8 @@ namespace AutomatedCar.Models
         private PowerTrain powerTrain;
         public AutomaticGearShift carShift;
         private SteeringWheel steeringWheel;
+        private Sensor radar;
+        private Sensor camera;
         private Pedal pedal;
 
         public AutomatedCar(int x, int y, string filename)
@@ -16,10 +19,13 @@ namespace AutomatedCar.Models
         {
             this.virtualFunctionBus = new VirtualFunctionBus();
             this.ZIndex = 10;
+            this.steeringWheel = new SteeringWheel(this.virtualFunctionBus, this);
             this.powerTrain = new PowerTrain(this.virtualFunctionBus, this);
             this.carShift = new AutomaticGearShift(this.virtualFunctionBus);
+            this.steeringWheel = new SteeringWheel(this.virtualFunctionBus);
+            this.camera = new Camera(World.Instance, this.virtualFunctionBus);
+            this.radar = new Radar(World.Instance, this.virtualFunctionBus);
             this.pedal = new Pedal(this.virtualFunctionBus, this);
-            this.steeringWheel = new SteeringWheel(this.virtualFunctionBus, this);
         }
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }
