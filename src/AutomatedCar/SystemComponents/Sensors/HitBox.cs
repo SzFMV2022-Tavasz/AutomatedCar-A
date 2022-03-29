@@ -11,6 +11,8 @@ namespace AutomatedCar.SystemComponents.Sensors
         private World world;
         private VirtualFunctionBus bus;
 
+        public event EventHandler ObjectsInRange;
+
         public HitBox(ref World world, VirtualFunctionBus virtualFunctionBus)
         {
             this.world = world;
@@ -20,6 +22,7 @@ namespace AutomatedCar.SystemComponents.Sensors
         public void Process()
         {
             this.bus.HitBoxPacket.Collided = CheckIfCollides();
+            if (this.bus.SensorPacket.WorldObjectsInRange.Count > 0) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
         }
 
         protected bool CheckIfCollides()
