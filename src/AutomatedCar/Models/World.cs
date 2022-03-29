@@ -11,8 +11,6 @@
     using Helpers;
     using Visualization;
     using Avalonia.Media;
-    using global::AutomatedCar.ViewModels;
-    using Avalonia.Controls;
 
     public class World
     {
@@ -20,10 +18,6 @@
         public List<AutomatedCar> controlledCars = new ();
 
         public static World Instance { get; } = new World();
-
-        public ScrollViewer ScrollViewerForFocus { get; set; }
-
-        public CourseDisplayViewModel ViewModelFocus { get; set; }
         public List<WorldObject> WorldObjects { get; set; } = new List<WorldObject>();
 
         public AutomatedCar ControlledCar
