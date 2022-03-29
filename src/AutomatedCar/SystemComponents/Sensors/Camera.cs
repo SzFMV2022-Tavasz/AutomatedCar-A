@@ -8,6 +8,8 @@
 
     public class Camera : Sensor
     {
+        public event EventHandler ObjectsInRange;
+
         public Camera(World world, VirtualFunctionBus virtualFunctionBus)
             : base(world, virtualFunctionBus, 80, 60)
         {
@@ -18,6 +20,7 @@
         {
             this.UpdateSensorPositionAndOrientation();
             this.virtualFunctionBus.SensorPacket.WorldObjectsInRange = GetWorldObjectsInRange();
+            if (this.virtualFunctionBus.SensorPacket.WorldObjectsInRange.Count > 0) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
         }
 
         protected override PolylineGeometry CalculateSensorPolylineGeometry()
@@ -34,6 +37,11 @@
 
         protected override bool IsInRange(WorldObject worldObject)
         {
+            if (worldObject == this.world.ControlledCar)
+            {
+                return false;
+            }
+
             bool flag = false;
             foreach (var geometry in worldObject.Geometries)
             {

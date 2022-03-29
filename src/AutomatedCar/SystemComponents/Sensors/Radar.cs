@@ -9,6 +9,8 @@
     public class Radar : Sensor
     {
 
+        public event EventHandler ObjectsInRange;
+
         public Radar(World world, VirtualFunctionBus virtualFunctionBus)
             : base(world, virtualFunctionBus, 200, 60)
         {
@@ -19,6 +21,7 @@
         {
             this.UpdateSensorPositionAndOrientation();
             this.virtualFunctionBus.SensorPacket.WorldObjectsInRange = GetWorldObjectsInRange();
+            if (this.virtualFunctionBus.SensorPacket.WorldObjectsInRange.Count > 0) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
         }
 
         protected override PolylineGeometry CalculateSensorPolylineGeometry()
@@ -35,6 +38,11 @@
 
         protected override bool IsInRange(WorldObject worldObject)
         {
+            if (worldObject == this.world.ControlledCar)
+            {
+                return false;
+            }
+
             if (worldObject.Collideable)
             {
                 bool flag = false;
