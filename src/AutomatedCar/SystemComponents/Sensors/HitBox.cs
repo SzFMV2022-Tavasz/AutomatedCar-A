@@ -22,7 +22,7 @@ namespace AutomatedCar.SystemComponents.Sensors
         public void Process()
         {
             this.bus.HitBoxPacket.Collided = CheckIfCollides();
-            if (this.bus.SensorPacket.WorldObjectsInRange.Count > 0) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
+            if (this.bus.HitBoxPacket.Collided) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
         }
 
         protected bool CheckIfCollides()
