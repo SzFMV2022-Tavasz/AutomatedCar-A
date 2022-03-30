@@ -17,6 +17,7 @@
             : base(x, y, filename)
         {
             this.NPCStatus = new NPCStatus();
+            this.ZIndex = 10;
         }
 
         /// <summary>

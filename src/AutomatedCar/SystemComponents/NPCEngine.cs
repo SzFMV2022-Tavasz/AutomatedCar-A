@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.Numerics;
     using AutomatedCar.Models;
+    using System;
+    using System.Linq;
 
     /// <summary>
     /// Logic responsible for the movement of the npcs.
@@ -16,7 +18,17 @@
         /// <param name="NPCs">List of npcs.</param>
         public NPCEngine(List<NPC> npcs)
         {
-            this.NPCs = npcs;
+            if (!npcs.Any())
+            {
+                throw new InvalidOperationException("List cannot be empty");
+            }
+
+            if (npcs.Any(x => x == null))
+            {
+                throw new NullReferenceException("List element cannot be null");
+            }
+
+            this.NPCs = npcs ?? throw new ArgumentNullException(nameof(npcs));
         }
 
         /// <summary>
@@ -46,7 +58,8 @@
             var previousToCurrentPos = npc.NPCStatus.CurrentPosition - npc.NPCStatus.Positions[npc.NPCStatus.CurrentIdx];
 
             var direction = Vector2.Normalize(currentToNextPos);
-            var displacement = direction * npc.NPCStatus.Velocities[npc.NPCStatus.CurrentIdx] * deltaTime;
+            var displacement = direction * npc.NPCStatus.Velocities[npc.NPCStatus.CurrentIdx] * deltaTime / GameBase.TicksPerSecond;
+            displacement *= 50;
 
             var currentToNextDistance = currentToNextPos.Length();
             var previousToCurrentDistance = previousToCurrentPos.Length();

@@ -44,7 +44,7 @@ namespace AutomatedCar
             world.PopulateFromJSON($"AutomatedCar.Assets.test_world.json");
 
             this.AddControlledCarsTo(world);
-            
+
             this.LoadNPCsInto(world);
 
             return world;
@@ -68,7 +68,7 @@ namespace AutomatedCar
         private void AddDummyCircleTo(World world)
         {
             var circle = new Circle(200, 200, "circle.png", 20);
-            
+
             circle.Width = 40;
             circle.Height = 40;
             circle.ZIndex = 20;
@@ -80,7 +80,7 @@ namespace AutomatedCar
         private AutomatedCar CreateControlledCar(int x, int y, int rotation, string filename)
         {
             var controlledCar = new Models.AutomatedCar(x, y, filename);
-            
+
             controlledCar.Geometry = this.GetControlledCarBoundaryBox();
             controlledCar.RawGeometries.Add(controlledCar.Geometry);
             controlledCar.Geometries.Add(controlledCar.Geometry);
@@ -107,12 +107,24 @@ namespace AutomatedCar
         /// <param name="world">World.</param>
         private void LoadNPCsInto(World world)
         {
-            NPC car = this.CreateNPC(new System.Drawing.Point(54, 160), "../../../Assets/test_world_car.csv", "car_1_white.png");
+            List<NPC> npcs = new List<NPC>();
+
+            NPC car = this.CreateNPC(new System.Drawing.Point(54, 180), "../../../Assets/test_world_car.csv", "car_3_black.png");
             NPC ped = this.CreateNPC(new System.Drawing.Point(20, 36), "../../../Assets/test_world_pedestrian.csv", "man.png");
+
+            car.Geometries.Add(this.GetNPCCarBoundaryBox());
+            car.RawGeometries.Add(this.GetNPCCarBoundaryBox());
+
+            ped.Geometries.Add(this.GetPedestrianBoundaryBox());
+            ped.RawGeometries.Add(this.GetPedestrianBoundaryBox());
 
             world.AddObject(car);
             world.AddObject(ped);
-            NPCEngine engine = new NPCEngine(new List<NPC>() { car, ped });
+
+            npcs.Add(car);
+            npcs.Add(ped);
+
+            NPCEngine engine = new NPCEngine(npcs);
             engine.Start();
         }
 
@@ -123,7 +135,7 @@ namespace AutomatedCar
         /// <param name="npcWayPoints">File containing the waypoints of the nps's path.</param>
         /// <param name="pictureName">Image of the npc.</param>
         /// <returns>Npc fully created..</returns>
-        private NPC CreateNPC(System.Drawing.Point rotationPoint ,string npcWayPoints, string pictureName)
+        private NPC CreateNPC(System.Drawing.Point rotationPoint, string npcWayPoints, string pictureName)
         {
             NPCWaypointSerializer wps = new NPCWaypointSerializer();
 
@@ -153,7 +165,50 @@ namespace AutomatedCar
                 npc.NPCStatus.Rotations[i] = (degree * (180 / Math.PI)) + 90;
             }
 
+            for (int i = 0; i < npc.NPCStatus.Velocities.Length; i++)
+            {
+                npc.NPCStatus.Velocities[i] *= 1000.0f / (60 * 60);
+            }
+
             return npc;
+        }
+
+        /// <summary>
+        /// Creating hitbox for the npc car.
+        /// </summary>
+        /// <returns>Hitbox.</returns>
+        private PolylineGeometry GetNPCCarBoundaryBox()
+        {
+            StreamReader reader = new StreamReader(Assembly.GetExecutingAssembly()
+    .GetManifestResourceStream($"AutomatedCar.Assets.worldobject_polygons.json"));
+            string json_text = reader.ReadToEnd();
+            dynamic stuff = JObject.Parse(json_text);
+            var points = new List<Point>();
+            foreach (var i in stuff["objects"][6]["polys"][0]["points"])
+            {
+                points.Add(new Point(i[0].ToObject<int>(), i[1].ToObject<int>()));
+            }
+
+            return new PolylineGeometry(points, false);
+        }
+
+        /// <summary>
+        /// Creating hitbox for the pedestrian.
+        /// </summary>
+        /// <returns>Hitbox.</returns>
+        private PolylineGeometry GetPedestrianBoundaryBox()
+        {
+            StreamReader reader = new StreamReader(Assembly.GetExecutingAssembly()
+    .GetManifestResourceStream($"AutomatedCar.Assets.worldobject_polygons.json"));
+            string json_text = reader.ReadToEnd();
+            dynamic stuff = JObject.Parse(json_text);
+            var points = new List<Point>();
+            foreach (var i in stuff["objects"][28]["polys"][0]["points"])
+            {
+                points.Add(new Point(i[0].ToObject<int>(), i[1].ToObject<int>()));
+            }
+
+            return new PolylineGeometry(points, false);
         }
     }
 }
