@@ -25,7 +25,7 @@
 
         protected override PolylineGeometry CalculateSensorPolylineGeometry()
         {               //          kezdö pont                                      jobb széle                                              balszéle
-            Point[] p = { new Point(100, 100), new Point(/*Az a pont ahol a kamera van +*/Range, Range + 50), new Point(/*Az a pont ahol a kamera van +*/Range, Range - 50) };
+            Point[] p = { new Point(world.ControlledCar.X, world.ControlledCar.Y), new Point(/*Az a pont ahol a kamera van +*/Range, Range + 50), new Point(/*Az a pont ahol a kamera van +*/Range, Range - 50) };
             return new PolylineGeometry(p, false);
             // defaultnak azért is jo mert legalább nem száll el hibával az egész 
         }
