@@ -22,6 +22,8 @@ namespace AutomatedCar.ViewModels
             this.WorldObjects = new ObservableCollection<WorldObjectViewModel>(world.WorldObjects.Select(wo => new WorldObjectViewModel(wo)));
             this.Width = world.Width;
             this.Height = world.Height;
+
+            world.ViewModelFocus = this;
         }
 
         public int Width { get; set; }
@@ -45,13 +47,13 @@ namespace AutomatedCar.ViewModels
         public void KeyUp()
         {
             //World.Instance.ControlledCar.Y -= 5;
-            World.Instance.ControlledCar.Pedal.ToggleUp();
+            World.Instance.ControlledCar.VirtualFunctionBus.PedalPacket.GasPressed = true;
         }
 
         public void KeyDown()
         {
             //World.Instance.ControlledCar.Y += 5;
-            World.Instance.ControlledCar.Pedal.ToggleDown();
+            World.Instance.ControlledCar.VirtualFunctionBus.PedalPacket.BreakPressed = true;
         }
 
         public void KeyLeft()
@@ -140,6 +142,16 @@ namespace AutomatedCar.ViewModels
                 World.Instance.ControlledCar.carShift.ShiftPacket.CurrentGear = Helpers.Gear.Drive;
                 World.Instance.ControlledCar.carShift.ShiftPacket.GearState = World.Instance.ControlledCar.carShift.ShiftPacket.CurrentShift.ToString();
             }
+        }
+
+        public void BreakRelease()
+        {
+            World.Instance.ControlledCar.VirtualFunctionBus.PedalPacket.BreakPressed = false;
+        }
+
+        public void GasRelease()
+        {
+            World.Instance.ControlledCar.VirtualFunctionBus.PedalPacket.GasPressed = false;
         }
 
         public void FocusCar(ScrollViewer scrollViewer)

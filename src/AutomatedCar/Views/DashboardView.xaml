@@ -30,7 +30,7 @@
                             <Grid ColumnDefinitions="2*,2*" RowDefinitions="50,15">
                                 <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Car.VirtualFunctionBus.PowerTrainPacket.RPM}" FontSize="40" TextAlignment="Center"/>
                                 <TextBlock Grid.Row="1" Grid.Column="0" TextAlignment="Center">rpm</TextBlock>
-                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Car.Speed}" FontSize="40" TextAlignment="Center"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.PowerTrainPacket.CorrectedSpeed}" FontSize="40" TextAlignment="Center"/>
                                 <TextBlock Grid.Row="1" Grid.Column="1" TextAlignment="Center">km/h</TextBlock>
                             </Grid>
                             <Separator Height="15"></Separator>
@@ -62,8 +62,8 @@
                                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Filename}"/>
                                 <TextBlock Grid.Row="3" Grid.Column="0">Rotation:</TextBlock>
                                 <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Rotation}"/>
-								<TextBlock Grid.Row="4" Grid.Column="0">Wheel rotation:</TextBlock>
-								<TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.SteeringWheelPacket.WheelRotation}"/>
+                                <TextBlock Grid.Row="4" Grid.Column="0">Wheel rotation:</TextBlock>
+                                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.SteeringWheelPacket.WheelRotation}"/>
                               <TextBlock Grid.Row="5" Grid.Column="0">Speed:</TextBlock>
                               <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.PowerTrainPacket.Speed}"/>
                             </Grid>

@@ -41,16 +41,26 @@
             this.virtualFunctionBus.PowerTrainPacket = this.PowerTrainPacket;
         }
 
+
+        public void FocusCar()
+        {
+            var offsetX = World.Instance.ControlledCar.X - (World.Instance.ScrollViewerForFocus.Viewport.Width / 2);
+            var offsetY = World.Instance.ControlledCar.Y - (World.Instance.ScrollViewerForFocus.Viewport.Height / 2);
+            World.Instance.ViewModelFocus.Offset = new Avalonia.Vector(offsetX, offsetY);
+        }
+
         /// <summary>
         /// This method will handle speed, accel, throtle.
         /// </summary>
         public override void Process()
         {
+            FocusCar();
+
             //this.virtualFunctionBus.GearShiftPacket.CurrentGear = Gear.Drive;
 
             switch (this.car.VirtualFunctionBus.GearShiftPacket.CurrentGear)
             {
-                case Gear n when (n == Gear.Drive ): this.DriveGear(80); break;
+                case Gear n when (n == Gear.Drive ): this.DriveGear(20); break;
                 case Gear n when (n == Gear.Neutral): this.NeutralGear(); break;
                 case Gear n when (n == Gear.Reverse): this.ReverseGear(); break;
                 case Gear n when (n == Gear.Park): this.ParkGear(); break;
@@ -106,29 +116,39 @@
             {
                 if (this.PowerTrainPacket.Speed < this.car.Pedal.PedalPacket.GasPedalLevel && this.PowerTrainPacket.Speed < maxspeed)
                 {
-                    if (this.tick > 30)//50 / (this.car.Pedal.PedalPacket.GasPedalLevel / 10)
+                    this.PowerTrainPacket.RPM += 11;
+
+                    int adjustedGasLevel = (int)Math.Round(maxspeed * ((float)this.car.Pedal.PedalPacket.GasPedalLevel / 80));
+
+                    if (this.tick > ((maxspeed + 20) - adjustedGasLevel))//50 / (this.car.Pedal.PedalPacket.GasPedalLevel / 10)
                     {
                         this.PowerTrainPacket.Speed += 1;
-                        this.PowerTrainPacket.RPM += 10;
                         this.tick = 0;
                     }
                 }
                 else if (this.PowerTrainPacket.Speed > this.car.Pedal.PedalPacket.GasPedalLevel) // RPM / TICK SPEED / 50Tick
                 {
-                    if (this.tick > 30 )/// (this.car.Pedal.PedalPacket.GasPedalLevel / 10)
+                    this.PowerTrainPacket.RPM -= 11;
+
+                    if (this.tick > 10)/// (this.car.Pedal.PedalPacket.GasPedalLevel / 10)
                     {
                         this.PowerTrainPacket.Speed -= 1;
-                        this.PowerTrainPacket.RPM -= 10;
                         this.tick = 0;
                     }
                 }
             }
             else if (this.car.Pedal.PedalPacket.BreakPedalLevel == 0 && this.car.Pedal.PedalPacket.GasPedalLevel == 0) //Lassulás
             {
+                if (this.PowerTrainPacket.RPM > 1000)
+                {
+                    this.PowerTrainPacket.RPM -= 11;
+                }
+
                 if (this.tick > 50)// Dinamik TODO
                 {
                     if (this.PowerTrainPacket.Speed > 0 && this.PowerTrainPacket.Speed > this.car.Pedal.PedalPacket.GasPedalLevel)
                     {
+
                         if ((this.PowerTrainPacket.Speed - Friction) < 0)
                         {
                             this.PowerTrainPacket.Speed = 0;
@@ -137,10 +157,6 @@
                         else
                         {
                             this.PowerTrainPacket.Speed -= Friction;
-                            if (this.PowerTrainPacket.RPM > 1000) // Basic, can be modified
-                            {
-                                this.PowerTrainPacket.RPM -= 100;
-                            }
                         }
                     }
 
@@ -149,7 +165,11 @@
             }
             else if (this.car.Pedal.PedalPacket.BreakPedalLevel > 0 && this.car.Pedal.PedalPacket.GasPedalLevel == 0) //Fékezés
             {
-                if (this.car.Pedal.PedalPacket.GasPedalLevel > 0 && this.tick > 50 / (this.car.Pedal.PedalPacket.GasPedalLevel / 10)) // a pedaltol valtozzon TODO 
+                int adjustedbreakLevel = (int)Math.Round(maxspeed * ((float)this.car.Pedal.PedalPacket.BreakPedalLevel / 80));
+
+                RPMDecreaser(55);
+
+                if (this.tick > ((maxspeed + 20) - adjustedbreakLevel)/2) // a pedaltol valtozzon TODO 
                 {
                     if (this.PowerTrainPacket.Speed > 0)
                     {
@@ -161,17 +181,13 @@
                         else
                         {
                             this.PowerTrainPacket.Speed -= Friction + 1;
-                            if (this.PowerTrainPacket.RPM > 1000) // Basic, can be modified
-                            {
-                                this.PowerTrainPacket.RPM -= 100;
-                            }
                         }
                     }
 
                     this.tick = 0;
                 }
             }
-
+            this.PowerTrainPacket.CorrectedSpeed=this.PowerTrainPacket.Speed;
             this.tick++;
         }
 
@@ -179,18 +195,46 @@
         {
             this.car.Pedal.PedalPacket.GasPedalLevel = 0;
             this.car.Pedal.PedalPacket.BreakPedalLevel = 0;
-            this.PowerTrainPacket.RPM = 1000;
+            RPMDecreaser(110);
+            SpeedDecreaser(1);
         }
 
         public void ReverseGear()
         {
-            this.car.Pedal.PedalPacket.BreakPedalLevel = 0;
-            DriveGear(40);
+            DriveGear(10);
         }
 
         public void ParkGear()
         {
-            this.car.Pedal.PedalPacket.BreakPedalLevel = 50;
+            this.car.Pedal.PedalPacket.BreakPedalLevel = 0;
+            this.car.Pedal.PedalPacket.GasPedalLevel = 0;
+        }
+
+        private void RPMDecreaser(int value)
+        {
+            if (this.PowerTrainPacket.RPM > 1000) // Basic, can be modified
+            {
+                int newRPM = this.PowerTrainPacket.RPM -= value;
+                if (newRPM >= 1000)
+                {
+                    this.PowerTrainPacket.RPM = newRPM;
+                }
+                else
+                {
+                    this.PowerTrainPacket.RPM = 1000;
+                }
+            }
+        }
+
+        private void SpeedDecreaser(int value)
+        {
+            if (this.PowerTrainPacket.Speed > 0 && this.tick > 10)/// (this.car.Pedal.PedalPacket.GasPedalLevel / 10)
+            {
+                this.PowerTrainPacket.Speed -= value;
+                this.tick = 0;
+            }
+
+            tick++;
         }
     }
 }

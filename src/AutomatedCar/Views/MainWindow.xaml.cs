@@ -1,5 +1,6 @@
 namespace AutomatedCar.Views
 {
+    using AutomatedCar.Models;
     using AutomatedCar.ViewModels;
     using Avalonia.Controls;
     using Avalonia.Input;
@@ -10,6 +11,7 @@ namespace AutomatedCar.Views
         public MainWindow()
         {
             this.InitializeComponent();
+            World.Instance.ScrollViewerForFocus = this.Get<CourseDisplayView>("courseDisplay").Get<ScrollViewer>("scrollViewer");
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -123,19 +125,19 @@ namespace AutomatedCar.Views
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
-         
 
-            //MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
+            MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
 
-            //if (Keyboard.IsKeyDown(Key.Left))
-            //{
-            //    viewModel.CourseDisplay.KeyLeftUp();
-            //}
+            if (Keyboard.IsKeyDown(Key.Up))
+            {
+                viewModel.CourseDisplay.GasRelease();
+            }
 
-            //if (Keyboard.IsKeyDown(Key.Right))
-            //{
-            //    viewModel.CourseDisplay.KeyRightUp();
-            //}
+            if (Keyboard.IsKeyDown(Key.Down))
+            {
+                viewModel.CourseDisplay.BreakRelease();
+            }
+
             Keyboard.Keys.Remove(e.Key);
             base.OnKeyUp(e);
         }
