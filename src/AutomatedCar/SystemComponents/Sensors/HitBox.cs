@@ -6,20 +6,20 @@ namespace AutomatedCar.SystemComponents.Sensors
     using AutomatedCar.Models;
     using System.Collections.Generic;
 
-    public class HitBox
+    public class HitBox : SystemComponent
     {
         private World world;
         private VirtualFunctionBus bus;
 
         public event EventHandler ObjectsInRange;
 
-        public HitBox(World world, VirtualFunctionBus virtualFunctionBus)
+        public HitBox(World world, VirtualFunctionBus virtualFunctionBus) : base(virtualFunctionBus)
         {
             this.world = world;
             this.bus = virtualFunctionBus;
         }
 
-        public void Process()
+        public override void Process()
         {
             this.bus.HitBoxPacket.Collided = CheckIfCollides();
             if (this.bus.HitBoxPacket.Collided) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
