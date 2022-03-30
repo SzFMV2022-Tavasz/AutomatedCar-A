@@ -13,7 +13,7 @@ namespace AutomatedCar.SystemComponents.Sensors
 
         public event EventHandler ObjectsInRange;
 
-        public HitBox(ref World world, VirtualFunctionBus virtualFunctionBus)
+        public HitBox(World world, VirtualFunctionBus virtualFunctionBus)
         {
             this.world = world;
             this.bus = virtualFunctionBus;
