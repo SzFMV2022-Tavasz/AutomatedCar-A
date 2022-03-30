@@ -22,6 +22,8 @@ namespace AutomatedCar.ViewModels
             this.WorldObjects = new ObservableCollection<WorldObjectViewModel>(world.WorldObjects.Select(wo => new WorldObjectViewModel(wo)));
             this.Width = world.Width;
             this.Height = world.Height;
+
+            world.ViewModelFocus = this;
         }
 
         public int Width { get; set; }
@@ -113,8 +115,12 @@ namespace AutomatedCar.ViewModels
 
         public void GearReverse()
         {
-            World.Instance.ControlledCar.carShift.ShiftPacket.CurrentGear = Helpers.Gear.Reverse;
-            World.Instance.ControlledCar.carShift.ShiftPacket.GearState = Helpers.Gear.Reverse.ToString();
+            if (World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.RPM <= 1000 && World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.Speed == 0)
+            {
+                World.Instance.ControlledCar.carShift.ShiftPacket.CurrentGear = Helpers.Gear.Reverse;
+                World.Instance.ControlledCar.carShift.ShiftPacket.GearState = Helpers.Gear.Reverse.ToString();
+            }
+
         }
         public void GearNeutral()
         {
@@ -124,14 +130,20 @@ namespace AutomatedCar.ViewModels
 
         public void GearPark()
         {
-            World.Instance.ControlledCar.carShift.ShiftPacket.CurrentGear = Helpers.Gear.Park;
-            World.Instance.ControlledCar.carShift.ShiftPacket.GearState = Helpers.Gear.Park.ToString();
+            if (World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.RPM <= 1000 && World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.Speed == 0)
+            {
+                World.Instance.ControlledCar.carShift.ShiftPacket.CurrentGear = Helpers.Gear.Park;
+                World.Instance.ControlledCar.carShift.ShiftPacket.GearState = Helpers.Gear.Park.ToString();
+            }
         }
 
         public void GearDrive()
         {
-            World.Instance.ControlledCar.carShift.ShiftPacket.CurrentGear = Helpers.Gear.Drive;
-            World.Instance.ControlledCar.carShift.ShiftPacket.GearState = Helpers.Shifts.None.ToString();
+            if (World.Instance.ControlledCar.carShift.ShiftPacket.CurrentGear==Helpers.Gear.Neutral || World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.RPM <= 1000 && World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.Speed == 0)
+            {
+                World.Instance.ControlledCar.carShift.ShiftPacket.CurrentGear = Helpers.Gear.Drive;
+                World.Instance.ControlledCar.carShift.ShiftPacket.GearState = World.Instance.ControlledCar.carShift.ShiftPacket.CurrentShift.ToString();
+            }
         }
 
         public void FocusCar(ScrollViewer scrollViewer)
