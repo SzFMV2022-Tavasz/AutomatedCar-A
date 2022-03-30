@@ -25,7 +25,12 @@
 
         protected double AngleOfView { get; set; }
 
-        public Sensor(ref World world, VirtualFunctionBus virtualFunctionBus, int range, double angleOfView)
+        protected TranslateTransform PositionUpdater;
+        protected RotateTransform OrientationUpdater;
+        protected TransformGroup TransformGroup;
+
+
+        public Sensor(World world, VirtualFunctionBus virtualFunctionBus, int range, double angleOfView)
             : base(virtualFunctionBus)
         {
             this.world = world;
@@ -33,11 +38,30 @@
             this.virtualFunctionBus.SensorPacket = this.SensorPacket;
             this.Range = range;
             this.AngleOfView = angleOfView;
+            this.CalculateSensorPolylineGeometry();
         }
 
-        protected void UpdateSensorPosition()
+        protected void UpdateSensorPositionAndOrientation()
         {
-            //TODO dummy szenzor pozíció, a "szélvédő" mögé kell majd helyezni
+            Matrix translation = Matrix.CreateTranslation(world.ControlledCar.X - SensorPosition.X, world.ControlledCar.Y - SensorPosition.Y);
+            Matrix rotation = Matrix.CreateRotation(world.ControlledCar.Rotation);
+
+            SensorPosition = SensorPosition.Transform(translation);
+            RightEdge = RightEdge.Transform(translation);
+            LeftEdge = LeftEdge.Transform(translation);
+            SensorPosition = SensorPosition.Transform(rotation);
+            RightEdge = RightEdge.Transform(rotation);
+            LeftEdge = LeftEdge.Transform(rotation);
+
+            this.FieldOfView = new PolylineGeometry(new List<Point> { this.SensorPosition, this.RightEdge, this.LeftEdge }, false);
+        }
+
+        protected void CalculateSensorPolylineGeometry()
+        {
+            this.SensorPosition = new Point(480, 1425);
+            this.RightEdge = new Point(480 + 200, 1425 + 100);
+            this.LeftEdge = new Point(480 + 200, 1425 - 100);
+            this.FieldOfView = new PolylineGeometry(new List<Point> { SensorPosition, RightEdge, LeftEdge }, false);
         }
 
         protected abstract ICollection<WorldObject> GetWorldObjectsInRange();

@@ -5,21 +5,28 @@ namespace AutomatedCar.SystemComponents.Sensors
     using System;
     using AutomatedCar.Models;
     using System.Collections.Generic;
+    using AutomatedCar.SystemComponents.Packets;
 
-    public class HitBox
+    public class HitBox : SystemComponent
     {
         private World world;
         private VirtualFunctionBus bus;
+        HitBoxPacket Hp;
 
-        public HitBox(ref World world, VirtualFunctionBus virtualFunctionBus)
+        public event EventHandler ObjectsInRange;
+
+        public HitBox(World world, VirtualFunctionBus virtualFunctionBus) : base(virtualFunctionBus)
         {
             this.world = world;
             this.bus = virtualFunctionBus;
+            Hp = new HitBoxPacket();
+            Hp.Collided = false;
         }
 
-        public void Process()
+        public override void Process()
         {
-            this.bus.HitBoxPacket.Collided = CheckIfCollides();
+            this.Hp.Collided = CheckIfCollides();
+            if (this.Hp.Collided) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
         }
 
         protected bool CheckIfCollides()
@@ -40,9 +47,9 @@ namespace AutomatedCar.SystemComponents.Sensors
                 bool flag = false;
                 foreach (var objGeometry in worldObject.Geometries)
                 {
-                    foreach (var carGeometry in this.world.ControlledCar.Geometries)
+                    // foreach (var carGeometry in this.world.ControlledCar.Geometries)
                     {
-                        if (objGeometry.Bounds.Intersects(carGeometry.Bounds))
+                        if (objGeometry.Bounds.Intersects(this.world.ControlledCar.Geometry.Bounds))
                         {
                             flag = true;
                         }
