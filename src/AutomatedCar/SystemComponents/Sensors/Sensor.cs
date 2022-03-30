@@ -44,6 +44,7 @@
         {
             this.PositionUpdater = new TranslateTransform(this.world.ControlledCar.X, this.world.ControlledCar.Y);
             this.OrientationUpdater = new RotateTransform(this.world.ControlledCar.Rotation);
+            this.TransformGroup = new TransformGroup();
             this.TransformGroup.Children.Add(this.PositionUpdater);
             this.TransformGroup.Children.Add(this.OrientationUpdater);
             this.FieldOfView.Transform = this.TransformGroup;
