@@ -1,4 +1,4 @@
-﻿namespace AutomatedCar.SystemComponents
+namespace AutomatedCar.SystemComponents
 {
     using AutomatedCar.Models;
     using AutomatedCar.SystemComponents.Packets;
@@ -131,7 +131,11 @@
             //automatedCar.Y = carLocationY;
 
             /*carHeading = Math.Atan2(frontWheelY - backWheelY, frontWheelX - backWheelX) * (180 / Math.PI);*/    //////////////////////// új számítááááás
-            automatedCar.Rotation = carHeading + steerAngle/20;
+            if (carSpeed!=0)
+            {
+                automatedCar.Rotation = carHeading + steerAngle / 20;
+            }
+       
 
         }
     }
