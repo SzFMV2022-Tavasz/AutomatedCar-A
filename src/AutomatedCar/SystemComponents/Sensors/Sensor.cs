@@ -38,19 +38,31 @@
             this.virtualFunctionBus.SensorPacket = this.SensorPacket;
             this.Range = range;
             this.AngleOfView = angleOfView;
+            this.CalculateSensorPolylineGeometry();
         }
 
         protected void UpdateSensorPositionAndOrientation()
         {
-            this.PositionUpdater = new TranslateTransform(this.world.ControlledCar.X, this.world.ControlledCar.Y);
-            this.OrientationUpdater = new RotateTransform(this.world.ControlledCar.Rotation);
-            this.TransformGroup = new TransformGroup();
-            this.TransformGroup.Children.Add(this.PositionUpdater);
-            this.TransformGroup.Children.Add(this.OrientationUpdater);
-            this.FieldOfView.Transform = this.TransformGroup;
+            Matrix translation = Matrix.CreateTranslation(world.ControlledCar.X - SensorPosition.X, world.ControlledCar.Y - SensorPosition.Y);
+            Matrix rotation = Matrix.CreateRotation(world.ControlledCar.Rotation);
+
+            SensorPosition = SensorPosition.Transform(translation);
+            RightEdge = RightEdge.Transform(translation);
+            LeftEdge = LeftEdge.Transform(translation);
+            SensorPosition = SensorPosition.Transform(rotation);
+            RightEdge = RightEdge.Transform(rotation);
+            LeftEdge = LeftEdge.Transform(rotation);
+
+            this.FieldOfView = new PolylineGeometry(new List<Point> { this.SensorPosition, this.RightEdge, this.LeftEdge }, false);
         }
 
-        protected abstract PolylineGeometry CalculateSensorPolylineGeometry();
+        protected void CalculateSensorPolylineGeometry()
+        {
+            this.SensorPosition = new Point(480, 1425);
+            this.RightEdge = new Point(480 + 200, 1425 + 100);
+            this.LeftEdge = new Point(480 + 200, 1425 - 100);
+            this.FieldOfView = new PolylineGeometry(new List<Point> { SensorPosition, RightEdge, LeftEdge }, false);
+        }
 
         protected abstract ICollection<WorldObject> GetWorldObjectsInRange();
 
