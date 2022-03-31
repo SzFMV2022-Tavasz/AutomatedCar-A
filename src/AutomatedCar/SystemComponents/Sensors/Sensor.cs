@@ -44,8 +44,9 @@
         protected void UpdateSensorPositionAndOrientation()
         {
             Matrix translation = Matrix.CreateTranslation(world.ControlledCar.X - SensorPosition.X, world.ControlledCar.Y - SensorPosition.Y);
-            Matrix rotation = Matrix.CreateRotation(world.ControlledCar.Rotation);
+            Matrix rotation = Matrix.CreateRotation((float)(world.ControlledCar.Rotation));
 
+           // (double)this.Range * Math.Tan((double)this.AngleOfView / 2 * (Math.PI / 180)
             SensorPosition = SensorPosition.Transform(translation);
             RightEdge = RightEdge.Transform(translation);
             LeftEdge = LeftEdge.Transform(translation);
@@ -55,7 +56,6 @@
 
             this.FieldOfView = new PolylineGeometry(new List<Point> { this.SensorPosition, this.RightEdge, this.LeftEdge }, false);
         }
-
         protected void CalculateSensorPolylineGeometry()
         {
             this.SensorPosition = new Point(480, 1425);
