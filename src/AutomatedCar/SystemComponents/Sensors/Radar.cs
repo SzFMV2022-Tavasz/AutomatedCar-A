@@ -33,7 +33,10 @@
 
         protected override ICollection<WorldObject> GetWorldObjectsInRange()
         {
-            return this.world.WorldObjects.FindAll(IsInRange);
+            var objs = this.world.WorldObjects.FindAll(IsInRange);
+            if (objs.Count == 0) Console.WriteLine("-");
+            else objs.ForEach(x => Console.WriteLine(x.Filename));
+            return objs;
         }
 
         protected override bool IsInRange(WorldObject worldObject)
@@ -45,16 +48,27 @@
 
             if (worldObject.Collideable)
             {
-                bool flag = false;
                 foreach (var geometry in worldObject.Geometries)
                 {
-                    if (geometry.Bounds.Intersects(this.FieldOfView.Bounds))
+                    Rect rect = geometry.Bounds;
+                    Matrix translation = Matrix.CreateTranslation(worldObject.X, worldObject.Y);
+                    Matrix rotation = Matrix.CreateRotation((float)(worldObject.Rotation));
+                    //rect = rect.Translate(new Vector(worldObject.X, worldObject.Y));
+                    foreach(var point in geometry.Points)
                     {
-                        flag = true;
+                        Point transformed = point.Transform(rotation).Transform(translation);
+                        if (this.FieldOfView.FillContains(transformed))
+                        {
+                            //Console.WriteLine("INTERSECT");
+                            return true;
+                        }
                     }
+
+                    //Console.WriteLine("NO INTERSECT");
+                    return false;
                 }
 
-                return flag;
+                return false;
             }
             else
             {

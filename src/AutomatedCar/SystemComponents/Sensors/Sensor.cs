@@ -29,11 +29,37 @@
         protected RotateTransform OrientationUpdater;
         protected TransformGroup TransformGroup;
 
+        private Circle cPos;
+        private Circle cRight;
+        private Circle cLeft;
 
         public Sensor(World world, VirtualFunctionBus virtualFunctionBus, int range, double angleOfView)
             : base(virtualFunctionBus)
         {
             this.world = world;
+            
+            this.cPos = new Circle(200, 200, "circle.png", 20);
+
+            cPos.Width = 40;
+            cPos.Height = 40;
+            cPos.ZIndex = 20;
+            cPos.Rotation = 45;
+            this.world.AddObject(this.cPos);
+            this.cRight = new Circle(200, 200, "circle.png", 20);
+
+            cRight.Width = 40;
+            cRight.Height = 40;
+            cRight.ZIndex = 20;
+            cRight.Rotation = 45;
+            this.world.AddObject(this.cRight);
+            this.cLeft = new Circle(200, 200, "circle.png", 20);
+
+            cLeft.Width = 40;
+            cLeft.Height = 40;
+            cLeft.ZIndex = 20;
+            cLeft.Rotation = 45;
+            this.world.AddObject(this.cLeft);
+
             this.SensorPacket = new SensorPacket();
             this.virtualFunctionBus.SensorPacket = this.SensorPacket;
             this.Range = range;
@@ -43,24 +69,27 @@
 
         protected void UpdateSensorPositionAndOrientation()
         {
-            Matrix translation = Matrix.CreateTranslation(world.ControlledCar.X - SensorPosition.X, world.ControlledCar.Y - SensorPosition.Y);
-            Matrix rotation = Matrix.CreateRotation((float)(world.ControlledCar.Rotation));
+            Matrix translation = Matrix.CreateTranslation(world.ControlledCar.X, world.ControlledCar.Y);
+            Matrix rotation = Matrix.CreateRotation((float)(world.ControlledCar.Rotation * Math.PI / 180));
 
-           // (double)this.Range * Math.Tan((double)this.AngleOfView / 2 * (Math.PI / 180)
-            SensorPosition = SensorPosition.Transform(translation);
-            RightEdge = RightEdge.Transform(translation);
-            LeftEdge = LeftEdge.Transform(translation);
-            SensorPosition = SensorPosition.Transform(rotation);
-            RightEdge = RightEdge.Transform(rotation);
-            LeftEdge = LeftEdge.Transform(rotation);
+            // (double)this.Range * Math.Tan((double)this.AngleOfView / 2 * (Math.PI / 180)
+            var p = SensorPosition.Transform(rotation).Transform(translation);
+            var r = RightEdge.Transform(rotation).Transform(translation);
+            var l = LeftEdge.Transform(rotation).Transform(translation);
 
-            this.FieldOfView = new PolylineGeometry(new List<Point> { this.SensorPosition, this.RightEdge, this.LeftEdge }, false);
+            this.cPos.X = (int)p.X;
+            this.cPos.Y = (int)p.Y;
+            this.cLeft.X = (int)l.X;
+            this.cLeft.Y = (int)l.Y;
+            this.cRight.X = (int)r.X;
+            this.cRight.Y = (int)r.Y;
+            this.FieldOfView = new PolylineGeometry(new List<Point> { p, r, l }, false);
         }
         protected void CalculateSensorPolylineGeometry()
         {
-            this.SensorPosition = new Point(480, 1425);
-            this.RightEdge = new Point(480 + 200, 1425 + 100);
-            this.LeftEdge = new Point(480 + 200, 1425 - 100);
+            this.SensorPosition = new Point(0, 0);
+            this.RightEdge = this.SensorPosition + new Point(100, -200);
+            this.LeftEdge = this.SensorPosition + new Point(-100, -200);
             this.FieldOfView = new PolylineGeometry(new List<Point> { SensorPosition, RightEdge, LeftEdge }, false);
         }
 
