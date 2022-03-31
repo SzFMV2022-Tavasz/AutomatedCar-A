@@ -14,10 +14,9 @@
         /// <param name="y">Y coordinate.</param>
         /// <param name="filename">Image name.</param>
         public NPC(int x, int y, string filename)
-            : base(x, y, filename)
+            : base(x, y, filename, 10, true)
         {
             this.NPCStatus = new NPCStatus();
-            this.ZIndex = 10;
         }
 
         /// <summary>
