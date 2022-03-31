@@ -58,6 +58,10 @@
 
             this.SensorPacket.XCord = (int)this.SensorPosition.X;
             this.SensorPacket.YCord = (int)this.SensorPosition.Y;
+            this.SensorPacket.LeftEdgeX = (int)this.LeftEdge.X;
+            this.SensorPacket.LeftEdgeY = (int)this.LeftEdge.Y;
+            this.SensorPacket.RightEdgeX = (int)this.RightEdge.X;
+            this.SensorPacket.RightEdgeY = (int)this.RightEdge.Y;
 
             this.FieldOfView = new PolylineGeometry(new List<Point> { this.SensorPosition, this.RightEdge, this.LeftEdge }, false);
         }

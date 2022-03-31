@@ -53,7 +53,7 @@
                                   <RotateTransform Angle="{Binding Car.VirtualFunctionBus.SteeringWheelPacket.WheelRotation}" />
                                 </Image.RenderTransform>
                             </Image>
-                            <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                            <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                                 <TextBlock Grid.Row="0" Grid.Column="0">X:</TextBlock>
                                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding X}"/>
                                 <TextBlock Grid.Row="1" Grid.Column="0">Y:</TextBlock>
@@ -66,10 +66,18 @@
                                 <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.SteeringWheelPacket.WheelRotation}"/>
                               <TextBlock Grid.Row="5" Grid.Column="0">Speed:</TextBlock>
                               <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.PowerTrainPacket.Speed}"/>
-                                <TextBlock Grid.Row="6" Grid.Column="0">Speed:</TextBlock>
+                                <TextBlock Grid.Row="6" Grid.Column="0">Sensor_X:</TextBlock>
                                 <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.SensorPacket.XCord}"/>
-                                <TextBlock Grid.Row="7" Grid.Column="0">Speed:</TextBlock>
+                                <TextBlock Grid.Row="7" Grid.Column="0">Sensor_Y:</TextBlock>
                                 <TextBlock Grid.Row="7" Grid.Column="2" Text="{Binding Car.VirtualFunctionBus.SensorPacket.YCord}"/>
+								<TextBlock Grid.Row="8" Grid.Column="0">RightEdgeX:</TextBlock>
+								<TextBlock Grid.Row="8" Grid.Column="3" Text="{Binding Car.VirtualFunctionBus.SensorPacket.RightEdgeX}"/>
+								<TextBlock Grid.Row="9" Grid.Column="0">RightEdgeY:</TextBlock>
+								<TextBlock Grid.Row="9" Grid.Column="2" Text="{Binding Car.VirtualFunctionBus.SensorPacket.RightEdgeY}"/>
+								<TextBlock Grid.Row="10" Grid.Column="0">LeftEdgeX:</TextBlock>
+								<TextBlock Grid.Row="10" Grid.Column="3" Text="{Binding Car.VirtualFunctionBus.SensorPacket.LeftEdgeX}"/>
+								<TextBlock Grid.Row="11" Grid.Column="0">LeftEdgeY:</TextBlock>
+								<TextBlock Grid.Row="11" Grid.Column="2" Text="{Binding Car.VirtualFunctionBus.SensorPacket.LeftEdgeY}"/>
                             </Grid>
                         </StackPanel>
                     </DataTemplate>
