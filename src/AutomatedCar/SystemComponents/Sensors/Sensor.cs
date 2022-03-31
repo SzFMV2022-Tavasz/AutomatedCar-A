@@ -7,6 +7,7 @@
     using Avalonia;
     using Avalonia.Media;
 
+    //reaktiv obj 
     public abstract class Sensor : SystemComponent
     {
 
@@ -39,20 +40,24 @@
             this.Range = range;
             this.AngleOfView = angleOfView;
             this.CalculateSensorPolylineGeometry();
+            
         }
 
         protected void UpdateSensorPositionAndOrientation()
         {
-            Matrix translation = Matrix.CreateTranslation(world.ControlledCar.X - SensorPosition.X, world.ControlledCar.Y - SensorPosition.Y);
             Matrix rotation = Matrix.CreateRotation((float)(world.ControlledCar.Rotation));
+            Matrix translation = Matrix.CreateTranslation(world.ControlledCar.X - SensorPosition.X, world.ControlledCar.Y - SensorPosition.Y);
 
-           // (double)this.Range * Math.Tan((double)this.AngleOfView / 2 * (Math.PI / 180)
-            SensorPosition = SensorPosition.Transform(translation);
-            RightEdge = RightEdge.Transform(translation);
-            LeftEdge = LeftEdge.Transform(translation);
             SensorPosition = SensorPosition.Transform(rotation);
             RightEdge = RightEdge.Transform(rotation);
             LeftEdge = LeftEdge.Transform(rotation);
+            // (double)this.Range * Math.Tan((double)this.AngleOfView / 2 * (Math.PI / 180)
+            SensorPosition = SensorPosition.Transform(translation);
+            RightEdge = RightEdge.Transform(translation);
+            LeftEdge = LeftEdge.Transform(translation);
+
+            this.SensorPacket.XCord = (int)this.SensorPosition.X;
+            this.SensorPacket.YCord = (int)this.SensorPosition.Y;
 
             this.FieldOfView = new PolylineGeometry(new List<Point> { this.SensorPosition, this.RightEdge, this.LeftEdge }, false);
         }

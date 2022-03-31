@@ -48,12 +48,21 @@
                 bool flag = false;
                 foreach (var geometry in worldObject.Geometries)
                 {
-                    if (geometry.Bounds.Intersects(this.FieldOfView.Bounds))
+                    foreach (var point in geometry.Points)
                     {
-                        flag = true;
-                    }
-                }
+                        //#megoldás elv 
+                        if (this.FieldOfView.FillContains(point))
+                        {
+                            return true;
+                        }
 
+                    }
+
+                    //if (geometry.FillContains(this.LeftEdge) || geometry.FillContains(this.RightEdge) || geometry.FillContains(this.SensorPosition))
+                    //{
+                    //    flag = true;
+                    //}
+                }
                 return flag;
             }
             else

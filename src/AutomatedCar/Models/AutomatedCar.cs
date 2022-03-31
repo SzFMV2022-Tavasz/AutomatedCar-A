@@ -14,6 +14,10 @@ namespace AutomatedCar.Models
         private Sensor radar;
         private Sensor camera;
         private HitBox hitbox;
+        public Sensor TempSen { get
+            {
+                return radar;
+            } }
 
         public AutomatedCar(int x, int y, string filename)
             : base(x, y, filename)
@@ -27,6 +31,7 @@ namespace AutomatedCar.Models
             this.camera = new Camera(World.Instance, this.virtualFunctionBus);
             this.radar = new Radar(World.Instance, this.virtualFunctionBus);
             this.hitbox = new HitBox(World.Instance, this.virtualFunctionBus);
+            
         }
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }
