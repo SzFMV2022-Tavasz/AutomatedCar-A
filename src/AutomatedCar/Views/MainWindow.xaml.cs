@@ -1,5 +1,6 @@
 namespace AutomatedCar.Views
 {
+    using AutomatedCar.Models;
     using AutomatedCar.ViewModels;
     using Avalonia.Controls;
     using Avalonia.Input;
@@ -10,6 +11,7 @@ namespace AutomatedCar.Views
         public MainWindow()
         {
             this.InitializeComponent();
+            World.Instance.ScrollViewerForFocus = this.Get<CourseDisplayView>("courseDisplay").Get<ScrollViewer>("scrollViewer");
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -92,12 +94,50 @@ namespace AutomatedCar.Views
                 Keyboard.Keys.Remove(Key.F5);
             }
 
+            if (Keyboard.IsKeyDown(Key.R))
+            {
+                viewModel.CourseDisplay.GearReverse();
+                Keyboard.Keys.Remove(Key.R);
+            }
+
+            if (Keyboard.IsKeyDown(Key.P))
+            {
+                viewModel.CourseDisplay.GearPark();
+                Keyboard.Keys.Remove(Key.P);
+            }
+
+            if (Keyboard.IsKeyDown(Key.N))
+            {
+                viewModel.CourseDisplay.GearNeutral();
+                Keyboard.Keys.Remove(Key.N);
+            }
+
+            if (Keyboard.IsKeyDown(Key.D))
+            {
+                viewModel.CourseDisplay.GearDrive();
+                Keyboard.Keys.Remove(Key.D);
+            }
+
+
             var scrollViewer = this.Get<CourseDisplayView>("courseDisplay").Get<ScrollViewer>("scrollViewer");
             viewModel.CourseDisplay.FocusCar(scrollViewer);
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
+
+            MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
+
+            if (Keyboard.IsKeyDown(Key.Up))
+            {
+                viewModel.CourseDisplay.GasRelease();
+            }
+
+            if (Keyboard.IsKeyDown(Key.Down))
+            {
+                viewModel.CourseDisplay.BreakRelease();
+            }
+
             Keyboard.Keys.Remove(e.Key);
             base.OnKeyUp(e);
         }
