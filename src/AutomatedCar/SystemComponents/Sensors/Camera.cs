@@ -37,7 +37,6 @@
 
             foreach (var geometry in worldObject.Geometries)
             {
-                Rect rect = geometry.Bounds;
                 Matrix translation = Matrix.CreateTranslation(worldObject.X, worldObject.Y);
                 Matrix rotation = Matrix.CreateRotation((worldObject.Rotation * Math.PI) / 180.0);
 
