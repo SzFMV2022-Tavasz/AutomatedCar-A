@@ -19,8 +19,8 @@ namespace AutomatedCar.SystemComponents.Sensors
         {
             this.world = world;
             this.bus = virtualFunctionBus;
-            Hp = new HitBoxPacket();
-            Hp.Collided = false;
+            this.Hp = new HitBoxPacket();
+            this.Hp.Collided = false;
         }
 
         public override void Process()
@@ -31,60 +31,54 @@ namespace AutomatedCar.SystemComponents.Sensors
 
         protected bool CheckIfCollides()
         {
-
-            return this.world.WorldObjects.Find(this.IsInRange) != null ;
+            return this.world.WorldObjects.Find(this.IsInRange) != null;
         }
 
         protected bool IsInRange(WorldObject worldObject)
         {
-            // undorito de legalább müködik (kb)
-            List<Point> cartemp = new List<Point>(); //az auto pontjai // ezeket a worldbe kellene lehet és nem it kiszámolni mindig 
-            List<Point> objtemp = new List<Point>(); //az objekt pontjai
             // No collision with self.
             if (worldObject == this.world.ControlledCar)
             {
                 return false;
             }
 
-            if (worldObject.Collideable /*&& worldObject.Filename != "roadsign_parking_right.png"*/)
+            if (worldObject.Collideable)
             {
-                bool flag = false;
+                Matrix carTranslation = Matrix.CreateTranslation(this.world.ControlledCar.X, this.world.ControlledCar.Y);
+                Matrix carRotation = Matrix.CreateRotation((this.world.ControlledCar.Rotation * Math.PI) / 180.0);
+
+                Matrix translation = Matrix.CreateTranslation(worldObject.X, worldObject.Y);
+                Matrix rotation = Matrix.CreateRotation((worldObject.Rotation * Math.PI) / 180.0);
+
+                var carPoints = new List<Point>();
+                foreach (var carPoint in this.world.ControlledCar.Geometry.Points)
                 {
-                    foreach (var Point in world.ControlledCar.Geometry.Points)
-                    {
-                        // kigyüjtjük az auto pontjait 
-                        cartemp.Add(new Point(Point.X + world.ControlledCar.X, Point.Y + world.ControlledCar.Y));
-                    }
+                    Point transformedCarPoint = carPoint.Transform(carRotation).Transform(carTranslation);
+                    carPoints.Add(transformedCarPoint);
                 }
 
-                foreach (var oneGeometri in worldObject.Geometries)
+                PolylineGeometry realGeo = new PolylineGeometry(carPoints, false);
+
+                foreach (var geometry in worldObject.Geometries)
+                {
+                    foreach (var point in geometry.Points)
                     {
-                        foreach (var GeometriPoint in oneGeometri.Points)
+                        Point transformed = point.Transform(rotation).Transform(translation);
+
+                        if (realGeo.FillContains(transformed))
                         {
-                         // kigyüjtük az ütköztethetö tárgyak pontjait
-                            objtemp.Add(new Point(GeometriPoint.X + worldObject.X, GeometriPoint.Y + worldObject.Y));
+                            return true;
                         }
+
                     }
 
-                //össze hasonlitjuk a pontokat
-                foreach (var objpoint in objtemp)
-                {
-                    foreach (var carpoint in cartemp)
-                    {
-                        if (objpoint.Equals(carpoint))
-                        {
-                            flag = true;
-                        }
-                    }
+                    return false;
                 }
 
-                return flag;
-            }
-            else
-            {
                 return false;
             }
-            // ez azért is gázos mert a pontok valahogy nem jönnek ki de legalább valaminek lehet már ütközni hitboxal
+
+            return false;
         }
     }
 }
