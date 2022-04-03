@@ -7,6 +7,7 @@
     using Avalonia;
     using Avalonia.Media;
 
+    //reaktiv obj 
     public abstract class Sensor : SystemComponent
     {
 
@@ -43,24 +44,27 @@
 
         protected void UpdateSensorPositionAndOrientation()
         {
-            Matrix translation = Matrix.CreateTranslation(world.ControlledCar.X - SensorPosition.X, world.ControlledCar.Y - SensorPosition.Y);
-            Matrix rotation = Matrix.CreateRotation((float)(world.ControlledCar.Rotation));
+            Matrix translation = Matrix.CreateTranslation(world.ControlledCar.X, world.ControlledCar.Y);
+            Matrix rotation = Matrix.CreateRotation((world.ControlledCar.Rotation * Math.PI) / 180.0);
+            var p = SensorPosition.Transform(rotation).Transform(translation);
+            var r = RightEdge.Transform(rotation).Transform(translation);
+            var l = LeftEdge.Transform(rotation).Transform(translation);
+            this.FieldOfView = new PolylineGeometry(new List<Point> { p, r, l }, false);
 
-           // (double)this.Range * Math.Tan((double)this.AngleOfView / 2 * (Math.PI / 180)
-            SensorPosition = SensorPosition.Transform(translation);
-            RightEdge = RightEdge.Transform(translation);
-            LeftEdge = LeftEdge.Transform(translation);
-            SensorPosition = SensorPosition.Transform(rotation);
-            RightEdge = RightEdge.Transform(rotation);
-            LeftEdge = LeftEdge.Transform(rotation);
-
-            this.FieldOfView = new PolylineGeometry(new List<Point> { this.SensorPosition, this.RightEdge, this.LeftEdge }, false);
+            //DEBUG MODE
+            this.SensorPacket.XCord = (int)p.X;
+            this.SensorPacket.YCord = (int)p.Y;
+            this.SensorPacket.LeftEdgeX = (int)l.X;
+            this.SensorPacket.LeftEdgeY = (int)l.Y;
+            this.SensorPacket.RightEdgeX = (int)r.X;
+            this.SensorPacket.RightEdgeY = (int)r.Y;
         }
+
         protected void CalculateSensorPolylineGeometry()
         {
-            this.SensorPosition = new Point(480, 1425);
-            this.RightEdge = new Point(480 + 200, 1425 + 100);
-            this.LeftEdge = new Point(480 + 200, 1425 - 100);
+            this.SensorPosition = new Point(0, 0);
+            this.RightEdge = this.SensorPosition + new Point(100, -200);
+            this.LeftEdge = this.SensorPosition + new Point(-100, -200);
             this.FieldOfView = new PolylineGeometry(new List<Point> { SensorPosition, RightEdge, LeftEdge }, false);
         }
 

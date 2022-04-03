@@ -22,14 +22,6 @@
             this.virtualFunctionBus.SensorPacket.WorldObjectsInRange = GetWorldObjectsInRange();
             if (this.virtualFunctionBus.SensorPacket.WorldObjectsInRange.Count > 0) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
         }
-        //}
-
-        //protected override PolylineGeometry CalculateSensorPolylineGeometry()
-        //{               //          kezdö pont                                      jobb széle                                              balszéle
-        //    Point[] p = { new Point(/*world.ControlledCar.X, world.ControlledCar.Y*/100, 100), new Point(/*Az a pont ahol a kamera van +*/Range, Range + 50), new Point(/*Az a pont ahol a kamera van +*/Range, Range - 50) };
-        //    return new PolylineGeometry(p, false);
-        //    // defaultnak azért is jo mert legalább nem száll el hibával az egész 
-        //}
 
         protected override ICollection<WorldObject> GetWorldObjectsInRange()
         {
@@ -43,16 +35,24 @@
                 return false;
             }
 
-            bool flag = false;
             foreach (var geometry in worldObject.Geometries)
             {
-                if (geometry.Bounds.Intersects(this.FieldOfView.Bounds))
+                Matrix translation = Matrix.CreateTranslation(worldObject.X, worldObject.Y);
+                Matrix rotation = Matrix.CreateRotation((worldObject.Rotation * Math.PI) / 180.0);
+
+                foreach (var point in geometry.Points)
                 {
-                    flag = true;
+                    Point transformed = point.Transform(rotation).Transform(translation);
+                    if (this.FieldOfView.FillContains(transformed))
+                    {
+                        return true;
+                    }
                 }
+
+                return false;
             }
 
-            return flag;
+            return false;
         }
     }
 }
