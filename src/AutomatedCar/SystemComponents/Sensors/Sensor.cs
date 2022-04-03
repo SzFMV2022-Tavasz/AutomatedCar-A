@@ -7,6 +7,7 @@
     using Avalonia;
     using Avalonia.Media;
 
+    //reaktiv obj 
     public abstract class Sensor : SystemComponent
     {
 
@@ -25,6 +26,9 @@
 
         protected double AngleOfView { get; set; }
 
+        protected TranslateTransform PositionUpdater;
+        protected RotateTransform OrientationUpdater;
+        protected TransformGroup TransformGroup;
         public Sensor(World world, VirtualFunctionBus virtualFunctionBus, int range, double angleOfView)
             : base(virtualFunctionBus)
         {
@@ -33,11 +37,33 @@
             this.virtualFunctionBus.SensorPacket = this.SensorPacket;
             this.Range = range;
             this.AngleOfView = angleOfView;
+            this.CalculateSensorPolylineGeometry();
         }
 
-        protected void UpdateSensorPosition()
+        protected void UpdateSensorPositionAndOrientation()
         {
-            //TODO dummy szenzor pozíció, a "szélvédő" mögé kell majd helyezni
+            Matrix translation = Matrix.CreateTranslation(world.ControlledCar.X, world.ControlledCar.Y);
+            Matrix rotation = Matrix.CreateRotation((world.ControlledCar.Rotation * Math.PI) / 180.0);
+            var p = SensorPosition.Transform(rotation).Transform(translation);
+            var r = RightEdge.Transform(rotation).Transform(translation);
+            var l = LeftEdge.Transform(rotation).Transform(translation);
+            this.FieldOfView = new PolylineGeometry(new List<Point> { p, r, l }, false);
+
+            //DEBUG MODE
+            this.SensorPacket.XCord = (int)p.X;
+            this.SensorPacket.YCord = (int)p.Y;
+            this.SensorPacket.LeftEdgeX = (int)l.X;
+            this.SensorPacket.LeftEdgeY = (int)l.Y;
+            this.SensorPacket.RightEdgeX = (int)r.X;
+            this.SensorPacket.RightEdgeY = (int)r.Y;
+        }
+
+        protected void CalculateSensorPolylineGeometry()
+        {
+            this.SensorPosition = new Point(0, 0);
+            this.RightEdge = this.SensorPosition + new Point(100, -200);
+            this.LeftEdge = this.SensorPosition + new Point(-100, -200);
+            this.FieldOfView = new PolylineGeometry(new List<Point> { SensorPosition, RightEdge, LeftEdge }, false);
         }
 
         protected abstract ICollection<WorldObject> GetWorldObjectsInRange();

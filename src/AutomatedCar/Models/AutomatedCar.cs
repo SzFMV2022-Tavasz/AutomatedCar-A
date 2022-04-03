@@ -13,6 +13,13 @@ namespace AutomatedCar.Models
         private Sensor radar;
         private Sensor camera;
         private Pedal pedal;
+        private Sensor radar;
+        private Sensor camera;
+        private HitBox hitbox;
+        public Sensor TempSen { get
+            {
+                return radar;
+            } }
 
         public AutomatedCar(int x, int y, string filename)
             : base(x, y, filename)
@@ -26,11 +33,13 @@ namespace AutomatedCar.Models
             this.camera = new Camera(World.Instance, this.virtualFunctionBus);
             this.radar = new Radar(World.Instance, this.virtualFunctionBus);
             this.pedal = new Pedal(this.virtualFunctionBus, this);
+            this.camera = new Camera(World.Instance, this.virtualFunctionBus);
+            this.radar = new Radar(World.Instance, this.virtualFunctionBus);
+            this.hitbox = new HitBox(World.Instance, this.virtualFunctionBus);
+            
         }
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }
-
-        //public SteeringWheel SteeringWheel { get => this.steeringWheel; }
 
         public Pedal Pedal { get => this.pedal; }
 
@@ -42,7 +51,7 @@ namespace AutomatedCar.Models
 
         public void StreeringInputKey(int rotation)
         {
-            steeringWheel.RotateWheelByInputRotation(rotation);
+            this.steeringWheel.RotateWheelByInputRotation(rotation);
         }
 
         /// <summary>Starts the automated cor by starting the ticker in the Virtual Function Bus, that cyclically calls the system components.</summary>

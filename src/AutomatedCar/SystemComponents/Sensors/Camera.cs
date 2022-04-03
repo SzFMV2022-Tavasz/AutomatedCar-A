@@ -8,15 +8,18 @@
 
     public class Camera : Sensor
     {
+        public event EventHandler ObjectsInRange;
         public Camera(World world, VirtualFunctionBus virtualFunctionBus)
             : base(world, virtualFunctionBus, 80, 60)
         {
+            //this.FieldOfView = CalculateSensorPolylineGeometry();
         }
 
         public override void Process()
         {
-            this.UpdateSensorPosition();
+            this.UpdateSensorPositionAndOrientation();
             this.virtualFunctionBus.SensorPacket.WorldObjectsInRange = GetWorldObjectsInRange();
+            if (this.virtualFunctionBus.SensorPacket.WorldObjectsInRange.Count > 0) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
         }
 
         protected override ICollection<WorldObject> GetWorldObjectsInRange()
@@ -26,16 +29,29 @@
 
         protected override bool IsInRange(WorldObject worldObject)
         {
-            bool flag = false;
-            foreach (var geometry in worldObject.Geometries)
+            if (worldObject == this.world.ControlledCar)
             {
-                if (geometry.Bounds.Intersects(this.FieldOfView.Bounds))
-                {
-                    flag = true;
-                }
+                return false;
             }
 
-            return flag;
+            foreach (var geometry in worldObject.Geometries)
+            {
+                Matrix translation = Matrix.CreateTranslation(worldObject.X, worldObject.Y);
+                Matrix rotation = Matrix.CreateRotation((worldObject.Rotation * Math.PI) / 180.0);
+
+                foreach (var point in geometry.Points)
+                {
+                    Point transformed = point.Transform(rotation).Transform(translation);
+                    if (this.FieldOfView.FillContains(transformed))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            return false;
         }
     }
 }
