@@ -39,19 +39,16 @@
                 Matrix translation = Matrix.CreateTranslation(worldObject.X, worldObject.Y);
                 Matrix rotation = Matrix.CreateRotation((worldObject.Rotation * Math.PI) / 180.0);
                 Point transformed;
-                foreach (var geometry in worldObject.Geometries)
-                {
-                    foreach (var point in geometry.Points)
-                    {
-                        transformed = point.Transform(preTanslation).Transform(rotation).Transform(translation);
-                        if (this.FieldOfView.FillContains(transformed))
-                        {
-                            return true;
-                        }
-                    }
 
-                    return false;
+                foreach (var point in worldObject.RawGeometries[0].Points)
+                {
+                    transformed = point.Transform(preTanslation).Transform(rotation).Transform(translation);
+                    if (this.FieldOfView.FillContains(transformed))
+                    {
+                        return true;
+                    }
                 }
+
 
                 return false;
             }

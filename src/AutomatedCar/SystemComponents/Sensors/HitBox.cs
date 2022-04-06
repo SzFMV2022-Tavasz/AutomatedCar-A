@@ -13,7 +13,6 @@ namespace AutomatedCar.SystemComponents.Sensors
         private VirtualFunctionBus bus;
         HitBoxPacket Hp;
         private PolylineGeometry transformedCarGeo;
-
         public event EventHandler ObjectsInRange;
 
         public HitBox(World world, VirtualFunctionBus virtualFunctionBus) : base(virtualFunctionBus)
@@ -26,6 +25,7 @@ namespace AutomatedCar.SystemComponents.Sensors
 
         public override void Process()
         {
+
             Matrix preCarTranslation = Matrix.CreateTranslation(-this.world.ControlledCar.RotationPoint.X, -this.world.ControlledCar.RotationPoint.Y);
             Matrix carTranslation = Matrix.CreateTranslation(this.world.ControlledCar.X, this.world.ControlledCar.Y);
             Matrix carRotation = Matrix.CreateRotation((this.world.ControlledCar.Rotation * Math.PI) / 180.0);
@@ -37,6 +37,7 @@ namespace AutomatedCar.SystemComponents.Sensors
             }
 
             this.transformedCarGeo = new PolylineGeometry(carPoints, false);
+
             this.Hp.Collided = CheckIfCollides();
             //if (this.Hp.Collided)
             //{
@@ -64,22 +65,32 @@ namespace AutomatedCar.SystemComponents.Sensors
 
             if (worldObject.Collideable)
             {
-                if (Math.Abs(worldObject.X - this.world.ControlledCar.X) <= 106 && Math.Abs(worldObject.Y - this.world.ControlledCar.Y) <= 238)
+                if (Math.Abs(worldObject.X - this.world.ControlledCar.X) <= 300 && Math.Abs(worldObject.Y - this.world.ControlledCar.Y) <= 500)
                 {
                     Matrix preTranslation = Matrix.CreateTranslation(-worldObject.RotationPoint.X, -worldObject.RotationPoint.Y);
                     Matrix translation = Matrix.CreateTranslation(worldObject.X, worldObject.Y);
                     Matrix rotation = Matrix.CreateRotation((worldObject.Rotation * Math.PI) / 180.0);
+                    List<Point> points = new List<Point>();
 
-                    foreach (var geometry in worldObject.Geometries)
+                    foreach (var point in worldObject.RawGeometries[0].Points)
                     {
-                        foreach (var point in geometry.Points)
-                        {
-                            Point transformed = point.Transform(preTranslation).Transform(rotation).Transform(translation);
+                        Point transformed = point.Transform(preTranslation).Transform(rotation).Transform(translation);
 
-                            if (this.transformedCarGeo.FillContains(transformed))
-                            {
-                                return true;
-                            }
+                        if (this.transformedCarGeo.FillContains(transformed))
+                        {
+                            return true;
+                        }
+
+                        points.Add(transformed);
+                    }
+
+                    PolylineGeometry transformedObject = new PolylineGeometry(points, false);
+
+                    foreach (var point in this.transformedCarGeo.Points)
+                    {
+                        if (transformedObject.FillContains(point))
+                        {
+                            return true;
                         }
                     }
                 }

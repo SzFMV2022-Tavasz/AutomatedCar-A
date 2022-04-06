@@ -29,27 +29,24 @@
 
         protected override bool IsInRange(WorldObject worldObject)
         {
-            if (worldObject == this.world.ControlledCar)
+            //Not counting self, and if world object has no geometry
+            if (worldObject == this.world.ControlledCar || worldObject.RawGeometries.Count == 0)
             {
                 return false;
             }
+
             Matrix preTanslation = Matrix.CreateTranslation(-worldObject.RotationPoint.X, -worldObject.RotationPoint.Y);
             Matrix translation = Matrix.CreateTranslation(worldObject.X, worldObject.Y);
             Matrix rotation = Matrix.CreateRotation((worldObject.Rotation * Math.PI) / 180.0);
             Point transformed;
 
-            foreach (var geometry in worldObject.Geometries)
+            foreach (var point in worldObject.RawGeometries[0].Points)
             {
-                foreach (var point in geometry.Points)
+                transformed = point.Transform(preTanslation).Transform(rotation).Transform(translation);
+                if (this.FieldOfView.FillContains(transformed))
                 {
-                    transformed = point.Transform(preTanslation).Transform(rotation).Transform(translation);
-                    if (this.FieldOfView.FillContains(transformed))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-
-                return false;
             }
 
             return false;
