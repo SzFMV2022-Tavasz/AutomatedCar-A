@@ -35,14 +35,15 @@
 
             if (worldObject.Collideable)
             {
+                Matrix preTanslation = Matrix.CreateTranslation(-worldObject.RotationPoint.X, -worldObject.RotationPoint.Y);
+                Matrix translation = Matrix.CreateTranslation(worldObject.X, worldObject.Y);
+                Matrix rotation = Matrix.CreateRotation((worldObject.Rotation * Math.PI) / 180.0);
+                Point transformed;
                 foreach (var geometry in worldObject.Geometries)
                 {
-                    Matrix translation = Matrix.CreateTranslation(worldObject.X, worldObject.Y);
-                    Matrix rotation = Matrix.CreateRotation((worldObject.Rotation * Math.PI) / 180.0);
-
                     foreach (var point in geometry.Points)
                     {
-                        Point transformed = point.Transform(rotation).Transform(translation);
+                        transformed = point.Transform(preTanslation).Transform(rotation).Transform(translation);
                         if (this.FieldOfView.FillContains(transformed))
                         {
                             return true;
