@@ -10,14 +10,17 @@ namespace AutomatedCar.Models
         private PowerTrain powerTrain;
         public AutomaticGearShift carShift;
         private SteeringWheel steeringWheel;
-        private Pedal pedal;
         private Sensor radar;
         private Sensor camera;
+        private Pedal pedal;
         private HitBox hitbox;
-        public Sensor TempSen { get
+        public Sensor TempSen
+        {
+            get
             {
                 return radar;
-            } }
+            }
+        }
 
         public AutomatedCar(int x, int y, string filename)
             : base(x, y, filename)
@@ -27,11 +30,11 @@ namespace AutomatedCar.Models
             this.steeringWheel = new SteeringWheel(this.virtualFunctionBus, this);
             this.powerTrain = new PowerTrain(this.virtualFunctionBus, this);
             this.carShift = new AutomaticGearShift(this.virtualFunctionBus);
-            this.pedal = new Pedal(this.virtualFunctionBus, this);
             this.camera = new Camera(World.Instance, this.virtualFunctionBus);
             this.radar = new Radar(World.Instance, this.virtualFunctionBus);
+            this.pedal = new Pedal(this.virtualFunctionBus, this);
             this.hitbox = new HitBox(World.Instance, this.virtualFunctionBus);
-            
+
         }
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }

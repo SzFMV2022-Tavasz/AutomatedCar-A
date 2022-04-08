@@ -8,9 +8,7 @@
 
     public class Radar : Sensor
     {
-
         public event EventHandler ObjectsInRange;
-
         public Radar(World world, VirtualFunctionBus virtualFunctionBus)
             : base(world, virtualFunctionBus, 200, 60)
         {
@@ -37,22 +35,20 @@
 
             if (worldObject.Collideable)
             {
-                foreach (var geometry in worldObject.Geometries)
+                Matrix preTanslation = Matrix.CreateTranslation(-worldObject.RotationPoint.X, -worldObject.RotationPoint.Y);
+                Matrix translation = Matrix.CreateTranslation(worldObject.X, worldObject.Y);
+                Matrix rotation = Matrix.CreateRotation((worldObject.Rotation * Math.PI) / 180.0);
+                Point transformed;
+
+                foreach (var point in worldObject.RawGeometries[0].Points)
                 {
-                    Matrix translation = Matrix.CreateTranslation(worldObject.X, worldObject.Y);
-                    Matrix rotation = Matrix.CreateRotation((worldObject.Rotation * Math.PI) / 180.0);
-
-                    foreach (var point in geometry.Points)
+                    transformed = point.Transform(preTanslation).Transform(rotation).Transform(translation);
+                    if (this.FieldOfView.FillContains(transformed))
                     {
-                        Point transformed = point.Transform(rotation).Transform(translation);
-                        if (this.FieldOfView.FillContains(transformed))
-                        {
-                            return true;
-                        }
+                        return true;
                     }
-
-                    return false;
                 }
+
 
                 return false;
             }

@@ -9,7 +9,6 @@
     public class Camera : Sensor
     {
         public event EventHandler ObjectsInRange;
-
         public Camera(World world, VirtualFunctionBus virtualFunctionBus)
             : base(world, virtualFunctionBus, 80, 60)
         {
@@ -30,26 +29,24 @@
 
         protected override bool IsInRange(WorldObject worldObject)
         {
-            if (worldObject == this.world.ControlledCar)
+            //Not counting self, and if world object has no geometry
+            if (worldObject == this.world.ControlledCar || worldObject.RawGeometries.Count == 0)
             {
                 return false;
             }
 
-            foreach (var geometry in worldObject.Geometries)
+            Matrix preTanslation = Matrix.CreateTranslation(-worldObject.RotationPoint.X, -worldObject.RotationPoint.Y);
+            Matrix translation = Matrix.CreateTranslation(worldObject.X, worldObject.Y);
+            Matrix rotation = Matrix.CreateRotation((worldObject.Rotation * Math.PI) / 180.0);
+            Point transformed;
+
+            foreach (var point in worldObject.RawGeometries[0].Points)
             {
-                Matrix translation = Matrix.CreateTranslation(worldObject.X, worldObject.Y);
-                Matrix rotation = Matrix.CreateRotation((worldObject.Rotation * Math.PI) / 180.0);
-
-                foreach (var point in geometry.Points)
+                transformed = point.Transform(preTanslation).Transform(rotation).Transform(translation);
+                if (this.FieldOfView.FillContains(transformed))
                 {
-                    Point transformed = point.Transform(rotation).Transform(translation);
-                    if (this.FieldOfView.FillContains(transformed))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-
-                return false;
             }
 
             return false;

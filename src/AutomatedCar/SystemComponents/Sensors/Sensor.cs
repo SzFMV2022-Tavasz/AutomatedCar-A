@@ -29,8 +29,6 @@
         protected TranslateTransform PositionUpdater;
         protected RotateTransform OrientationUpdater;
         protected TransformGroup TransformGroup;
-
-
         public Sensor(World world, VirtualFunctionBus virtualFunctionBus, int range, double angleOfView)
             : base(virtualFunctionBus)
         {
