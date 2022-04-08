@@ -5,7 +5,7 @@
     using ReactiveUI;
     using AutomatedCar.Helpers;
 
-    class EmergencyBrakePacket : ReactiveObject, IEmergancyBrakePacket
+    public class EmergencyBrakePacket : ReactiveObject, IEmergancyBrakePacket
     {
 
         private bool activated = false;
