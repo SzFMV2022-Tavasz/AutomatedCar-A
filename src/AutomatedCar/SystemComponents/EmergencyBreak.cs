@@ -13,6 +13,13 @@
         private AutomatedCar car;
         private EmergencyBrakePacket emergencyBrakePacket;
 
+        //FELADATOK:
+        // REVERSBEN NE MŰKÖDJÖN
+        // SEBESSÉG SZERINT LEGYEN SZÁMOLVA A TÁVOLSÁG
+        // FÉKEZÉS LOGIKA NE A PEDÁLT HASZNÁLJA
+        // DASHBOARDRA KIÍRÁS
+        // REFAKTORÁLÁS
+
         public EmergencyBreak(VirtualFunctionBus virtualFunctionBus, AutomatedCar car)
             : base(virtualFunctionBus)
         {
@@ -27,7 +34,16 @@
         /// </summary>
         public override void Process()
         {
-            if (true) // aktiválva van-e az EBA
+            if (this.emergencyBrakePacket.Activated && this.virtualFunctionBus.PowerTrainPacket.CorrectedSpeed >= 70)
+            {
+                this.DisableEBA();
+            }
+            else if (!this.emergencyBrakePacket.Activated && this.virtualFunctionBus.PowerTrainPacket.CorrectedSpeed < 70)
+            {
+                this.EnableEBA();
+            }
+
+            if (this.emergencyBrakePacket.Activated) // aktiválva van-e az EBA
             {
                 ICollection<WorldObject> dangerObjects = this.CollisionObjects();
                 if (dangerObjects.Count() > 0)
@@ -48,9 +64,9 @@
             {
                 int distanceX = Math.Abs(this.car.X - item.X);
                 int distanceY = Math.Abs(this.car.Y - item.Y);
-                int distance = (int)Math.Sqrt((Math.Pow(distanceX,2)+Math.Pow(distanceY,2)));
+                int distance = (int)Math.Sqrt((Math.Pow(distanceX, 2) + Math.Pow(distanceY, 2)));
 
-                if (distance<1000) // dummy érték, csak tesztre
+                if (distance < 1000) // dummy érték, csak tesztre
                 {
                     objects.Add(item);
                 }
@@ -64,10 +80,9 @@
         /// </summary>
         private void DisableEBA()
         {
-            if (this.emergencyBrakePacket.Activated && this.virtualFunctionBus.PowerTrainPacket.CorrectedSpeed>70)
-            {
-                this.emergencyBrakePacket.Activated = false;
-            }
+
+            this.emergencyBrakePacket.Activated = false;
+
         }
 
         /// <summary>
@@ -75,10 +90,9 @@
         /// </summary>
         private void EnableEBA()
         {
-            if (!this.emergencyBrakePacket.Activated && this.virtualFunctionBus.PowerTrainPacket.CorrectedSpeed<70)
-            {
-                this.emergencyBrakePacket.Activated = true;
-            }
+
+            this.emergencyBrakePacket.Activated = true;
+
         }
 
         /// <summary>
@@ -86,7 +100,10 @@
         /// </summary>
         private void ActivateBreak()
         {
-            this.virtualFunctionBus.PedalPacket.BreakPedalLevel = 50; // dummy logika, csak tesztre
+            if (this.virtualFunctionBus.PowerTrainPacket.Speed > 1)
+            {
+                this.virtualFunctionBus.PedalPacket.BreakPedalLevel = 100; // dummy logika, csak tesztre
+            }
         }
 
     }
