@@ -20,9 +20,9 @@
         {
             this.car = car;
             this.ControllerPacket = new ACCControllerPacket();
-            this.ControllerPacket.Gain = 2F;
-            this.ControllerPacket.Gain_i = 0.1F;
-            this.ControllerPacket.Gain_d = 2F;
+            this.ControllerPacket.Gain = .3F;
+            this.ControllerPacket.Gain_i = .36F;
+            this.ControllerPacket.Gain_d = .34F;
             this.ControllerPacket.TimeConstant = 6;
             this.ControllerPacket.MaxInput = 20;
             this.virtualFunctionBus.ControllerPacket = this.ControllerPacket;
@@ -35,22 +35,22 @@
             {
                 this.ControllerPacket.Input = this.virtualFunctionBus.PowerTrainPacket.Speed;
                 Debug.WriteLine(
-                    $"Recommended pedal level: {this.ControllerPacket.CalculateOutput()}" +
-                    $"\tP: {this.ControllerPacket.CalculateProportionalTerm()}" +
-                    $"\tI: {this.ControllerPacket.CalculateIntegralTerm()}" +
-                    $"\tD: {this.ControllerPacket.CalculateDerivativeTerm()}" +
+                    $"Recommended pedal level: {(int)this.ControllerPacket.CalculateOutput()}" +
+                    $"\tP: {(int)(this.ControllerPacket.Gain * this.ControllerPacket.Transfer(this.ControllerPacket.CalculateProportionalTerm()))}" +
+                    $"\tI: {(int)(this.ControllerPacket.Gain_i * this.ControllerPacket.Transfer(this.ControllerPacket.CalculateIntegralTerm()))}" +
+                    $"\tD: {(int)(this.ControllerPacket.Gain_d * this.ControllerPacket.Transfer(this.ControllerPacket.CalculateDerivativeTerm()))}" +
                     $"\tE: {this.ControllerPacket.Error}" +
-                    $"\tE: { this.ControllerPacket.LastError}");
-                int output = this.ControllerPacket.CalculateOutput();
-                if (output > 0)
+                    $"\tE: {this.ControllerPacket.LastError}");
+                int output = (int)this.ControllerPacket.CalculateOutput();
+                if (output >= 0)
                 {
-                    //this.car.Pedal.PedalPacket.BreakPedalLevel = 0;
+                    this.car.Pedal.PedalPacket.BreakPedalLevel = 0;
                     this.car.Pedal.PedalPacket.GasPedalLevel = output;
                 }
-                else if (output < -40)
+                else
                 {
-                    //this.car.Pedal.PedalPacket.GasPedalLevel = 0;
-                    this.car.Pedal.PedalPacket.BreakPedalLevel = output;
+                    this.car.Pedal.PedalPacket.GasPedalLevel = 0;
+                    this.car.Pedal.PedalPacket.BreakPedalLevel = -output;
                 }
             }
         }
