@@ -12,16 +12,15 @@
         private double input;
         private double output;
         private double target;
-        private double error;
         private double lastError;
         private double accumulator;
         private double derivative;
         private double maxInput;
-        private double gain;
-        private double gain_i;
-        private double gain_d;
+        private double gain_proportional;
+        private double gain_integral;
+        private double gain_derivative;
         private double timeConstant;
-        private double counter;
+        private byte counter;
 
         public double Input { get => this.input; set => this.RaiseAndSetIfChanged(ref this.input, value); }
         public double Output { get => this.output; set => this.RaiseAndSetIfChanged(ref this.output, value); }
@@ -31,11 +30,11 @@
         public double Accumulator { get => this.accumulator; set => this.RaiseAndSetIfChanged(ref this.accumulator, value); }
         public double Derivative { get => this.derivative; set => this.RaiseAndSetIfChanged(ref this.derivative, value); }
         public double MaxInput { get => this.maxInput; set => this.RaiseAndSetIfChanged(ref this.maxInput, value); }
-        public double Gain { get => this.gain; set => this.RaiseAndSetIfChanged(ref this.gain, value); }
-        public double Gain_i { get => this.gain_i; set => this.RaiseAndSetIfChanged(ref this.gain_i, value); }
-        public double Gain_d { get => this.gain_d; set => this.RaiseAndSetIfChanged(ref this.gain_d, value); }
+        public double Gain_proportional { get => this.gain_proportional; set => this.RaiseAndSetIfChanged(ref this.gain_proportional, value); }
+        public double Gain_integral { get => this.gain_integral; set => this.RaiseAndSetIfChanged(ref this.gain_integral, value); }
+        public double Gain_derivative { get => this.gain_derivative; set => this.RaiseAndSetIfChanged(ref this.gain_derivative, value); }
         public double TimeConstant { get => this.timeConstant; set => this.RaiseAndSetIfChanged(ref this.timeConstant, value); }
-        public double Counter { get => this.counter; set => this.RaiseAndSetIfChanged(ref this.counter, value); }
+        public byte Counter { get => this.counter; set => this.RaiseAndSetIfChanged(ref this.counter, value); }
 
         /// <summary>
         /// The transfer function.
@@ -66,6 +65,11 @@
             return output;
         }
 
+        /// <summary>
+        /// Logistic function https://www.desmos.com/calculator/z2f4vox0fg.
+        /// </summary>
+        /// <param name="x">Velocity.</param>
+        /// <returns>Pedal level ]-80, 80[.</returns>
         public virtual double Transfer(double x)
         {
             double L = 160;
@@ -79,31 +83,35 @@
 
         public double CalculateProportionalTerm()
         {
-            return 1 * this.Error;
+            return this.Gain_proportional * this.Error;
         }
 
         public double CalculateIntegralTerm()
         {
-            this.Accumulator += 1 / this.TimeConstant * this.Error;
-            if (this.Accumulator < -20)
+            if (Math.Abs(this.Accumulator) > 20)
             {
-                this.Accumulator = -20;
-            }
-            else if (this.Accumulator > 20)
-            {
-                this.Accumulator = 20;
+                this.Accumulator -= this.Accumulator % 20;
             }
 
-            return this.Accumulator;
+            this.Accumulator += 1 / this.TimeConstant * this.Error;
+
+            return this.Gain_integral * this.Accumulator;
         }
 
         public double CalculateDerivativeTerm()
         {
-            if (this.Counter++ == 179)
+            if (this.Counter++ == 0)
             {
-                this.Derivative = 1 * (this.Error - this.LastError);
+                if (this.Error != 0)
+                {
+                    this.Derivative = this.Gain_derivative * (this.Error - this.LastError);
+                }
+                else
+                {
+                    this.Derivative = 0;
+                }
+
                 this.LastError = this.Error;
-                this.Counter = 0;
             }
 
             return this.Derivative;
@@ -111,10 +119,10 @@
 
         public double CalculateOutput()
         {
-            return
-                (this.Gain * this.Transfer(this.CalculateProportionalTerm())) +
-                (this.Gain_i * this.Transfer(this.CalculateIntegralTerm())) +
-                (this.Gain_d * this.Transfer(this.CalculateDerivativeTerm()));
+            return this.Transfer(
+                this.CalculateProportionalTerm() +
+                this.CalculateIntegralTerm() +
+                this.CalculateDerivativeTerm());
         }
     }
 }
