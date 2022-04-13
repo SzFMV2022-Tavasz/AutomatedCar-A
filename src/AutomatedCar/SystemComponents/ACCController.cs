@@ -20,10 +20,10 @@
         {
             this.car = car;
             this.ControllerPacket = new ACCControllerPacket();
-            this.ControllerPacket.Gain = .3F;
-            this.ControllerPacket.Gain_i = .36F;
-            this.ControllerPacket.Gain_d = .34F;
-            this.ControllerPacket.TimeConstant = 6;
+            this.ControllerPacket.Gain_proportional = .34F;
+            this.ControllerPacket.Gain_integral = .26F;
+            this.ControllerPacket.Gain_derivative = .4F;
+            this.ControllerPacket.TimeConstant = 12;
             this.ControllerPacket.MaxInput = 20;
             this.virtualFunctionBus.ControllerPacket = this.ControllerPacket;
             timer.Start();
@@ -36,12 +36,17 @@
                 this.ControllerPacket.Input = this.virtualFunctionBus.PowerTrainPacket.Speed;
                 Debug.WriteLine(
                     $"Recommended pedal level: {(int)this.ControllerPacket.CalculateOutput()}" +
-                    $"\tP: {(int)(this.ControllerPacket.Gain * this.ControllerPacket.Transfer(this.ControllerPacket.CalculateProportionalTerm()))}" +
-                    $"\tI: {(int)(this.ControllerPacket.Gain_i * this.ControllerPacket.Transfer(this.ControllerPacket.CalculateIntegralTerm()))}" +
-                    $"\tD: {(int)(this.ControllerPacket.Gain_d * this.ControllerPacket.Transfer(this.ControllerPacket.CalculateDerivativeTerm()))}" +
+                    $"\tP: {this.ControllerPacket.CalculateProportionalTerm():0.00}" +
+                    $"\tI: {this.ControllerPacket.CalculateIntegralTerm():0.00}" +
+                    $"\tD: {this.ControllerPacket.CalculateDerivativeTerm():0.00}" +
                     $"\tE: {this.ControllerPacket.Error}" +
                     $"\tE: {this.ControllerPacket.LastError}");
                 int output = (int)this.ControllerPacket.CalculateOutput();
+                if (Math.Abs(output) > 80)
+                {
+                   output -= output % 80;
+                }
+
                 if (output >= 0)
                 {
                     this.car.Pedal.PedalPacket.BreakPedalLevel = 0;
