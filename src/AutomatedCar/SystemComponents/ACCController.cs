@@ -55,7 +55,7 @@
                 else
                 {
                     this.car.Pedal.PedalPacket.GasPedalLevel = 0;
-                    this.car.Pedal.PedalPacket.BreakPedalLevel = -output;
+                    this.car.Pedal.PedalPacket.BreakPedalLevel = -output / 3;
                 }
             }
         }
