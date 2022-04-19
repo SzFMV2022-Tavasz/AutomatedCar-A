@@ -34,7 +34,7 @@
 
         public override void Process()
         {
-            if (this.car.track)
+            if (true)//this.car.track)
             {
                 this.ControllerPacket.Input = this.virtualFunctionBus.PowerTrainPacket.Speed;
                 int output = (int)this.ControllerPacket.Output;
