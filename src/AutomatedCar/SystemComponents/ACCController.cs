@@ -34,7 +34,11 @@
 
         public override void Process()
         {
-            if (true)//this.car.track)
+            //Change this to set target speed.
+            ControllerPacket.Target = 10;
+
+            //Change this to turn on ACC
+            if (false)//this.car.track)
             {
                 this.ControllerPacket.Input = this.virtualFunctionBus.PowerTrainPacket.Speed;
                 int output = (int)this.ControllerPacket.Output;
