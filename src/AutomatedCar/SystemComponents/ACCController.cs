@@ -25,9 +25,9 @@
 
             this.ControllerPacket.MaxInput = 20;
             this.ControllerPacket.TimeConstant = 12;
-            this.ControllerPacket.Gain_proportional = .34F;
-            this.ControllerPacket.Gain_integral = .26F;
-            this.ControllerPacket.Gain_derivative = .4F;
+            this.ControllerPacket.Gain_proportional = .6F;
+            this.ControllerPacket.Gain_integral = .4F;
+            this.ControllerPacket.Gain_derivative = 0.4F;
 
             this.timer.Start();
         }
