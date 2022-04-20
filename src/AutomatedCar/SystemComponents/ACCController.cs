@@ -34,6 +34,15 @@
 
         public override void Process()
         {
+            if (this.virtualFunctionBus.PowerTrainPacket.Speed > 0)
+            {
+                this.car.isTracked = true;
+            }
+            else
+            {
+                this.car.isTracked = false;
+            }
+
             //Change this to set target speed.
             ControllerPacket.Target = 10;
 
@@ -50,6 +59,18 @@
                     $"\tD: {this.ControllerPacket.CalculateDerivativeTerm():0.00}" +
                     $"\tE: {this.ControllerPacket.Error}" +
                     $"\tE: {this.ControllerPacket.LastError}");
+                if (this.car.isTracked)
+                {
+                    Debug.WriteLine(
+                        $"Target speed: {this.ControllerPacket.Target,-5}" +
+                        $"Actual speed: {this.virtualFunctionBus.PowerTrainPacket.Speed,-5}" +
+                        $"Recommended pedal level: {output,-5}" +
+                        $"\t\tP: {this.ControllerPacket.CalculateProportionalTerm(),-6:0.00}" +
+                        $"\t\tI: {this.ControllerPacket.CalculateIntegralTerm(),-6:0.00}" +
+                        $"\t\tD: {this.ControllerPacket.CalculateDerivativeTerm(),-6:0.00}"/* +
+                        $"\tEa: {this.ControllerPacket.Error}" +
+                        $"\tEl: {this.ControllerPacket.LastError}"*/);
+                }
 
                 if (output >= 0)
                 {
