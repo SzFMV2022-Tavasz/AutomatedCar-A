@@ -52,13 +52,6 @@
                 this.ControllerPacket.Input = this.virtualFunctionBus.PowerTrainPacket.Speed;
                 int output = (int)this.ControllerPacket.Output;
 
-                Debug.WriteLine(
-                    $"Recommended pedal level: {output}" +
-                    $"\tP: {this.ControllerPacket.CalculateProportionalTerm():0.00}" +
-                    $"\tI: {this.ControllerPacket.CalculateIntegralTerm():0.00}" +
-                    $"\tD: {this.ControllerPacket.CalculateDerivativeTerm():0.00}" +
-                    $"\tE: {this.ControllerPacket.Error}" +
-                    $"\tE: {this.ControllerPacket.LastError}");
                 if (this.car.isTracked)
                 {
                     Debug.WriteLine(
