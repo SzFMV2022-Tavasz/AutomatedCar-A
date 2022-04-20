@@ -58,15 +58,12 @@
 
         private double CalculateOutput()
         {
-            double output = this.Transfer(
-                this.CalculateProportionalTerm() +
-                this.CalculateIntegralTerm() +
-                this.CalculateDerivativeTerm());
-
-            if (Math.Abs(output) > 80)
-            {
-                output -= output % 80;
-            }
+            double output =
+                this.RegulateOutput(
+                    this.Transfer(
+                        this.CalculateProportionalTerm() +
+                        this.CalculateIntegralTerm() +
+                        this.CalculateDerivativeTerm()));
 
             return output;
         }
@@ -90,7 +87,7 @@
 
         public double CalculateDerivativeTerm()
         {
-            if (this.Counter++ == 0)
+            if (this.Counter++ * 2 == 0)
             {
                 if (this.Error != 0)
                 {
@@ -105,6 +102,16 @@
             }
 
             return this.Derivative;
+        }
+
+        private double RegulateOutput(double output)
+        {
+            if (Math.Abs(output) > 80)
+            {
+                output -= output % 80;
+            }
+
+            return output;
         }
     }
 }
