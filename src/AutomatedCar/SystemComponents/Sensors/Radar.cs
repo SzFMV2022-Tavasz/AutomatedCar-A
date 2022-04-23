@@ -12,13 +12,14 @@
         public Radar(World world, VirtualFunctionBus virtualFunctionBus)
             : base(world, virtualFunctionBus, 200, 60)
         {
+            this.virtualFunctionBus.RadarPacket = this.SensorPacket;
         }
 
         public override void Process()
         {
             this.UpdateSensorPositionAndOrientation();
-            this.virtualFunctionBus.SensorPacket.WorldObjectsInRange = GetWorldObjectsInRange();
-            if (this.virtualFunctionBus.SensorPacket.WorldObjectsInRange.Count > 0) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
+            this.virtualFunctionBus.RadarPacket.WorldObjectsInRange = GetWorldObjectsInRange();
+            if (this.virtualFunctionBus.RadarPacket.WorldObjectsInRange.Count > 0) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
         }
 
         protected override ICollection<WorldObject> GetWorldObjectsInRange()

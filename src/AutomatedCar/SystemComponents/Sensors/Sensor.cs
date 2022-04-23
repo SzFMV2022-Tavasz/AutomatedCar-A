@@ -34,7 +34,6 @@
         {
             this.world = world;
             this.SensorPacket = new SensorPacket();
-            this.virtualFunctionBus.SensorPacket = this.SensorPacket;
             this.Range = range;
             this.AngleOfView = angleOfView;
             this.CalculateSensorPolylineGeometry();
@@ -45,8 +44,11 @@
             Matrix translation = Matrix.CreateTranslation(world.ControlledCar.X, world.ControlledCar.Y);
             Matrix rotation = Matrix.CreateRotation((world.ControlledCar.Rotation * Math.PI) / 180.0);
             var p = SensorPosition.Transform(rotation).Transform(translation);
+
             var r = RightEdge.Transform(rotation).Transform(translation);
+
             var l = LeftEdge.Transform(rotation).Transform(translation);
+
             this.FieldOfView = new PolylineGeometry(new List<Point> { p, r, l }, false);
 
             //DEBUG MODE

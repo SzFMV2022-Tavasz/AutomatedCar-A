@@ -15,6 +15,7 @@ namespace AutomatedCar.Models
         private Pedal pedal;
         private HitBox hitbox;
         private ACCController aCCController;
+        private LaneKeepingAssist laneKeepingAssist;
         public Sensor TempSen
         {
             get
@@ -36,7 +37,7 @@ namespace AutomatedCar.Models
             this.pedal = new Pedal(this.virtualFunctionBus, this);
             this.hitbox = new HitBox(World.Instance, this.virtualFunctionBus);
             this.aCCController = new ACCController(this.virtualFunctionBus, this);
-
+            this.laneKeepingAssist = new LaneKeepingAssist(this.virtualFunctionBus, World.Instance);
         }
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }

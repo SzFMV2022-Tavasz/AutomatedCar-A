@@ -9,18 +9,20 @@
 
     public class LaneKeepingAssist : SystemComponent
     {
-        VirtualFunctionBus bus;
+        private World world;
 
-        public LaneKeepingAssist(VirtualFunctionBus bus) : base(bus)
-        {}
+        public LaneKeepingAssist(VirtualFunctionBus bus, World world) : base(bus)
+        {
+            this.world = world;
+        }
 
         public override void Process()
         {
-            if (this.bus.SteeringWheelPacket.IsLKAActive)
+            if (this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive || true)
             {
-                if (this.bus.SensorPacket.WorldObjectsInRange.Count > 0)
+                if (this.virtualFunctionBus.CameraPacket.WorldObjectsInRange.Count > 0)
                 {
-                    ICollection<WorldObject> lanes = this.bus.SensorPacket.WorldObjectsInRange.Where(x => x.Filename.Contains("road_2lane")).ToList();
+                    ICollection<WorldObject> lanes = this.virtualFunctionBus.CameraPacket.WorldObjectsInRange.Where(x => x.Filename.Contains("road_2lane")).ToList();
 
                     if (lanes.Count > 0)
                     {
@@ -32,7 +34,11 @@
 
         private void SetWheelRotationByLanes(ICollection<WorldObject> lanes)
         {
-
+            //foreach(var line in lanes)
+            //{
+            //    Console.WriteLine(line.Filename);
+            //}
+            //this.world.ControlledCar.StreeringInputKey();
         }
     }
 }
