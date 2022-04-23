@@ -18,6 +18,7 @@
 
         public override void Process()
         {
+            //TODO: Implement Lane Keep Assist IN/OFF
             if (this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive || true)
             {
                 if (this.virtualFunctionBus.CameraPacket.WorldObjectsInRange.Count > 0)
@@ -34,11 +35,12 @@
 
         private void SetWheelRotationByLanes(ICollection<WorldObject> lanes)
         {
+            int value = 0;
             //foreach(var line in lanes)
             //{
             //    Console.WriteLine(line.Filename);
             //}
-            //this.world.ControlledCar.StreeringInputKey();
+            this.world.ControlledCar.StreeringInputKey(value);
         }
     }
 }
