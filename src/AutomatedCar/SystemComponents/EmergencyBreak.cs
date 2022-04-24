@@ -66,7 +66,7 @@
                 int distanceY = Math.Abs(this.car.Y - item.Y);
                 int distance = (int)Math.Sqrt((Math.Pow(distanceX, 2) + Math.Pow(distanceY, 2)));
 
-                if (distance < 1000) // dummy érték, csak tesztre
+                if (distance < 1500) // dummy érték, csak tesztre
                 {
                     objects.Add(item);
                 }
