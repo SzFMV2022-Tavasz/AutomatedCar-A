@@ -14,6 +14,7 @@ namespace AutomatedCar.Models
         private Sensor camera;
         private Pedal pedal;
         private HitBox hitbox;
+        private ACCController aCCController;
         public Sensor TempSen
         {
             get
@@ -34,12 +35,15 @@ namespace AutomatedCar.Models
             this.radar = new Radar(World.Instance, this.virtualFunctionBus);
             this.pedal = new Pedal(this.virtualFunctionBus, this);
             this.hitbox = new HitBox(World.Instance, this.virtualFunctionBus);
+            this.aCCController = new ACCController(this.virtualFunctionBus, this);
 
         }
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }
 
         public Pedal Pedal { get => this.pedal; }
+
+        public ACCController ACCController { get => this.aCCController; }
 
         public int Revolution { get; set; }
 
