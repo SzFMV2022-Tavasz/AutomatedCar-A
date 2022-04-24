@@ -12,5 +12,6 @@ namespace AutomatedCar.SystemComponents.Packets
 
         int Speed { get; set; }
 
+        int CorrectedSpeed { get; set; }
     }
 }

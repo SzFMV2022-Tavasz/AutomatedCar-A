@@ -14,6 +14,7 @@ namespace AutomatedCar.Models
         private Sensor camera;
         private Pedal pedal;
         private HitBox hitbox;
+        private EmergencyBreak EmergencyBreak;
         private ACCController aCCController;
         public Sensor TempSen
         {
@@ -35,6 +36,7 @@ namespace AutomatedCar.Models
             this.radar = new Radar(World.Instance, this.virtualFunctionBus);
             this.pedal = new Pedal(this.virtualFunctionBus, this);
             this.hitbox = new HitBox(World.Instance, this.virtualFunctionBus);
+            this.EmergencyBreak = new EmergencyBreak(this.virtualFunctionBus,this);
             this.aCCController = new ACCController(this.virtualFunctionBus, this);
 
         }

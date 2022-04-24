@@ -78,6 +78,8 @@
 								<TextBlock Grid.Row="10" Grid.Column="3" Text="{Binding Car.VirtualFunctionBus.SensorPacket.LeftEdgeX}"/>
 								<TextBlock Grid.Row="11" Grid.Column="0">LeftEdgeY:</TextBlock>
 								<TextBlock Grid.Row="11" Grid.Column="2" Text="{Binding Car.VirtualFunctionBus.SensorPacket.LeftEdgeY}"/>
+                                <TextBlock Grid.Row="12" Grid.Column="0">EBA:</TextBlock>
+                                <TextBlock Grid.Row="12" Grid.Column="2" Text="{Binding Car.VirtualFunctionBus.EmergancyBrakePacket.Activated}"/>
                             </Grid>
                         </StackPanel>
                     </DataTemplate>
