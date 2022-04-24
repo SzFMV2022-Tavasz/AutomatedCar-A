@@ -137,7 +137,7 @@ namespace AutomatedCar.ViewModels
 
         public void GearDrive()
         {
-            if (World.Instance.ControlledCar.carShift.ShiftPacket.CurrentGear==Helpers.Gear.Neutral || World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.RPM <= 1000 && World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.Speed == 0)
+            if (World.Instance.ControlledCar.carShift.ShiftPacket.CurrentGear==Helpers.Gear.Neutral && World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.Speed == 0 || World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.RPM <= 1000 && World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.Speed == 0)
             {
                 World.Instance.ControlledCar.carShift.ShiftPacket.CurrentGear = Helpers.Gear.Drive;
                 World.Instance.ControlledCar.carShift.ShiftPacket.GearState = World.Instance.ControlledCar.carShift.ShiftPacket.CurrentShift.ToString();

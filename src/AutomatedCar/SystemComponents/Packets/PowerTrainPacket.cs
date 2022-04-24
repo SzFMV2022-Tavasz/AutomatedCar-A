@@ -30,11 +30,11 @@ namespace AutomatedCar.SystemComponents.Packets
         {
             get
             {
-                return this.correctedSpeed;
+                return this.correctedSpeed*7;
             }
             set
             {
-                this.RaiseAndSetIfChanged(ref this.correctedSpeed, value * 7);
+                this.RaiseAndSetIfChanged(ref this.correctedSpeed, value );
             }
         }
 

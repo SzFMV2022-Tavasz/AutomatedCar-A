@@ -102,11 +102,25 @@ namespace AutomatedCar.SystemComponents
             int carLocationY = this.automatedCar.Y;
             double carHeading = this.automatedCar.Rotation;
             int carSpeed = this.automatedCar.VirtualFunctionBus.PowerTrainPacket.Speed;
-
             if (this.automatedCar.VirtualFunctionBus.GearShiftPacket.CurrentGear == Helpers.Gear.Reverse)
             {
                 carSpeed = carSpeed * (-1);
                 steerAngle = steerAngle * (-1);
+            }
+            if (this.automatedCar.VirtualFunctionBus.GearShiftPacket.CurrentGear == Helpers.Gear.Neutral)
+
+            {
+                if (this.virtualFunctionBus.GearShiftPacket.PrevGear==Helpers.Gear.Reverse)
+                {
+                    carSpeed = carSpeed * (-1);
+                    steerAngle = steerAngle * (-1);
+                }
+                else
+                {
+                    carSpeed = carSpeed *1;
+                    steerAngle = steerAngle * (1);
+                }
+            
             }
 
             double frontWheelX = carLocationX + (wheelBase / 2 * Math.Sin((carHeading * Math.PI) / 180));
