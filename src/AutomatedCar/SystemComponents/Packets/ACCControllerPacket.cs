@@ -19,6 +19,7 @@
         private double gain_proportional;
         private double gain_integral;
         private double gain_derivative;
+        private bool enabled = false;
 
         public byte Counter { get => this.counter; set => this.RaiseAndSetIfChanged(ref this.counter, value); }
         public double Input { get => this.input; set => this.RaiseAndSetIfChanged(ref this.input, value); }
@@ -33,6 +34,7 @@
         public double Gain_proportional { get => this.gain_proportional; set => this.RaiseAndSetIfChanged(ref this.gain_proportional, value); }
         public double Gain_integral { get => this.gain_integral; set => this.RaiseAndSetIfChanged(ref this.gain_integral, value); }
         public double Gain_derivative { get => this.gain_derivative; set => this.RaiseAndSetIfChanged(ref this.gain_derivative, value); }
+        public bool Enabled { get => this.enabled; set => this.RaiseAndSetIfChanged(ref this.enabled, value); }
 
         /// <summary>
         /// Logistic function https://www.desmos.com/calculator/z2f4vox0fg.
