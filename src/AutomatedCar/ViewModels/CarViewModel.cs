@@ -8,25 +8,26 @@
     using System.Reactive;
     using System.Text;
     using System.Threading.Tasks;
+    using SystemComponents;
     using SystemComponents.Packets;
 
     public class CarViewModel : WorldObjectViewModel
     {
         public AutomatedCar Car { get; set; }
-        public ACCControllerPrototype Acc { get; set; }
+        public ACCController Acc { get; set; }
 
-        public ReactiveCommand<Unit, Unit> DoTheThing { get; }
+        public ReactiveCommand<Unit, Unit> ACCButtonCommand { get; }
         public CarViewModel(AutomatedCar car) : base(car)
         {
             this.Car = car;
-            this.Acc = new ACCControllerPrototype();
-            DoTheThing = ReactiveCommand.Create(DoSomeThing);
+            this.Acc = this.Car.ACCController;
+            ACCButtonCommand = ReactiveCommand.Create(this.TurnOnOff);
             
         }
         
-        void DoSomeThing()
+        void TurnOnOff()
         {
-            this.Acc.TurnOnOrOff();
+            this.Acc.ControllerPacket.Enabled = !this.Acc.ControllerPacket.Enabled;
         }
     }
 }

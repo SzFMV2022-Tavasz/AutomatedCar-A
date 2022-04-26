@@ -20,7 +20,7 @@ namespace AutomatedCar.Views
             this.InitializeComponent();
         }
 
-        private bool isOn = false;
+       
 
         private void InitializeComponent()
         {
@@ -34,7 +34,7 @@ namespace AutomatedCar.Views
            var myButtonBorder = (Border)this.FindControl<ContentControl>("Dashboard").GetLogicalChildren().ToList()[0].LogicalChildren[11].LogicalChildren[25].LogicalChildren[0].LogicalChildren[0];
            var labelText = (AccessText)myButtonBorder.GetLogicalChildren().ToList()[0].LogicalChildren[0];
 
-           if (this.isOn)
+           if (labelText.DataContext == "On")
            {
                labelText.DataContext = "Off";
                myButtonBorder.HorizontalAlignment = HorizontalAlignment.Left;
@@ -44,8 +44,6 @@ namespace AutomatedCar.Views
                labelText.DataContext = "On";
                myButtonBorder.HorizontalAlignment = HorizontalAlignment.Right;
            }
-
-           this.isOn = !this.isOn;
         }
     }
 }
