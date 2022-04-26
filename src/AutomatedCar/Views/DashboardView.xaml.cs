@@ -20,30 +20,9 @@ namespace AutomatedCar.Views
             this.InitializeComponent();
         }
 
-       
-
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-        }
-
-        private void Button_On_Off(object? sender, RoutedEventArgs e)
-        {
-            // todo
-            // hardcoded
-           var myButtonBorder = (Border)this.FindControl<ContentControl>("Dashboard").GetLogicalChildren().ToList()[0].LogicalChildren[11].LogicalChildren[25].LogicalChildren[0].LogicalChildren[0];
-           var labelText = (AccessText)myButtonBorder.GetLogicalChildren().ToList()[0].LogicalChildren[0];
-
-           if (labelText.DataContext == "On")
-           {
-               labelText.DataContext = "Off";
-               myButtonBorder.HorizontalAlignment = HorizontalAlignment.Left;
-           }
-           else
-           {
-               labelText.DataContext = "On";
-               myButtonBorder.HorizontalAlignment = HorizontalAlignment.Right;
-           }
         }
     }
 }
