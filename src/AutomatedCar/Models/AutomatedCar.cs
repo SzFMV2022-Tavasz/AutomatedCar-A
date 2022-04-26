@@ -49,6 +49,8 @@ namespace AutomatedCar.Models
 
         public ACCController ACCController { get => this.aCCController; }
 
+        public ACCTargetProcessor ACCTargetProcessor { get => this.accSensor; }
+
         public int Revolution { get; set; }
 
         public int Velocity { get; set; }
