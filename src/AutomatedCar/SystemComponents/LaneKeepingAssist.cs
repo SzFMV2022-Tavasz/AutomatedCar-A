@@ -19,7 +19,7 @@
         public override void Process()
         {
             //TODO: Implement Lane Keep Assist IN/OFF
-            if (this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive || true)
+            if (this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive)// || true)
             {
                 if (this.virtualFunctionBus.CameraPacket.WorldObjectsInRange.Count > 0)
                 {

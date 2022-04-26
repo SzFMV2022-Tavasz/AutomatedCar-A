@@ -63,8 +63,8 @@
         protected void CalculateSensorPolylineGeometry()
         {
             this.SensorPosition = new Point(0, 0);
-            this.RightEdge = this.SensorPosition + new Point(100, -200);
-            this.LeftEdge = this.SensorPosition + new Point(-100, -200);
+            this.RightEdge = this.SensorPosition + new Point(Math.Round(Math.Tan((90 - this.AngleOfView) * (Math.PI / 180)), 3) * (this.Range * 50), -this.Range * 50);
+            this.LeftEdge = this.SensorPosition + new Point(Math.Round(-Math.Tan((90 - this.AngleOfView) * (Math.PI / 180)), 3) * (this.Range * 50), -this.Range * 50);
             this.FieldOfView = new PolylineGeometry(new List<Point> { SensorPosition, RightEdge, LeftEdge }, false);
         }
 
