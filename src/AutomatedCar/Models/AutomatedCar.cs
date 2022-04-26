@@ -15,6 +15,8 @@ namespace AutomatedCar.Models
         private Pedal pedal;
         private HitBox hitbox;
         private ACCController aCCController;
+        public bool isTracked;
+        private ACCTargetProcessor accSensor;
         public Sensor TempSen
         {
             get
@@ -36,7 +38,9 @@ namespace AutomatedCar.Models
             this.pedal = new Pedal(this.virtualFunctionBus, this);
             this.hitbox = new HitBox(World.Instance, this.virtualFunctionBus);
             this.aCCController = new ACCController(this.virtualFunctionBus, this);
+            this.isTracked = false;
 
+            this.accSensor = new ACCTargetProcessor(this.virtualFunctionBus, this);
         }
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }
@@ -44,6 +48,8 @@ namespace AutomatedCar.Models
         public Pedal Pedal { get => this.pedal; }
 
         public ACCController ACCController { get => this.aCCController; }
+
+        public ACCTargetProcessor ACCTargetProcessor { get => this.accSensor; }
 
         public int Revolution { get; set; }
 
