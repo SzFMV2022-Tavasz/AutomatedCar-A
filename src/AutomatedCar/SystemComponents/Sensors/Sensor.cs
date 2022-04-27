@@ -56,6 +56,7 @@
             this.SensorPacket.LeftEdgeY = (int)l.Y;
             this.SensorPacket.RightEdgeX = (int)r.X;
             this.SensorPacket.RightEdgeY = (int)r.Y;
+            //this.SensorPacket.FileNames = new List<string> { "Anyuam "," apukam"}; // nem ide valo lol 
         }
 
         protected void CalculateSensorPolylineGeometry()

@@ -9,6 +9,8 @@
         private ICollection<WorldObject> worldObjectsInRange;
         private int xCord;
         private int yCord;
+        private List<string> fileNamesRadar;
+        private List<string> fileNamesCam;
 
         public int XCord
         {
@@ -59,5 +61,18 @@
             get => this.worldObjectsInRange;
             set => this.worldObjectsInRange = value;
         }
+
+        public List<string> FileNamesRadar
+        {
+            get => this.fileNamesRadar;
+            set => this.RaiseAndSetIfChanged(ref this.fileNamesRadar, value);
+        }
+
+        public List<string> FileNamesCam
+        {
+            get => this.fileNamesCam;
+            set => this.RaiseAndSetIfChanged(ref this.fileNamesCam, value);
+        }
     }
 }
+

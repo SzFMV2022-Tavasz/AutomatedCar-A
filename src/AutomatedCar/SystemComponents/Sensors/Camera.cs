@@ -9,6 +9,7 @@
     public class Camera : Sensor
     {
         public event EventHandler ObjectsInRange;
+        private List<string> fileNames;
         public Camera(World world, VirtualFunctionBus virtualFunctionBus)
             : base(world, virtualFunctionBus, 80, 60)
         {
@@ -20,10 +21,15 @@
             this.UpdateSensorPositionAndOrientation();
             this.virtualFunctionBus.SensorPacket.WorldObjectsInRange = GetWorldObjectsInRange();
             if (this.virtualFunctionBus.SensorPacket.WorldObjectsInRange.Count > 0) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
+            if (fileNames != null)
+            {
+                this.SensorPacket.FileNamesCam = fileNames;
+            }
         }
 
         protected override ICollection<WorldObject> GetWorldObjectsInRange()
         {
+            this.fileNames = new List<string>();
             return this.world.WorldObjects.FindAll(IsInRange);
         }
 
@@ -45,6 +51,7 @@
                 transformed = point.Transform(preTanslation).Transform(rotation).Transform(translation);
                 if (this.FieldOfView.FillContains(transformed))
                 {
+                    this.fileNames.Add(worldObject.Filename);
                     return true;
                 }
             }
