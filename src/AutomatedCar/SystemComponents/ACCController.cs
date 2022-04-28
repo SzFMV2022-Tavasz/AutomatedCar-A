@@ -70,6 +70,11 @@
                     this.car.Pedal.PedalPacket.BreakPedalLevel = 0;
                     this.car.Pedal.PedalPacket.GasPedalLevel = output;
                 }
+                else if (output >= -30)
+                {
+                    this.car.Pedal.PedalPacket.GasPedalLevel = 0;
+                    this.car.Pedal.PedalPacket.BreakPedalLevel = 0;
+                }
                 else
                 {
                     this.car.Pedal.PedalPacket.GasPedalLevel = 0;
