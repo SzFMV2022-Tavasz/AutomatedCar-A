@@ -84,7 +84,7 @@
             {
                 if (obj.WorldObjectType == WorldObjectType.RoadSign)
                 {
-                    if (IsRoadSignFrontFacing(obj))
+                    if (IsRoadSignFrontFacing(obj) && (this.currentRoadSign == null || DistanceFrom(obj) < DistanceFrom(this.currentRoadSign)))
                     {
                         this.currentRoadSign = obj;
                     }
