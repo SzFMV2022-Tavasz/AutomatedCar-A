@@ -18,9 +18,20 @@
         <Style Selector="ContentControl#Dashboard TextBlock">
             <Setter Property="Foreground" Value="#EEEEEE"/>
         </Style>
+        
+        <Style Selector="ContentControl#Dashboard Button.onoff">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent"/>
+        </Style> 
+        <Style Selector="ContentControl#Dashboard Button.onoff:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent"/>
+        </Style> 
+        
+        
     </UserControl.Styles>
 
-    <DockPanel>
+    <DockPanel Name="DockPanel">
         <Border Padding="2 0 0 0" >
             <ContentControl Name="Dashboard" Content="{Binding ControlledCar, Mode=OneWay}" >
                 <ContentControl.ContentTemplate>
@@ -53,7 +64,7 @@
                                   <RotateTransform Angle="{Binding Car.VirtualFunctionBus.SteeringWheelPacket.WheelRotation}" />
                                 </Image.RenderTransform>
                             </Image>
-                            <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                            <Grid Name = "GridN" ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                                 <TextBlock Grid.Row="0" Grid.Column="0">X:</TextBlock>
                                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding X}"/>
                                 <TextBlock Grid.Row="1" Grid.Column="0">Y:</TextBlock>
@@ -78,6 +89,10 @@
 								<TextBlock Grid.Row="10" Grid.Column="3" Text="{Binding Car.VirtualFunctionBus.SensorPacket.LeftEdgeX}"/>
 								<TextBlock Grid.Row="11" Grid.Column="0">LeftEdgeY:</TextBlock>
 								<TextBlock Grid.Row="11" Grid.Column="2" Text="{Binding Car.VirtualFunctionBus.SensorPacket.LeftEdgeY}"/>
+                                <TextBlock Grid.Row="12" Grid.Column="0">ACC:</TextBlock>
+                                <TextBlock Grid.Row="12" Grid.Column="1" Text="{Binding Car.ACCController.ControllerPacket.Enabled}"/>
+                                <TextBlock Grid.Row="14" Grid.Column="0">Tracking speed:</TextBlock>
+                                <TextBlock Grid.Row="14" Grid.Column="1" Text="{Binding Car.ACCTargetProcessor.Packet.DriverTarget}"/>
                             </Grid>
                         </StackPanel>
                     </DataTemplate>
