@@ -16,6 +16,7 @@ namespace AutomatedCar.Models
         private HitBox hitbox;
         private EmergencyBreak EmergencyBreak;
         private ACCController aCCController;
+        private LaneKeepingAssist laneKeepingAssist;
         public Sensor TempSen
         {
             get
@@ -38,7 +39,7 @@ namespace AutomatedCar.Models
             this.hitbox = new HitBox(World.Instance, this.virtualFunctionBus);
             this.EmergencyBreak = new EmergencyBreak(this.virtualFunctionBus,this);
             this.aCCController = new ACCController(this.virtualFunctionBus, this);
-
+            this.laneKeepingAssist = new LaneKeepingAssist(this.virtualFunctionBus, World.Instance);
         }
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }
