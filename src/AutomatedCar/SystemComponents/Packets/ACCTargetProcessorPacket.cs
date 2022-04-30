@@ -7,6 +7,32 @@
     {
         private int driverTarget;
         private int actualTarget;
+        private double targetDistanceCycle = 0.8;
+
+        public double TargetDistanceCycle
+        {
+            get => this.targetDistanceCycle;
+            set => this.RaiseAndSetIfChanged(ref this.targetDistanceCycle, value);
+        }
+
+        public void TargetDistanceCycleUp()
+        {
+            switch (this.targetDistanceCycle)
+            {
+                case 0.8:
+                    this.TargetDistanceCycle = 1.0;
+                    break;
+                case 1.0:
+                    this.TargetDistanceCycle = 1.2;
+                    break;
+                case 1.2:
+                    this.TargetDistanceCycle = 1.4;
+                    break;
+                case 1.4:
+                    this.TargetDistanceCycle = 0.8;
+                    break;
+            }
+        }
 
         public int DriverTarget
         {
