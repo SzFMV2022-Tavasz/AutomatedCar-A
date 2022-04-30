@@ -19,16 +19,6 @@
             <Setter Property="Foreground" Value="#EEEEEE"/>
         </Style>
         
-        <Style Selector="ContentControl#Dashboard Button.onoff">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderBrush" Value="Transparent"/>
-        </Style> 
-        <Style Selector="ContentControl#Dashboard Button.onoff:pointerover /template/ ContentPresenter">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderBrush" Value="Transparent"/>
-        </Style> 
-        
-        
     </UserControl.Styles>
 
     <DockPanel Name="DockPanel">
