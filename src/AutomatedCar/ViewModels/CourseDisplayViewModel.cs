@@ -151,7 +151,7 @@ namespace AutomatedCar.ViewModels
 
         public void ACCPlus()
         {
-            if (World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget <= 160)
+            if (World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget < 160)
             {
                 World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget += 10;
             }
@@ -159,7 +159,7 @@ namespace AutomatedCar.ViewModels
 
         public void ACCMinus()
         {
-            if (World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget >= 30)
+            if (World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget > 30)
             {
                 World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget -= 10;
             }
