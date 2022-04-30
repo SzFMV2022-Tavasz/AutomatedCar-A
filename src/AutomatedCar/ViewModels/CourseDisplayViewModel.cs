@@ -165,6 +165,11 @@ namespace AutomatedCar.ViewModels
             }
         }
 
+        public void CycleDistance()
+        {
+            World.Instance.ControlledCar.ACCTargetProcessor.Packet.TargetDistanceCycleUp();
+        }
+
         public void BreakRelease()
         {
             World.Instance.ControlledCar.VirtualFunctionBus.PedalPacket.BreakPressed = false;

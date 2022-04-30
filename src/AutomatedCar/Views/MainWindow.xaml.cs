@@ -136,6 +136,12 @@ namespace AutomatedCar.Views
                 Keyboard.Keys.Remove(Key.OemMinus);
             }
 
+            if (Keyboard.IsKeyDown(Key.T))
+            {
+                viewModel.CourseDisplay.CycleDistance();
+                Keyboard.Keys.Remove(Key.OemMinus);
+            }
+
             var scrollViewer = this.Get<CourseDisplayView>("courseDisplay").Get<ScrollViewer>("scrollViewer");
             viewModel.CourseDisplay.FocusCar(scrollViewer);
         }
