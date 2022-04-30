@@ -27,7 +27,7 @@
             this.ControllerPacket.TimeConstant = 12;
             this.ControllerPacket.Gain_proportional = .6F;
             this.ControllerPacket.Gain_integral = .4F;
-            this.ControllerPacket.Gain_derivative = 0.4F;
+            this.ControllerPacket.Gain_derivative = .2F;
 
             this.timer.Start();
         }
@@ -70,11 +70,11 @@
                     this.car.Pedal.PedalPacket.BreakPedalLevel = 0;
                     this.car.Pedal.PedalPacket.GasPedalLevel = output;
                 }
-                else if (output >= -30)
-                {
-                    this.car.Pedal.PedalPacket.GasPedalLevel = 0;
-                    this.car.Pedal.PedalPacket.BreakPedalLevel = 0;
-                }
+                //else if (output >= -15)
+                //{
+                //    this.car.Pedal.PedalPacket.GasPedalLevel = 0;
+                //    this.car.Pedal.PedalPacket.BreakPedalLevel = 0;
+                //}
                 else
                 {
                     this.car.Pedal.PedalPacket.GasPedalLevel = 0;

@@ -43,10 +43,10 @@
         /// <returns>Pedal level ]-80, 80[.</returns>
         private double Transfer(double x)
         {
-            double L = 400;
-            double k = 0.037F;
+            double L = 160;
+            double k = 0.3F;
             double x0 = 0;
-            double c = 200;
+            double c = 80;
 
             double output = (L / (1 + Math.Pow(Math.E, -k * (x - x0)))) - c;
 
