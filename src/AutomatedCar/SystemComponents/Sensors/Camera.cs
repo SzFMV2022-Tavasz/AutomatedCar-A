@@ -10,16 +10,16 @@
     {
         public event EventHandler ObjectsInRange;
         public Camera(World world, VirtualFunctionBus virtualFunctionBus)
-            : base(world, virtualFunctionBus, 80, 60)
+            : base(world, virtualFunctionBus, 5, 60)
         {
-            //this.FieldOfView = CalculateSensorPolylineGeometry();
+            this.virtualFunctionBus.CameraPacket = this.SensorPacket;
         }
 
         public override void Process()
         {
             this.UpdateSensorPositionAndOrientation();
-            this.virtualFunctionBus.SensorPacket.WorldObjectsInRange = GetWorldObjectsInRange();
-            if (this.virtualFunctionBus.SensorPacket.WorldObjectsInRange.Count > 0) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
+            this.virtualFunctionBus.CameraPacket.WorldObjectsInRange = GetWorldObjectsInRange();
+            if (this.virtualFunctionBus.CameraPacket.WorldObjectsInRange.Count > 0) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
         }
 
         protected override ICollection<WorldObject> GetWorldObjectsInRange()
@@ -40,12 +40,16 @@
             Matrix rotation = Matrix.CreateRotation((worldObject.Rotation * Math.PI) / 180.0);
             Point transformed;
 
-            foreach (var point in worldObject.RawGeometries[0].Points)
+            foreach (var geometry in worldObject.RawGeometries)
             {
-                transformed = point.Transform(preTanslation).Transform(rotation).Transform(translation);
-                if (this.FieldOfView.FillContains(transformed))
+                foreach (var point in geometry.Points)
                 {
-                    return true;
+                    transformed = point.Transform(preTanslation).Transform(rotation).Transform(translation);
+                    
+                    if (this.FieldOfView.FillContains(transformed))
+                    {
+                        return true;
+                    }
                 }
             }
 

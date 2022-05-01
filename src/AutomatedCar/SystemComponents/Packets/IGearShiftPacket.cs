@@ -9,5 +9,7 @@
         Shifts CurrentShift { get; set; }
 
         string GearState { get; set; }
+
+        Gear PrevGear { get; set; }
     }
 }

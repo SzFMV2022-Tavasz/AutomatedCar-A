@@ -1,4 +1,4 @@
-﻿namespace AutomatedCar.SystemComponents
+namespace AutomatedCar.SystemComponents
 {
     using System;
     using AutomatedCar.Helpers;
@@ -60,9 +60,12 @@
 
             switch (this.car.VirtualFunctionBus.GearShiftPacket.CurrentGear)
             {
-                case Gear n when (n == Gear.Drive ): this.DriveGear(20); break;
+                case Gear n when (n == Gear.Drive ): {
+                        this.virtualFunctionBus.GearShiftPacket.PrevGear = Gear.Drive;
+                        this.DriveGear(20); break;
+                    } 
                 case Gear n when (n == Gear.Neutral): this.NeutralGear(); break;
-                case Gear n when (n == Gear.Reverse): this.ReverseGear(); break;
+                case Gear n when (n == Gear.Reverse): { this.virtualFunctionBus.GearShiftPacket.PrevGear = Gear.Reverse; this.ReverseGear(); break; } 
                 case Gear n when (n == Gear.Park): this.ParkGear(); break;
                 default:
                     this.car.VirtualFunctionBus.GearShiftPacket.CurrentGear = Gear.Neutral;
@@ -111,6 +114,7 @@
 
         public void DriveGear(int maxspeed)//for reverse
         {
+           
             /*Gázpedál meghatározza az autó jelenlegi cél sebességét,*/
             if (this.car.Pedal.PedalPacket.BreakPedalLevel == 0 && this.car.Pedal.PedalPacket.GasPedalLevel > 0) //Gas gas gas
             {
@@ -191,6 +195,7 @@
             this.tick++;
         }
 
+
         public void NeutralGear()
         {
             this.car.Pedal.PedalPacket.GasPedalLevel = 0;
@@ -199,8 +204,10 @@
             SpeedDecreaser(1);
         }
 
+
         public void ReverseGear()
         {
+
             DriveGear(10);
         }
 
@@ -228,10 +235,12 @@
 
         private void SpeedDecreaser(int value)
         {
-            if (this.PowerTrainPacket.Speed > 0 && this.tick > 10)/// (this.car.Pedal.PedalPacket.GasPedalLevel / 10)
+            if (this.PowerTrainPacket.Speed > 0 && this.tick > 10 )/// (this.car.Pedal.PedalPacket.GasPedalLevel / 10)
             {
-                this.PowerTrainPacket.Speed -= value;
-                this.tick = 0;
+               
+                    this.PowerTrainPacket.Speed -= value;
+                this.PowerTrainPacket.CorrectedSpeed = this.PowerTrainPacket.Speed;
+                    this.tick = 0;
             }
 
             tick++;
