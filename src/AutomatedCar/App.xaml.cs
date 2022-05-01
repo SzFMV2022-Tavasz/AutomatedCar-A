@@ -111,6 +111,8 @@ namespace AutomatedCar
 
             NPC car = this.CreateNPC(new System.Drawing.Point(54, 180), "../../../Assets/test_world_car.csv", "car_3_black.png");
             NPC ped = this.CreateNPC(new System.Drawing.Point(20, 36), "../../../Assets/test_world_pedestrian.csv", "man.png");
+            car.WorldObjectType = WorldObjectType.Pedestrian;
+            car.WorldObjectType = WorldObjectType.Car;
 
             car.Geometries.Add(this.GetNPCCarBoundaryBox());
             car.RawGeometries.Add(this.GetNPCCarBoundaryBox());
