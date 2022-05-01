@@ -144,16 +144,29 @@ namespace AutomatedCar.ViewModels
                 World.Instance.ControlledCar.carShift.ShiftPacket.GearState = World.Instance.ControlledCar.carShift.ShiftPacket.CurrentShift.ToString();
             }
         }
+
         public void ACC()
         {
             World.Instance.ControlledCar.ACCController.ControllerPacket.Enabled = !World.Instance.ControlledCar.ACCController.ControllerPacket.Enabled;
+            if (World.Instance.ControlledCar.ACCController.ControllerPacket.Enabled)
+            {
+                World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget = World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.CorrectedSpeed < 30 ? 30 : World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.CorrectedSpeed;
+            }
+            
         }
 
         public void ACCPlus()
         {
             if (World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget < 160)
             {
-                World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget += 10;
+                if (World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget % 10 != 0)
+                {
+                    World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget = World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.CorrectedSpeed < 30 ? 30 : (int)Math.Ceiling(World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.CorrectedSpeed / 10D) * 10;
+                }
+                else
+                {
+                    World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget += 10;
+                }
             }
         }
 
@@ -161,7 +174,14 @@ namespace AutomatedCar.ViewModels
         {
             if (World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget > 30)
             {
-                World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget -= 10;
+                if (World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget % 10 != 0)
+                {
+                    World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget = World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.CorrectedSpeed < 30 ? 30 : (int)Math.Floor(World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.CorrectedSpeed / 10D) * 10;
+                }
+                else
+                {
+                    World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget -= 10;
+                }
             }
         }
 
