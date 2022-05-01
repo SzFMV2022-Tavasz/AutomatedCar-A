@@ -50,6 +50,14 @@
                 {
                     this.ActivateBreak();
                 }
+                else if (this.virtualFunctionBus.RadarPacket.WorldObjectsInRange.Count()>0)
+                {
+                    this.emergencyBrakePacket.BrakeState = "Elkerülhető ütközés!";
+                }
+                else
+                {
+                    this.emergencyBrakePacket.BrakeState = "";
+                }
             }
         }
 
@@ -82,7 +90,7 @@
         {
 
             this.emergencyBrakePacket.Activated = false;
-
+            this.emergencyBrakePacket.BrakeState = "Az AEB nem tud minden helyzetet kezelni ekkora sebességnél!";
         }
 
         /// <summary>
@@ -92,7 +100,7 @@
         {
 
             this.emergencyBrakePacket.Activated = true;
-
+            this.emergencyBrakePacket.BrakeState = "";
         }
 
         /// <summary>
