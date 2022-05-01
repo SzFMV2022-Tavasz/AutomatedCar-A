@@ -90,7 +90,7 @@
         {
 
             this.emergencyBrakePacket.Activated = false;
-            this.emergencyBrakePacket.BrakeState = "Az AEB nem tud minden helyzetet kezelni ekkora sebességnél!";
+            this.emergencyBrakePacket.BrakeState = "Az AEB nem tud minden helyzetet kezelni!";
         }
 
         /// <summary>
