@@ -26,7 +26,7 @@
 
         private ISensorPacket SensorPacket
         {
-            get { return this.virtualFunctionBus.SensorPacket; }
+            get { return this.virtualFunctionBus.RadarPacket; }
         }
         private IControllerPacket<double> ACCControllerPacket
         {

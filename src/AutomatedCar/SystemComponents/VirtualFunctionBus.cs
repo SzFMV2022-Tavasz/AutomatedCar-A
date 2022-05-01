@@ -23,6 +23,8 @@ namespace AutomatedCar.SystemComponents
 
         public IControllerPacket<double> ControllerPacket { get; set; }
 
+        public IACCTargetProcessorPacket ACCTargetProcessorPacket { get; set; }
+
         public IEmergancyBrakePacket EmergancyBrakePacket { get; set; }
 
         public void RegisterComponent(SystemComponent component)
