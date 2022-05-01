@@ -114,8 +114,6 @@ namespace AutomatedCar.SystemComponents
 
         public void DriveGear(int maxspeed)//for reverse
         {
-           
-            /*Gázpedál meghatározza az autó jelenlegi cél sebességét,*/
             if (this.car.Pedal.PedalPacket.BreakPedalLevel == 0 && this.car.Pedal.PedalPacket.GasPedalLevel > 0) //Gas gas gas
             {
                 if (this.PowerTrainPacket.Speed < this.car.Pedal.PedalPacket.GasPedalLevel && this.PowerTrainPacket.Speed < maxspeed)
@@ -130,11 +128,11 @@ namespace AutomatedCar.SystemComponents
                         this.tick = 0;
                     }
                 }
-                else if (this.PowerTrainPacket.Speed > this.car.Pedal.PedalPacket.GasPedalLevel) // RPM / TICK SPEED / 50Tick
+                else if (this.PowerTrainPacket.Speed > this.car.Pedal.PedalPacket.GasPedalLevel) 
                 {
                     this.PowerTrainPacket.RPM -= 11;
 
-                    if (this.tick > 10)/// (this.car.Pedal.PedalPacket.GasPedalLevel / 10)
+                    if (this.tick > 10)
                     {
                         this.PowerTrainPacket.Speed -= 1;
                         this.tick = 0;
