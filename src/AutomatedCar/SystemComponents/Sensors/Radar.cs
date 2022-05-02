@@ -9,6 +9,8 @@
     public class Radar : Sensor
     {
         public event EventHandler ObjectsInRange;
+
+        private List<string> fileNames;
         public Radar(World world, VirtualFunctionBus virtualFunctionBus)
             : base(world, virtualFunctionBus, 6, 60)
         {
@@ -20,10 +22,15 @@
             this.UpdateSensorPositionAndOrientation();
             this.virtualFunctionBus.RadarPacket.WorldObjectsInRange = GetWorldObjectsInRange();
             if (this.virtualFunctionBus.RadarPacket.WorldObjectsInRange.Count > 0) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
+            if (this.fileNames != null)
+            {
+                this.SensorPacket.FileNamesRadar = this.fileNames;
+            }
         }
 
         protected override ICollection<WorldObject> GetWorldObjectsInRange()
         {
+            this.fileNames = new List<string>();
             return this.world.WorldObjects.FindAll(IsInRange);
         }
 
@@ -46,10 +53,10 @@
                     transformed = point.Transform(preTanslation).Transform(rotation).Transform(translation);
                     if (this.FieldOfView.FillContains(transformed))
                     {
+                        this.fileNames.Add(worldObject.Filename);
                         return true;
                     }
                 }
-
 
                 return false;
             }

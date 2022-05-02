@@ -60,7 +60,7 @@
         private ICollection<WorldObject> CollisionObjects()
         {
             ICollection<WorldObject> objects = new List<WorldObject>();
-            foreach (var item in this.virtualFunctionBus.SensorPacket.WorldObjectsInRange)
+            foreach (var item in this.virtualFunctionBus.RadarPacket.WorldObjectsInRange)
             {
                 int distanceX = Math.Abs(this.car.X - item.X);
                 int distanceY = Math.Abs(this.car.Y - item.Y);

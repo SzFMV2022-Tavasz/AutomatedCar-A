@@ -9,6 +9,9 @@
     public class Camera : Sensor
     {
         public event EventHandler ObjectsInRange;
+
+        private List<string> fileNames;
+
         public Camera(World world, VirtualFunctionBus virtualFunctionBus)
             : base(world, virtualFunctionBus, 5, 60)
         {
@@ -20,10 +23,17 @@
             this.UpdateSensorPositionAndOrientation();
             this.virtualFunctionBus.CameraPacket.WorldObjectsInRange = GetWorldObjectsInRange();
             if (this.virtualFunctionBus.CameraPacket.WorldObjectsInRange.Count > 0) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
+            if (this.fileNames != null)
+            {
+                // vicces hogy müködik sensorpaketel midna  kettö és nem kell külön 
+                // a camera vagy radar packet ( a régiben meg nem müködött ) 
+                this.SensorPacket.FileNamesCam = this.fileNames;
+            }
         }
 
         protected override ICollection<WorldObject> GetWorldObjectsInRange()
         {
+            this.fileNames = new List<string>();
             return this.world.WorldObjects.FindAll(IsInRange);
         }
 
@@ -45,9 +55,10 @@
                 foreach (var point in geometry.Points)
                 {
                     transformed = point.Transform(preTanslation).Transform(rotation).Transform(translation);
-                    
+
                     if (this.FieldOfView.FillContains(transformed))
                     {
+                        this.fileNames.Add(worldObject.Filename);
                         return true;
                     }
                 }
