@@ -61,7 +61,21 @@
                 {
                     float displacement = (this.carPreviousPosition - position).Length();
                     float carSpeed = displacement * (float)((6.0 / 5.0) * 3.6); // px/tick -> km/h
+                    Debug.WriteLine(carSpeed);
                     this.targetSpeed = Math.Min(this.targetSpeed, (int)carSpeed);
+
+                    Vector2 thiscarposition = new Vector2(this.controlledCar.X, this.controlledCar.Y);
+                    var realDistance = (thiscarposition - position).Length();
+                    var distance = this.Packet.TargetDistanceCycle * carSpeed;
+
+                    if (realDistance < distance)
+                    {
+                        this.targetSpeed -= 10;
+                    }
+                    else if (realDistance > distance)
+                    {
+                        this.targetSpeed += 10;
+                    }
                 }
                 this.carPreviousPosition = position;
             }
