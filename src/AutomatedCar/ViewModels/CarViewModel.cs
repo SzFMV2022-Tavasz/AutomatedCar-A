@@ -1,11 +1,15 @@
 ﻿namespace AutomatedCar.ViewModels
 {
     using AutomatedCar.Models;
+    using ReactiveUI;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reactive;
     using System.Text;
     using System.Threading.Tasks;
+    using SystemComponents;
+    using SystemComponents.Packets;
 
     public class CarViewModel : WorldObjectViewModel
     {

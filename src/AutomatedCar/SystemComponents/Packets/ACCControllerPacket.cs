@@ -19,6 +19,7 @@
         private double gain_proportional;
         private double gain_integral;
         private double gain_derivative;
+        private bool enabled = false;
 
         public byte Counter { get => this.counter; set => this.RaiseAndSetIfChanged(ref this.counter, value); }
         public double Input { get => this.input; set => this.RaiseAndSetIfChanged(ref this.input, value); }
@@ -33,6 +34,7 @@
         public double Gain_proportional { get => this.gain_proportional; set => this.RaiseAndSetIfChanged(ref this.gain_proportional, value); }
         public double Gain_integral { get => this.gain_integral; set => this.RaiseAndSetIfChanged(ref this.gain_integral, value); }
         public double Gain_derivative { get => this.gain_derivative; set => this.RaiseAndSetIfChanged(ref this.gain_derivative, value); }
+        public bool Enabled { get => this.enabled; set => this.RaiseAndSetIfChanged(ref this.enabled, value); }
 
         /// <summary>
         /// Logistic function https://www.desmos.com/calculator/z2f4vox0fg.
@@ -42,10 +44,11 @@
         private double Transfer(double x)
         {
             double L = 160;
-            double k = 0.15F;
+            double k = 0.3F;
             double x0 = 0;
+            double c = 80;
 
-            double output = (L / (1 + Math.Pow(Math.E, -k * (x - x0)))) - 80;
+            double output = (L / (1 + Math.Pow(Math.E, -k * (x - x0)))) - c;
 
             return output;
         }
@@ -57,15 +60,12 @@
 
         private double CalculateOutput()
         {
-            double output = this.Transfer(
-                this.CalculateProportionalTerm() +
-                this.CalculateIntegralTerm() +
-                this.CalculateDerivativeTerm());
-
-            if (Math.Abs(output) > 80)
-            {
-                output -= output % 80;
-            }
+            double output =
+                this.RegulateOutput(
+                    this.Transfer(
+                        this.CalculateProportionalTerm() +
+                        this.CalculateIntegralTerm() +
+                        this.CalculateDerivativeTerm()));
 
             return output;
         }
@@ -89,7 +89,7 @@
 
         public double CalculateDerivativeTerm()
         {
-            if (this.Counter++ == 0)
+            if (this.Counter++ * 2 == 0)
             {
                 if (this.Error != 0)
                 {
@@ -104,6 +104,16 @@
             }
 
             return this.Derivative;
+        }
+
+        private double RegulateOutput(double output)
+        {
+            if (Math.Abs(output) > 80)
+            {
+                output -= output % 80;
+            }
+
+            return output;
         }
     }
 }

@@ -16,6 +16,8 @@ namespace AutomatedCar.Models
         private HitBox hitbox;
         private EmergencyBreak EmergencyBreak;
         private ACCController aCCController;
+        public bool isTracked;
+        private ACCTargetProcessor accSensor;
         private LaneKeepingAssist laneKeepingAssist;
         public Sensor TempSen
         {
@@ -39,6 +41,8 @@ namespace AutomatedCar.Models
             this.hitbox = new HitBox(World.Instance, this.virtualFunctionBus);
             this.EmergencyBreak = new EmergencyBreak(this.virtualFunctionBus,this);
             this.aCCController = new ACCController(this.virtualFunctionBus, this);
+            this.isTracked = false;
+            this.accSensor = new ACCTargetProcessor(this.virtualFunctionBus, this);
             this.laneKeepingAssist = new LaneKeepingAssist(this.virtualFunctionBus, World.Instance);
         }
 
@@ -47,6 +51,8 @@ namespace AutomatedCar.Models
         public Pedal Pedal { get => this.pedal; }
 
         public ACCController ACCController { get => this.aCCController; }
+
+        public ACCTargetProcessor ACCTargetProcessor { get => this.accSensor; }
 
         public int Revolution { get; set; }
 

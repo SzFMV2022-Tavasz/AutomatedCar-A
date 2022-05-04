@@ -78,14 +78,20 @@
 								<TextBlock Grid.Row="10" Grid.Column="3" Text="{Binding Car.VirtualFunctionBus.RadarPacket.LeftEdgeX}"/>
 								<TextBlock Grid.Row="11" Grid.Column="0">LeftEdgeY:</TextBlock>
 								<TextBlock Grid.Row="11" Grid.Column="2" Text="{Binding Car.VirtualFunctionBus.RadarPacket.LeftEdgeY}"/>
-                                <TextBlock Grid.Row="12" Grid.Column="0">EBA:</TextBlock>
-                                <TextBlock Grid.Row="12" Grid.Column="2" Text="{Binding Car.VirtualFunctionBus.EmergancyBrakePacket.Activated}"/>
-								<TextBlock Grid.Row="13" Grid.Column="0">RadarElemek</TextBlock>
+                <TextBlock Grid.Row="12" Grid.Column="0">EBA:</TextBlock>
+                <TextBlock Grid.Row="12" Grid.Column="2" Text="{Binding Car.VirtualFunctionBus.EmergancyBrakePacket.Activated}"/>
+                <TextBlock Grid.Row="13" Grid.Column="0">RadarElemek</TextBlock>
 								<ListBox Grid.Row="13" Background="Black" Grid.Column="3" Items="{Binding  Car.VirtualFunctionBus.RadarPacket.FileNamesRadar}"></ListBox>
-								<TextBlock Grid.Row="15" Grid.Column="0">CameraElemek</TextBlock>
-								<ListBox Grid.Row="15" Background="Black" Grid.Column="3" Items="{Binding  Car.VirtualFunctionBus.CameraPacket.FileNamesCam}"></ListBox>
-
-							</Grid>
+								<TextBlock Grid.Row="14" Grid.Column="0">CameraElemek</TextBlock>
+								<ListBox Grid.Row="14" Background="Black" Grid.Column="3" Items="{Binding  Car.VirtualFunctionBus.CameraPacket.FileNamesCam}"></ListBox>
+								<TextBlock Grid.Row="15" Grid.Column="0">ACC:</TextBlock>
+								<TextBlock Grid.Row="15" Grid.Column="1" Text="{Binding Car.ACCController.ControllerPacket.Enabled}"/>
+								<TextBlock Grid.Row="16" Grid.Column="0">Tracking speed:</TextBlock>
+								<TextBlock Grid.Row="16" Grid.Column="1" Text="{Binding Car.ACCTargetProcessor.Packet.DriverTarget}"/>
+								<TextBlock Grid.Row="17" Grid.Column="0">Tracking distance:</TextBlock>
+								<TextBlock Grid.Row="17" Grid.Column="1" Text="{Binding Car.ACCTargetProcessor.Packet.TargetDistanceCycle}"/>
+                <TextBlock Grid.Row="18" Grid.Column="0" Text="{Binding Car.VirtualFunctionBus.EmergancyBrakePacket.BrakeState  }"/>
+                              </Grid>
                         </StackPanel>
                     </DataTemplate>
                 </ContentControl.ContentTemplate>
