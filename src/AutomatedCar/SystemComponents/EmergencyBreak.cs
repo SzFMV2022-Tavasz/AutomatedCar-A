@@ -51,7 +51,7 @@
                 {
                     this.ActivateBreak();
                 }
-                else if (this.virtualFunctionBus.RadarPacket.WorldObjectsInRange.Count()>0 /*&& this.virtualFunctionBus.PowerTrainPacket.CorrectedSpeed > 0*/)
+                else if (this.virtualFunctionBus.RadarPacket.WorldObjectsInRange.Count()>0)
                 {
                     if (i < 100)
                     {
