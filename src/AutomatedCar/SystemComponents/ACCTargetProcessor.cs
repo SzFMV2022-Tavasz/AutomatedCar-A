@@ -148,6 +148,8 @@
                     return 50;
                 case "roadsign_speed_60.png":
                     return 60;
+                case "roadsign_priority_stop.png":
+                    return 0;
                 default:
                     throw new ApplicationException("Roadsign " + obj.Filename + " not handled");
             }
