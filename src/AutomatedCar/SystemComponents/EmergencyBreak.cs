@@ -49,6 +49,7 @@
                 ICollection<WorldObject> dangerObjects = this.CollisionObjects();
                 if (dangerObjects.Count() > 0)
                 {
+                    this.car.ACCController.ControllerPacket.Enabled = false;
                     this.ActivateBreak();
                 }
                 else if (this.virtualFunctionBus.RadarPacket.WorldObjectsInRange.Count()>0)
