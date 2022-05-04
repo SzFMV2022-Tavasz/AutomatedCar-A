@@ -44,35 +44,56 @@
 
         public override void Process()
         {
+            if (this.controlledCar.Filename.Contains("red"))
+                return;
             ProcessSensorInput();
             CalculateTargetSpeed();
         }
 
         private void CalculateTargetSpeed()
         {
-            if (this.Packet.DriverTarget != 0)
-            {
-                this.targetSpeed = this.Packet.DriverTarget;
-            }
             if (this.currentCar != null)
             {
                 Vector2 position = new Vector2(this.currentCar.X, this.currentCar.Y);
                 if (!float.IsNaN(this.carPreviousPosition.X))
                 {
                     float displacement = (this.carPreviousPosition - position).Length();
-                    float carSpeed = displacement * (float)((6.0 / 5.0) * 3.6); // px/tick -> km/h
-                    this.targetSpeed = Math.Min(this.targetSpeed, (int)carSpeed);
+                    float carSpeed_mPs = displacement * (float)((6.0 / 5.0)); // px/tick -> m/s
+                    float carSpeed = carSpeed_mPs * 3.6f; // m/s -> km/h
+
+                    Vector2 thiscarposition = new Vector2(this.controlledCar.X, this.controlledCar.Y);
+                    var realDistance = (thiscarposition - position).Length() / 50.0f; // pixel -> m
+                    var distance = this.Packet.TargetDistanceCycle * carSpeed_mPs;
+
+                    if (Math.Abs(realDistance - distance) <= 0.0001f)
+                    {
+                        this.targetSpeed = (int)carSpeed;
+                    }
+                    else if (realDistance < distance && carSpeed <= this.targetSpeed)
+                    {
+                        this.targetSpeed = Math.Max((int)carSpeed - 10, 5);
+                    }
+                    else if (realDistance > distance && carSpeed >= this.targetSpeed)
+                    {
+                        this.targetSpeed = (int)carSpeed + 10;
+                    }
                 }
                 this.carPreviousPosition = position;
+            }
+            else if (this.Packet.DriverTarget != 0)
+            {
+                this.targetSpeed = this.Packet.DriverTarget;
             }
             if (this.currentRoadSign != null)
             {
                 var rsTargetSpeed = GetSpeedLimitFromSign(this.currentRoadSign);
-                this.targetSpeed = Math.Min(this.targetSpeed, rsTargetSpeed);
+                if (rsTargetSpeed < this.targetSpeed)
+                {
+                    this.targetSpeed = rsTargetSpeed;
+                }
             }
 
             this.Packet.ActualTarget = this.targetSpeed;
-            Debug.WriteLine("ACTUAL TARGET: " + this.Packet.ActualTarget);
             this.ACCControllerPacket.Target = this.Packet.ActualTarget;
         }
 
