@@ -12,6 +12,7 @@
     {
         private AutomatedCar car;
         private EmergencyBrakePacket emergencyBrakePacket;
+        private int i = 0;
 
         //FELADATOK:
         // REVERSBEN NE MŰKÖDJÖN
@@ -50,12 +51,21 @@
                 {
                     this.ActivateBreak();
                 }
-                else if (this.virtualFunctionBus.RadarPacket.WorldObjectsInRange.Count()>0)
+                else if (this.virtualFunctionBus.RadarPacket.WorldObjectsInRange.Count()>0 /*&& this.virtualFunctionBus.PowerTrainPacket.CorrectedSpeed > 0*/)
                 {
-                    this.emergencyBrakePacket.BrakeState = "Elkerülhető ütközés!";
+                    if (i < 100)
+                    {
+                        this.emergencyBrakePacket.BrakeState = "Elkerülhető ütközés!";
+                        i++;
+                    }
+                    else
+                    {
+                        this.emergencyBrakePacket.BrakeState = "";
+                    }
                 }
                 else
                 {
+                    i = 0;
                     this.emergencyBrakePacket.BrakeState = "";
                 }
             }
@@ -74,7 +84,7 @@
                 int distanceY = Math.Abs(this.car.Y - item.Y);
                 int distance = (int)Math.Sqrt((Math.Pow(distanceX, 2) + Math.Pow(distanceY, 2)));
 
-                if (distance < 1500) // dummy érték, csak tesztre
+                if (distance < car.VirtualFunctionBus.PowerTrainPacket.CorrectedSpeed*90) // dummy érték, csak tesztre
                 {
                     objects.Add(item);
                 }
