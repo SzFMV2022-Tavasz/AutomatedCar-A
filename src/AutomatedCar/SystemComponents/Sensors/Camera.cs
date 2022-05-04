@@ -13,7 +13,7 @@
         private List<string> fileNames;
 
         public Camera(World world, VirtualFunctionBus virtualFunctionBus)
-            : base(world, virtualFunctionBus, 5, 60)
+            : base(world, virtualFunctionBus, 9, 60)
         {
             this.virtualFunctionBus.CameraPacket = this.SensorPacket;
         }

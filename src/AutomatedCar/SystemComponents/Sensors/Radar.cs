@@ -12,7 +12,7 @@
 
         private List<string> fileNames;
         public Radar(World world, VirtualFunctionBus virtualFunctionBus)
-            : base(world, virtualFunctionBus, 6, 60)
+            : base(world, virtualFunctionBus, 7, 60)
         {
             this.virtualFunctionBus.RadarPacket = this.SensorPacket;
         }
