@@ -6,20 +6,25 @@
     using System.Text;
     using System.Threading.Tasks;
     using AutomatedCar.Models;
+    using AutomatedCar.SystemComponents.Packets;
 
     public class LaneKeepingAssist : SystemComponent
     {
         private World world;
+        public SteeringWheelPacket steeringWheelPacket;
 
         public LaneKeepingAssist(VirtualFunctionBus bus, World world) : base(bus)
         {
             this.world = world;
+            this.steeringWheelPacket = new SteeringWheelPacket();
+            this.steeringWheelPacket.IsLKAActive = false;
         }
 
         public override void Process()
         {
             //TODO: Implement Lane Keep Assist IN/OFF
-            if (this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive)// || true)
+            //if (this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive)// || true)
+            if (this.steeringWheelPacket.IsLKAActive)
             {
                 if (this.virtualFunctionBus.CameraPacket.WorldObjectsInRange.Count > 0)
                 {

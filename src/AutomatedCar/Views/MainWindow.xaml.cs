@@ -124,6 +124,12 @@ namespace AutomatedCar.Views
                 Keyboard.Keys.Remove(Key.C);
             }
 
+            if (Keyboard.IsKeyDown(Key.L))
+            {
+                viewModel.CourseDisplay.LKA();
+                Keyboard.Keys.Remove(Key.L);
+            }
+
             if (Keyboard.IsKeyDown(Key.OemPlus))
             {
                 viewModel.CourseDisplay.ACCPlus();
