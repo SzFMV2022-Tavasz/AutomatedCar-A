@@ -55,7 +55,6 @@ namespace AutomatedCar.ViewModels
             //World.Instance.ControlledCar.Y += 5;
             World.Instance.ControlledCar.VirtualFunctionBus.PedalPacket.BreakPressed = true;
             World.Instance.ControlledCar.ACCController.ControllerPacket.Enabled = false;
-            World.Instance.ControlledCar.LaneKeepingAssist.steeringWheelPacket.IsLKAActive = true;
         }
 
         public void KeyLeft()
@@ -148,9 +147,10 @@ namespace AutomatedCar.ViewModels
 
         public void LKA()
         {
-            World.Instance.ControlledCar.LaneKeepingAssist.steeringWheelPacket.IsLKAActive = !World.Instance.ControlledCar.LaneKeepingAssist.steeringWheelPacket.IsLKAActive;
-            if (World.Instance.ControlledCar.LaneKeepingAssist.steeringWheelPacket.IsLKAActive)
+            World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsLKAActive = !World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsLKAActive;
+            if (World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsLKAActive)
             {
+                //??
                 //World.Instance.ControlledCar.LaneKeepingAssist.steeringWheelPacket.IsLKAActive = !World.Instance.ControlledCar.LaneKeepingAssist.steeringWheelPacket.IsLKAActive;
             }
 
