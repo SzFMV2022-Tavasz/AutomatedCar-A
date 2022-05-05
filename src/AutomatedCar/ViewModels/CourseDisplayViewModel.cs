@@ -150,8 +150,7 @@ namespace AutomatedCar.ViewModels
             World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsLKAActive = !World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsLKAActive;
             if (World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsLKAActive)
             {
-                //??
-                //World.Instance.ControlledCar.LaneKeepingAssist.steeringWheelPacket.IsLKAActive = !World.Instance.ControlledCar.LaneKeepingAssist.steeringWheelPacket.IsLKAActive;
+                // ie jöhet hogyha bevankapcsolva akkor hivja meg vagy valami
             }
 
         }
