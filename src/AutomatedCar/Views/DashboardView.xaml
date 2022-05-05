@@ -53,7 +53,7 @@
                                   <RotateTransform Angle="{Binding Car.VirtualFunctionBus.SteeringWheelPacket.WheelRotation}" />
                                 </Image.RenderTransform>
                             </Image>
-                            <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                            <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                                 <TextBlock Grid.Row="0" Grid.Column="0">X:</TextBlock>
                                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding X}"/>
                                 <TextBlock Grid.Row="1" Grid.Column="0">Y:</TextBlock>
@@ -66,7 +66,32 @@
                                 <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.SteeringWheelPacket.WheelRotation}"/>
                               <TextBlock Grid.Row="5" Grid.Column="0">Speed:</TextBlock>
                               <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.PowerTrainPacket.Speed}"/>
-                            </Grid>
+                                <TextBlock Grid.Row="6" Grid.Column="0">Sensor_X:</TextBlock>
+                                <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.RadarPacket.XCord}"/>
+                                <TextBlock Grid.Row="7" Grid.Column="0">Sensor_Y:</TextBlock>
+                                <TextBlock Grid.Row="7" Grid.Column="2" Text="{Binding Car.VirtualFunctionBus.RadarPacket.YCord}"/>
+								<TextBlock Grid.Row="8" Grid.Column="0">RightEdgeX:</TextBlock>
+								<TextBlock Grid.Row="8" Grid.Column="3" Text="{Binding Car.VirtualFunctionBus.RadarPacket.RightEdgeX}"/>
+								<TextBlock Grid.Row="9" Grid.Column="0">RightEdgeY:</TextBlock>
+								<TextBlock Grid.Row="9" Grid.Column="2" Text="{Binding Car.VirtualFunctionBus.RadarPacket.RightEdgeY}"/>
+								<TextBlock Grid.Row="10" Grid.Column="0">LeftEdgeX:</TextBlock>
+								<TextBlock Grid.Row="10" Grid.Column="3" Text="{Binding Car.VirtualFunctionBus.RadarPacket.LeftEdgeX}"/>
+								<TextBlock Grid.Row="11" Grid.Column="0">LeftEdgeY:</TextBlock>
+								<TextBlock Grid.Row="11" Grid.Column="2" Text="{Binding Car.VirtualFunctionBus.RadarPacket.LeftEdgeY}"/>
+                <TextBlock Grid.Row="12" Grid.Column="0">EBA:</TextBlock>
+                <TextBlock Grid.Row="12" Grid.Column="2" Text="{Binding Car.VirtualFunctionBus.EmergancyBrakePacket.Activated}"/>
+                <TextBlock Grid.Row="13" Grid.Column="0">RadarElemek</TextBlock>
+								<ListBox Grid.Row="13" Background="Black" Grid.Column="3" Items="{Binding  Car.VirtualFunctionBus.RadarPacket.FileNamesRadar}"></ListBox>
+								<TextBlock Grid.Row="14" Grid.Column="0">CameraElemek</TextBlock>
+								<ListBox Grid.Row="14" Background="Black" Grid.Column="3" Items="{Binding  Car.VirtualFunctionBus.CameraPacket.FileNamesCam}"></ListBox>
+								<TextBlock Grid.Row="15" Grid.Column="0">ACC:</TextBlock>
+								<TextBlock Grid.Row="15" Grid.Column="1" Text="{Binding Car.ACCController.ControllerPacket.Enabled}"/>
+								<TextBlock Grid.Row="16" Grid.Column="0">Tracking speed:</TextBlock>
+								<TextBlock Grid.Row="16" Grid.Column="1" Text="{Binding Car.ACCTargetProcessor.Packet.DriverTarget}"/>
+								<TextBlock Grid.Row="17" Grid.Column="0">Tracking distance:</TextBlock>
+								<TextBlock Grid.Row="17" Grid.Column="1" Text="{Binding Car.ACCTargetProcessor.Packet.TargetDistanceCycle}"/>
+                <TextBlock Grid.Row="18" Grid.Column="0" Text="{Binding Car.VirtualFunctionBus.EmergancyBrakePacket.BrakeState  }"/>
+                              </Grid>
                         </StackPanel>
                     </DataTemplate>
                 </ContentControl.ContentTemplate>

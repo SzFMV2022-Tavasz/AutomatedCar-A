@@ -7,6 +7,7 @@
     using Avalonia;
     using Avalonia.Media;
 
+    //reaktiv obj 
     public abstract class Sensor : SystemComponent
     {
 
@@ -28,14 +29,11 @@
         protected TranslateTransform PositionUpdater;
         protected RotateTransform OrientationUpdater;
         protected TransformGroup TransformGroup;
-
-
         public Sensor(World world, VirtualFunctionBus virtualFunctionBus, int range, double angleOfView)
             : base(virtualFunctionBus)
         {
             this.world = world;
             this.SensorPacket = new SensorPacket();
-            this.virtualFunctionBus.SensorPacket = this.SensorPacket;
             this.Range = range;
             this.AngleOfView = angleOfView;
             this.CalculateSensorPolylineGeometry();
@@ -43,24 +41,30 @@
 
         protected void UpdateSensorPositionAndOrientation()
         {
-            Matrix translation = Matrix.CreateTranslation(world.ControlledCar.X - SensorPosition.X, world.ControlledCar.Y - SensorPosition.Y);
-            Matrix rotation = Matrix.CreateRotation((float)(world.ControlledCar.Rotation));
+            Matrix translation = Matrix.CreateTranslation(world.ControlledCar.X, world.ControlledCar.Y);
+            Matrix rotation = Matrix.CreateRotation((world.ControlledCar.Rotation * Math.PI) / 180.0);
+            var p = SensorPosition.Transform(rotation).Transform(translation);
 
-           // (double)this.Range * Math.Tan((double)this.AngleOfView / 2 * (Math.PI / 180)
-            SensorPosition = SensorPosition.Transform(translation);
-            RightEdge = RightEdge.Transform(translation);
-            LeftEdge = LeftEdge.Transform(translation);
-            SensorPosition = SensorPosition.Transform(rotation);
-            RightEdge = RightEdge.Transform(rotation);
-            LeftEdge = LeftEdge.Transform(rotation);
+            var r = RightEdge.Transform(rotation).Transform(translation);
 
-            this.FieldOfView = new PolylineGeometry(new List<Point> { this.SensorPosition, this.RightEdge, this.LeftEdge }, false);
+            var l = LeftEdge.Transform(rotation).Transform(translation);
+
+            this.FieldOfView = new PolylineGeometry(new List<Point> { p, r, l }, false);
+
+            //DEBUG MODE
+            this.SensorPacket.XCord = (int)p.X;
+            this.SensorPacket.YCord = (int)p.Y;
+            this.SensorPacket.LeftEdgeX = (int)l.X;
+            this.SensorPacket.LeftEdgeY = (int)l.Y;
+            this.SensorPacket.RightEdgeX = (int)r.X;
+            this.SensorPacket.RightEdgeY = (int)r.Y;
         }
+
         protected void CalculateSensorPolylineGeometry()
         {
-            this.SensorPosition = new Point(480, 1425);
-            this.RightEdge = new Point(480 + 200, 1425 + 100);
-            this.LeftEdge = new Point(480 + 200, 1425 - 100);
+            this.SensorPosition = new Point(0, 0);
+            this.RightEdge = this.SensorPosition + new Point(Math.Round(Math.Tan((90 - this.AngleOfView) * (Math.PI / 180)), 3) * (this.Range * 50), -this.Range * 50);
+            this.LeftEdge = this.SensorPosition + new Point(Math.Round(-Math.Tan((90 - this.AngleOfView) * (Math.PI / 180)), 3) * (this.Range * 50), -this.Range * 50);
             this.FieldOfView = new PolylineGeometry(new List<Point> { SensorPosition, RightEdge, LeftEdge }, false);
         }
 

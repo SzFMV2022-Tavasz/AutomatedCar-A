@@ -10,49 +10,61 @@
     {
         public event EventHandler ObjectsInRange;
 
+        private List<string> fileNames;
+
         public Camera(World world, VirtualFunctionBus virtualFunctionBus)
-            : base(world, virtualFunctionBus, 80, 60)
+            : base(world, virtualFunctionBus, 9, 60)
         {
-            //this.FieldOfView = CalculateSensorPolylineGeometry();
+            this.virtualFunctionBus.CameraPacket = this.SensorPacket;
         }
 
         public override void Process()
         {
             this.UpdateSensorPositionAndOrientation();
-            this.virtualFunctionBus.SensorPacket.WorldObjectsInRange = GetWorldObjectsInRange();
-            if (this.virtualFunctionBus.SensorPacket.WorldObjectsInRange.Count > 0) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
+            this.virtualFunctionBus.CameraPacket.WorldObjectsInRange = GetWorldObjectsInRange();
+            if (this.virtualFunctionBus.CameraPacket.WorldObjectsInRange.Count > 0) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
+            if (this.fileNames != null)
+            {
+                // vicces hogy müködik sensorpaketel midna  kettö és nem kell külön 
+                // a camera vagy radar packet ( a régiben meg nem müködött ) 
+                this.SensorPacket.FileNamesCam = this.fileNames;
+            }
         }
-        //}
-
-        //protected override PolylineGeometry CalculateSensorPolylineGeometry()
-        //{               //          kezdö pont                                      jobb széle                                              balszéle
-        //    Point[] p = { new Point(/*world.ControlledCar.X, world.ControlledCar.Y*/100, 100), new Point(/*Az a pont ahol a kamera van +*/Range, Range + 50), new Point(/*Az a pont ahol a kamera van +*/Range, Range - 50) };
-        //    return new PolylineGeometry(p, false);
-        //    // defaultnak azért is jo mert legalább nem száll el hibával az egész 
-        //}
 
         protected override ICollection<WorldObject> GetWorldObjectsInRange()
         {
+            this.fileNames = new List<string>();
             return this.world.WorldObjects.FindAll(IsInRange);
         }
 
         protected override bool IsInRange(WorldObject worldObject)
         {
-            if (worldObject == this.world.ControlledCar)
+            //Not counting self, and if world object has no geometry
+            if (worldObject == this.world.ControlledCar || worldObject.RawGeometries.Count == 0)
             {
                 return false;
             }
 
-            bool flag = false;
-            foreach (var geometry in worldObject.Geometries)
+            Matrix preTanslation = Matrix.CreateTranslation(-worldObject.RotationPoint.X, -worldObject.RotationPoint.Y);
+            Matrix translation = Matrix.CreateTranslation(worldObject.X, worldObject.Y);
+            Matrix rotation = Matrix.CreateRotation((worldObject.Rotation * Math.PI) / 180.0);
+            Point transformed;
+
+            foreach (var geometry in worldObject.RawGeometries)
             {
-                if (geometry.Bounds.Intersects(this.FieldOfView.Bounds))
+                foreach (var point in geometry.Points)
                 {
-                    flag = true;
+                    transformed = point.Transform(preTanslation).Transform(rotation).Transform(translation);
+
+                    if (this.FieldOfView.FillContains(transformed))
+                    {
+                        this.fileNames.Add(worldObject.Filename);
+                        return true;
+                    }
                 }
             }
 
-            return flag;
+            return false;
         }
     }
 }

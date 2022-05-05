@@ -54,6 +54,7 @@ namespace AutomatedCar.ViewModels
         {
             //World.Instance.ControlledCar.Y += 5;
             World.Instance.ControlledCar.VirtualFunctionBus.PedalPacket.BreakPressed = true;
+            World.Instance.ControlledCar.ACCController.ControllerPacket.Enabled = false;
         }
 
         public void KeyLeft()
@@ -137,11 +138,56 @@ namespace AutomatedCar.ViewModels
 
         public void GearDrive()
         {
-            if (World.Instance.ControlledCar.carShift.ShiftPacket.CurrentGear==Helpers.Gear.Neutral || World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.RPM <= 1000 && World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.Speed == 0)
+            if (World.Instance.ControlledCar.carShift.ShiftPacket.CurrentGear==Helpers.Gear.Neutral && World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.Speed == 0 || World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.RPM <= 1000 && World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.Speed == 0)
             {
                 World.Instance.ControlledCar.carShift.ShiftPacket.CurrentGear = Helpers.Gear.Drive;
                 World.Instance.ControlledCar.carShift.ShiftPacket.GearState = World.Instance.ControlledCar.carShift.ShiftPacket.CurrentShift.ToString();
             }
+        }
+
+        public void ACC()
+        {
+            World.Instance.ControlledCar.ACCController.ControllerPacket.Enabled = !World.Instance.ControlledCar.ACCController.ControllerPacket.Enabled;
+            if (World.Instance.ControlledCar.ACCController.ControllerPacket.Enabled)
+            {
+                World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget = World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.CorrectedSpeed < 30 ? 30 : World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.CorrectedSpeed;
+            }
+            
+        }
+
+        public void ACCPlus()
+        {
+            if (World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget < 160)
+            {
+                if (World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget % 10 != 0)
+                {
+                    World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget = World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.CorrectedSpeed < 30 ? 30 : (int)Math.Ceiling(World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.CorrectedSpeed / 10D) * 10;
+                }
+                else
+                {
+                    World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget += 10;
+                }
+            }
+        }
+
+        public void ACCMinus()
+        {
+            if (World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget > 30)
+            {
+                if (World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget % 10 != 0)
+                {
+                    World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget = World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.CorrectedSpeed < 30 ? 30 : (int)Math.Floor(World.Instance.ControlledCar.VirtualFunctionBus.PowerTrainPacket.CorrectedSpeed / 10D) * 10;
+                }
+                else
+                {
+                    World.Instance.ControlledCar.ACCTargetProcessor.Packet.DriverTarget -= 10;
+                }
+            }
+        }
+
+        public void CycleDistance()
+        {
+            World.Instance.ControlledCar.ACCTargetProcessor.Packet.TargetDistanceCycleUp();
         }
 
         public void BreakRelease()
@@ -155,7 +201,7 @@ namespace AutomatedCar.ViewModels
         }
 
         public void FocusCar(ScrollViewer scrollViewer)
-        {
+        {   
             var offsetX = World.Instance.ControlledCar.X - (scrollViewer.Viewport.Width / 2);
             var offsetY = World.Instance.ControlledCar.Y - (scrollViewer.Viewport.Height / 2);
             this.Offset = new Avalonia.Vector(offsetX, offsetY);

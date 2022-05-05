@@ -8,31 +8,29 @@
 
     public class Radar : Sensor
     {
-
         public event EventHandler ObjectsInRange;
 
+        private List<string> fileNames;
         public Radar(World world, VirtualFunctionBus virtualFunctionBus)
-            : base(world, virtualFunctionBus, 200, 60)
+            : base(world, virtualFunctionBus, 7, 60)
         {
-            //this.FieldOfView = CalculateSensorPolylineGeometry();
+            this.virtualFunctionBus.RadarPacket = this.SensorPacket;
         }
 
         public override void Process()
         {
             this.UpdateSensorPositionAndOrientation();
-            this.virtualFunctionBus.SensorPacket.WorldObjectsInRange = GetWorldObjectsInRange();
-            if (this.virtualFunctionBus.SensorPacket.WorldObjectsInRange.Count > 0) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
+            this.virtualFunctionBus.RadarPacket.WorldObjectsInRange = GetWorldObjectsInRange();
+            if (this.virtualFunctionBus.RadarPacket.WorldObjectsInRange.Count > 0) this.ObjectsInRange?.Invoke(this, EventArgs.Empty);
+            if (this.fileNames != null)
+            {
+                this.SensorPacket.FileNamesRadar = this.fileNames;
+            }
         }
-
-        //protected override PolylineGeometry CalculateSensorPolylineGeometry()
-        //{
-        //    //          kezdö pont                                      jobb széle                                              balszéle
-        //    Point[] p = { new Point(100, 100), new Point(/*Az a pont ahol a kamera van +*/Range, Range + 50), new Point(/*Az a pont ahol a kamera van +*/Range, Range - 50) };
-        //    return new PolylineGeometry(p, false);
-        //}
 
         protected override ICollection<WorldObject> GetWorldObjectsInRange()
         {
+            this.fileNames = new List<string>();
             return this.world.WorldObjects.FindAll(IsInRange);
         }
 
@@ -45,16 +43,22 @@
 
             if (worldObject.Collideable)
             {
-                bool flag = false;
-                foreach (var geometry in worldObject.Geometries)
+                Matrix preTanslation = Matrix.CreateTranslation(-worldObject.RotationPoint.X, -worldObject.RotationPoint.Y);
+                Matrix translation = Matrix.CreateTranslation(worldObject.X, worldObject.Y);
+                Matrix rotation = Matrix.CreateRotation((worldObject.Rotation * Math.PI) / 180.0);
+                Point transformed;
+
+                foreach (var point in worldObject.RawGeometries[0].Points)
                 {
-                    if (geometry.Bounds.Intersects(this.FieldOfView.Bounds))
+                    transformed = point.Transform(preTanslation).Transform(rotation).Transform(translation);
+                    if (this.FieldOfView.FillContains(transformed))
                     {
-                        flag = true;
+                        this.fileNames.Add(worldObject.Filename);
+                        return true;
                     }
                 }
 
-                return flag;
+                return false;
             }
             else
             {

@@ -7,7 +7,9 @@ namespace AutomatedCar.SystemComponents
     {
         private List<SystemComponent> components = new List<SystemComponent>();
 
-        public ISensorPacket SensorPacket { get; set; }
+        public ISensorPacket RadarPacket { get; set; }
+
+        public ISensorPacket CameraPacket { get; set; }
 
         public IHitBoxPacket HitBoxPacket { get; set; }
 
@@ -18,6 +20,12 @@ namespace AutomatedCar.SystemComponents
         public IPedalPacket PedalPacket { get; set; }
 
         public ISteeringWheelPacket SteeringWheelPacket { get; set; }
+
+        public IControllerPacket<double> ControllerPacket { get; set; }
+
+        public IACCTargetProcessorPacket ACCTargetProcessorPacket { get; set; }
+
+        public IEmergancyBrakePacket EmergancyBrakePacket { get; set; }
 
         public void RegisterComponent(SystemComponent component)
         {

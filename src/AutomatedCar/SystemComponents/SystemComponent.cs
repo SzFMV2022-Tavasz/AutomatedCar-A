@@ -1,6 +1,6 @@
 namespace AutomatedCar.SystemComponents
 {
-    public abstract class SystemComponent
+    public abstract class SystemComponent 
     {
         protected VirtualFunctionBus virtualFunctionBus;
 
