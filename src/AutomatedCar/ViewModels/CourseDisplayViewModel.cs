@@ -48,23 +48,27 @@ namespace AutomatedCar.ViewModels
         {
             //World.Instance.ControlledCar.Y -= 5;
             World.Instance.ControlledCar.VirtualFunctionBus.PedalPacket.GasPressed = true;
+            //World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsLKAActive = false;
         }
 
         public void KeyDown()
         {
             //World.Instance.ControlledCar.Y += 5;
+            //World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsLKAActive = false;
             World.Instance.ControlledCar.VirtualFunctionBus.PedalPacket.BreakPressed = true;
             World.Instance.ControlledCar.ACCController.ControllerPacket.Enabled = false;
         }
 
         public void KeyLeft()
         {
+            World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsLKAActive = false;
             World.Instance.ControlledCar.StreeringInputKey(-10);
             World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsBeingRotated = World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.WheelRotation < -20;
         }
 
         public void KeyRight()
         {
+            World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsLKAActive = false;
             World.Instance.ControlledCar.StreeringInputKey(10);
             World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsBeingRotated = World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.WheelRotation > 20;
         }

@@ -20,8 +20,6 @@
 
         public override void Process()
         {
-            // TODO ki kell kapcsolnia hogyha hoszá érsz a kormányhoz 
-            // most ha bevan nyomja és forgatod a kormányt akkor körbe körbe forog 
 
             if (this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive)
             {
@@ -39,13 +37,7 @@
 
         private void SetWheelRotationByLanes(ICollection<WorldObject> lanes)
         {
-            // kikommenteztem mert NUllExceptionnal elszál 
-           // int value = 0;
-            //foreach(var line in lanes)
-            //{
-            //    Console.WriteLine(line.Filename);
-            //}
-            //this.world.ControlledCar.StreeringInputKey(value);
+            //Lane keeping calculations
         }
     }
 }
