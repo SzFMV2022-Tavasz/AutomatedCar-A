@@ -16,6 +16,6 @@
 
         bool IsBeingRotated { get; set; }
 
-        bool IsLKAActive { get; }
+        bool IsLKAActive { get; set; }
     }
 }

@@ -145,6 +145,16 @@ namespace AutomatedCar.ViewModels
             }
         }
 
+        public void LKA()
+        {
+            World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsLKAActive = !World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsLKAActive;
+            if (World.Instance.ControlledCar.VirtualFunctionBus.SteeringWheelPacket.IsLKAActive)
+            {
+                // ie jöhet hogyha bevankapcsolva akkor hivja meg vagy valami
+            }
+
+        }
+
         public void ACC()
         {
             World.Instance.ControlledCar.ACCController.ControllerPacket.Enabled = !World.Instance.ControlledCar.ACCController.ControllerPacket.Enabled;

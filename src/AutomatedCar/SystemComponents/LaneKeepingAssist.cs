@@ -6,6 +6,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using AutomatedCar.Models;
+    using AutomatedCar.SystemComponents.Packets;
 
     public class LaneKeepingAssist : SystemComponent
     {
@@ -14,12 +15,15 @@
         public LaneKeepingAssist(VirtualFunctionBus bus, World world) : base(bus)
         {
             this.world = world;
+            this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive = false;
         }
 
         public override void Process()
         {
-            //TODO: Implement Lane Keep Assist IN/OFF
-            if (this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive)// || true)
+            // TODO ki kell kapcsolnia hogyha hoszá érsz a kormányhoz 
+            // most ha bevan nyomja és forgatod a kormányt akkor körbe körbe forog 
+
+            if (this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive)
             {
                 if (this.virtualFunctionBus.CameraPacket.WorldObjectsInRange.Count > 0)
                 {
@@ -35,12 +39,13 @@
 
         private void SetWheelRotationByLanes(ICollection<WorldObject> lanes)
         {
-            int value = 0;
+            // kikommenteztem mert NUllExceptionnal elszál 
+           // int value = 0;
             //foreach(var line in lanes)
             //{
             //    Console.WriteLine(line.Filename);
             //}
-            this.world.ControlledCar.StreeringInputKey(value);
+            //this.world.ControlledCar.StreeringInputKey(value);
         }
     }
 }

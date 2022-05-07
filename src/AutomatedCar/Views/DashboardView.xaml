@@ -91,6 +91,8 @@
 								<TextBlock Grid.Row="17" Grid.Column="0">Tracking distance:</TextBlock>
 								<TextBlock Grid.Row="17" Grid.Column="1" Text="{Binding Car.ACCTargetProcessor.Packet.TargetDistanceCycle}"/>
                 <TextBlock Grid.Row="18" Grid.Column="0" Text="{Binding Car.VirtualFunctionBus.EmergancyBrakePacket.BrakeState  }"/>
+								<TextBlock Grid.Row="19" Grid.Column="0">LKA:</TextBlock>
+								<TextBlock Grid.Row="19" Grid.Column="3" Text="{Binding Car.VirtualFunctionBus.SteeringWheelPacket.IsLKAActive}"/>
                               </Grid>
                         </StackPanel>
                     </DataTemplate>

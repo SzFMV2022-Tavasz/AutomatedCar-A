@@ -18,7 +18,7 @@ namespace AutomatedCar.Models
         private ACCController aCCController;
         public bool isTracked;
         private ACCTargetProcessor accSensor;
-        private LaneKeepingAssist laneKeepingAssist;
+        public LaneKeepingAssist LaneKeepingAssist;
         public Sensor TempSen
         {
             get
@@ -43,7 +43,7 @@ namespace AutomatedCar.Models
             this.aCCController = new ACCController(this.virtualFunctionBus, this);
             this.isTracked = false;
             this.accSensor = new ACCTargetProcessor(this.virtualFunctionBus, this);
-            this.laneKeepingAssist = new LaneKeepingAssist(this.virtualFunctionBus, World.Instance);
+            this.LaneKeepingAssist = new LaneKeepingAssist(this.virtualFunctionBus, World.Instance);
         }
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }

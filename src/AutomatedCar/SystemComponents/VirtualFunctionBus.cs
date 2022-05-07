@@ -27,6 +27,7 @@ namespace AutomatedCar.SystemComponents
 
         public IEmergancyBrakePacket EmergancyBrakePacket { get; set; }
 
+
         public void RegisterComponent(SystemComponent component)
         {
             this.components.Add(component);
