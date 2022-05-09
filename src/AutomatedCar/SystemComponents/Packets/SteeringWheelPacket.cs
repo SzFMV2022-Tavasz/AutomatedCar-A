@@ -50,5 +50,11 @@
             get => this.isLKAActive;
             set => this.RaiseAndSetIfChanged(ref this.isLKAActive, value);
         }
+
+        public string LKAState
+        {
+            get => this.lKAState;
+            set => this.RaiseAndSetIfChanged(ref this.lKAState, value);
+        }
     }
 }
