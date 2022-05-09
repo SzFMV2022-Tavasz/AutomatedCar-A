@@ -21,6 +21,14 @@
 
         public override void Process()
         {
+            if (this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive == true)
+            {
+                this.DisableLKA();
+            }
+            else if (this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive == false)
+            {
+                this.EnableLKA();
+            }
 
             if (this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive)
             {
