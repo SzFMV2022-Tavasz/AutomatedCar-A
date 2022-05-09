@@ -57,5 +57,22 @@
                 }
             }
         }
+
+        private void EnableLKA()
+        {
+            ICollection<WorldObject> objects = this.virtualFunctionBus.CameraPacket.WorldObjectsInRange.ToList();
+
+            foreach (var item in objects)
+            {
+                if (item.Filename != "road_2lane_90left.png" && item.Filename != "road_2lane_90right.png" &&
+                        item.Filename != "road_2lane_crossroad_1.png" && item.Filename != "road_2lane_crossroad_2.png" &&
+                        item.Filename != "road_2lane_rotary.png" && item.Filename != "road_2lane_tjunctionleft.png" &&
+                        item.Filename != "road_2lane_tjunctionright.png")
+                {
+                    this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive = true;
+                    this.virtualFunctionBus.SteeringWheelPacket.LKAState = "Elérhető a sávtartó funkció!";
+                }
+            }
+        }
     }
 }
