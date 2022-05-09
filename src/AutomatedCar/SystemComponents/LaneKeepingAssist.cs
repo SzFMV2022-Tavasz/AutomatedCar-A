@@ -16,6 +16,7 @@
         {
             this.world = world;
             this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive = false;
+            this.virtualFunctionBus.SteeringWheelPacket.LKAState = "";
         }
 
         public override void Process()
