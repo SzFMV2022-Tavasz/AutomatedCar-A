@@ -14,6 +14,7 @@
         private int nextPositionY;
         private bool isbeingRotated;
         private bool isLKAActive;
+        private string lKAState;
 
         public SteeringWheelPacket()
         {
