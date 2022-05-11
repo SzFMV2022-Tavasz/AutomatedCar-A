@@ -81,7 +81,6 @@
         private void EnableLKA()
         {
             WorldObject[] objects = this.virtualFunctionBus.CameraPacket.WorldObjectsInRange.ToArray();
-            bool result = false;
             int complexRoad = 0;
             int i = 0;
 
@@ -100,8 +99,12 @@
 
                 i++;
             } while (i < objects.Length);
-            
-                
+
+            if (complexRoad == 0)
+            {
+                this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive = true;
+                this.virtualFunctionBus.SteeringWheelPacket.LKAState = "Elérhető!";
+            }
         }
     }
 }
