@@ -53,18 +53,20 @@
         {
             WorldObject[] objects = this.virtualFunctionBus.CameraPacket.WorldObjectsInRange.ToArray();
             bool result = true;
+            int i = 0;
 
-            foreach (var item in objects)
+            do
             {
-                if (item.Filename == "road_2lane_90left.png" || item.Filename == "road_2lane_90right.png" ||
-                        item.Filename == "road_2lane_crossroad_1.png" || item.Filename == "road_2lane_crossroad_2.png" ||
-                        item.Filename == "road_2lane_rotary.png" || item.Filename == "road_2lane_tjunctionleft.png" ||
-                        item.Filename == "road_2lane_tjunctionright.png")
+                if (objects[i].Filename == "road_2lane_90left.png" || objects[i].Filename == "road_2lane_90right.png" ||
+                        objects[i].Filename == "road_2lane_crossroad_1.png" || objects[i].Filename == "road_2lane_crossroad_2.png" ||
+                        objects[i].Filename == "road_2lane_rotary.png" || objects[i].Filename == "road_2lane_tjunctionleft.png" ||
+                        objects[i].Filename == "road_2lane_tjunctionright.png")
                 {
-                    this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive = false;
-                    this.virtualFunctionBus.SteeringWheelPacket.LKAState = "Kezelhetetlen forgalmi szituáció!";
+                    result = false;
                 }
-            }
+
+                i++;
+            } while (result == true && i < objects.Length);
         }
 
         private void EnableLKA()
