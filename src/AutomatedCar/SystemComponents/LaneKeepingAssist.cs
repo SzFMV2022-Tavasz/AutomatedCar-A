@@ -51,7 +51,7 @@
 
         private void DisableLKA()
         {
-            ICollection<WorldObject> objects = this.virtualFunctionBus.CameraPacket.WorldObjectsInRange.ToList();
+            WorldObject[] objects = this.virtualFunctionBus.CameraPacket.WorldObjectsInRange.ToArray();
 
             foreach (var item in objects)
             {
