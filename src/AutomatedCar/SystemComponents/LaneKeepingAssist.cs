@@ -67,11 +67,20 @@
 
                 i++;
             } while (result == true && i < objects.Length);
+
+            if (result == true)
+            {
+            }
+            else
+            {
+                this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive = false;
+                this.virtualFunctionBus.SteeringWheelPacket.LKAState = "Kezelhetetlen!";
+            }
         }
 
         private void EnableLKA()
         {
-            ICollection<WorldObject> objects = this.virtualFunctionBus.CameraPacket.WorldObjectsInRange.ToList();
+            WorldObject[] objects = this.virtualFunctionBus.CameraPacket.WorldObjectsInRange.ToArray();
 
             foreach (var item in objects)
             {
