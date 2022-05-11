@@ -53,7 +53,7 @@
                                   <RotateTransform Angle="{Binding Car.VirtualFunctionBus.SteeringWheelPacket.WheelRotation}" />
                                 </Image.RenderTransform>
                             </Image>
-                            <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                            <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                                 <TextBlock Grid.Row="0" Grid.Column="0">X:</TextBlock>
                                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding X}"/>
                                 <TextBlock Grid.Row="1" Grid.Column="0">Y:</TextBlock>
@@ -93,7 +93,8 @@
                 <TextBlock Grid.Row="18" Grid.Column="0" Text="{Binding Car.VirtualFunctionBus.EmergancyBrakePacket.BrakeState  }"/>
 								<TextBlock Grid.Row="19" Grid.Column="0">LKA:</TextBlock>
 								<TextBlock Grid.Row="19" Grid.Column="3" Text="{Binding Car.VirtualFunctionBus.SteeringWheelPacket.IsLKAActive}"/>
-                              </Grid>
+                                <TextBlock Grid.Row="20" Grid.Column="0" Text="{Binding Car.VirtualFunctionBus.SteeringWheelPacket.LKAState}"/>
+                            </Grid>
                         </StackPanel>
                     </DataTemplate>
                 </ContentControl.ContentTemplate>

@@ -16,10 +16,19 @@
         {
             this.world = world;
             this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive = false;
+            this.virtualFunctionBus.SteeringWheelPacket.LKAState = "";
         }
 
         public override void Process()
         {
+            if (this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive == true)
+            {
+                this.DisableLKA();
+            }
+            else if (this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive == false)
+            {
+                this.EnableLKA();
+            }
 
             if (this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive)
             {
@@ -38,6 +47,63 @@
         private void SetWheelRotationByLanes(ICollection<WorldObject> lanes)
         {
             //Lane keeping calculations
+        }
+
+        private void DisableLKA()
+        {
+            WorldObject[] objects = this.virtualFunctionBus.CameraPacket.WorldObjectsInRange.ToArray();
+            bool result = true;
+            int i = 0;
+
+            while (result == true && i < objects.Length)
+            {
+                if (objects[i].Filename == "road_2lane_90left.png" || objects[i].Filename == "road_2lane_90right.png" ||
+                        objects[i].Filename == "road_2lane_crossroad_1.png" || objects[i].Filename == "road_2lane_crossroad_2.png" ||
+                        objects[i].Filename == "road_2lane_rotary.png" || objects[i].Filename == "road_2lane_tjunctionleft.png" ||
+                        objects[i].Filename == "road_2lane_tjunctionright.png")
+                {
+                    result = false;
+                }
+
+                i++;
+            }
+
+            if (result == true)
+            {
+            }
+            else
+            {
+                this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive = false;
+                this.virtualFunctionBus.SteeringWheelPacket.LKAState = "Kezelhetetlen!";
+            }
+        }
+
+        private void EnableLKA()
+        {
+            WorldObject[] objects = this.virtualFunctionBus.CameraPacket.WorldObjectsInRange.ToArray();
+            int complexRoad = 0;
+            int i = 0;
+
+            while (i < objects.Length)
+            {
+                if (objects[i].Filename != "road_2lane_90left.png" && objects[i].Filename != "road_2lane_90right.png" &&
+                        objects[i].Filename != "road_2lane_crossroad_1.png" && objects[i].Filename != "road_2lane_crossroad_2.png" &&
+                        objects[i].Filename != "road_2lane_rotary.png" && objects[i].Filename != "road_2lane_tjunctionleft.png" &&
+                        objects[i].Filename != "road_2lane_tjunctionright.png")
+                {
+                }
+                else
+                {
+                    complexRoad++;
+                }
+
+                i++;
+            }
+
+            if (complexRoad == 0)
+            {
+                this.virtualFunctionBus.SteeringWheelPacket.LKAState = "Elérhető!";
+            }
         }
     }
 }

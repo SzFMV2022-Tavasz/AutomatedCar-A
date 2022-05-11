@@ -17,5 +17,7 @@
         bool IsBeingRotated { get; set; }
 
         bool IsLKAActive { get; set; }
+
+        string LKAState { get; set; }
     }
 }
