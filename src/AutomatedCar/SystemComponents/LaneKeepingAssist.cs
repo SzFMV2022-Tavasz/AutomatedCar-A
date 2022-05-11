@@ -102,7 +102,6 @@
 
             if (complexRoad == 0)
             {
-                this.virtualFunctionBus.SteeringWheelPacket.IsLKAActive = true;
                 this.virtualFunctionBus.SteeringWheelPacket.LKAState = "Elérhető!";
             }
         }
