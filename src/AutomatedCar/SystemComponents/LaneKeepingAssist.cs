@@ -55,7 +55,7 @@
             bool result = true;
             int i = 0;
 
-            do
+            while (result == true && i < objects.Length)
             {
                 if (objects[i].Filename == "road_2lane_90left.png" || objects[i].Filename == "road_2lane_90right.png" ||
                         objects[i].Filename == "road_2lane_crossroad_1.png" || objects[i].Filename == "road_2lane_crossroad_2.png" ||
@@ -66,7 +66,7 @@
                 }
 
                 i++;
-            } while (result == true && i < objects.Length);
+            }
 
             if (result == true)
             {
@@ -84,7 +84,7 @@
             int complexRoad = 0;
             int i = 0;
 
-            do
+            while (i < objects.Length)
             {
                 if (objects[i].Filename != "road_2lane_90left.png" && objects[i].Filename != "road_2lane_90right.png" &&
                         objects[i].Filename != "road_2lane_crossroad_1.png" && objects[i].Filename != "road_2lane_crossroad_2.png" &&
@@ -98,7 +98,7 @@
                 }
 
                 i++;
-            } while (i < objects.Length);
+            }
 
             if (complexRoad == 0)
             {
